@@ -6,42 +6,41 @@
 #include "TestUtil.h"
 
 
-bool          testingStarted = false;
 clock_t       startTime;
-unsigned int  testsPassed;
-unsigned int  testsFailed;
+int           testsPassed;
+int           testsFailed;
 
 const char*   currentTestName = NULL;
 clock_t       currentTestStart;
 
+void finishTest (bool passed);
+
 
 void startTesting ()
 {
-    assert(!testingStarted);
     startTime = clock();
     testsPassed = 0;
     testsFailed = 0;
-    testingStarted = true;
     printf("+----------------------------------------------------------+\n");
 }
 
 
 void finishTesting ()
 {
-    assert(testingStarted);
+    finishTest(true);
     double time = ((double)(clock() - startTime)) / CLOCKS_PER_SEC;
-    char passed[20];
-    sprintf(passed, "%d/%d PASSED", testsPassed, testsPassed + testsFailed);
+    char result[20];
+    sprintf(result, "%d FAILED", testsFailed);
+    if (testsFailed == 0) { sprintf(result, "ALL PASSED"); }
     printf("|                                                          |\n");
-    printf("| TOTAL                    %20s  %fs |\n", passed, time);
+    printf("| TOTAL                    %20s  %fs |\n", result, time);
     printf("+----------------------------------------------------------+\n");
-    testingStarted = false;
 }
 
 
-void start (const char* testName)
+void startTest (const char* testName)
 {
-    assert(currentTestName == NULL);
+    finishTest(true);
     currentTestName = testName;
     currentTestStart = clock();
 }
@@ -49,7 +48,7 @@ void start (const char* testName)
 
 void finishTest (bool passed)
 {
-    assert(currentTestName != NULL);
+    if (currentTestName == NULL) { return; }
     passed ? ++testsPassed : ++testsFailed;
 
     const char* name = currentTestName;
@@ -58,12 +57,6 @@ void finishTest (bool passed)
 
     printf("| %-37s  %s  %fs |\n", name, result, time);
     currentTestName = NULL;
-}
-
-
-void finish ()
-{
-    finishTest(true);
 }
 
 

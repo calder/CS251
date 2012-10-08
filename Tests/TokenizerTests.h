@@ -7,9 +7,8 @@
 
 void testTokenizer ()
 {
-    start("Tokenizer");
+    startTest("Tokenizer");
     failIfTrue(false);
-    finish();
 }
 
 
