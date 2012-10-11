@@ -15,44 +15,44 @@ struct
 typedef Quack;
 
 
-/// Malloc and return a new Quack
-Quack* createQuack ();
+/// Malloc, initialize and return an empty Quack
+Quack* quack_create ();
 
 /// Free the Quack itself, leaving its contents untouched
-void freeQuack (Quack* quack);
+void quack_free (Quack* quack);
 
 /// Free the Quack and everything in it
-void freeQuackAndContents (Quack* quack);
+void quack_free_with_contents (Quack* quack);
 
 /// Display the entire Quack for debugging purposes
-void print (Quack* quack);
+void quack_print (Quack* quack);
 
 /// Return true iff the Quack contains no items
-bool empty (Quack* quack);
+bool quack_empty (Quack* quack);
 
 /// Add a new item to the front of the Quack
-void pushFront (Quack* quack, void* item);
+void quack_push_front (Quack* quack, void* item);
 
 /// Add a new item to the back of the Quack
-void pushBack (Quack* quack, void* item);
+void quack_push_back (Quack* quack, void* item);
 
 /// Remove and return the item at the front of the Quack
-void* popFront (Quack* quack);
+void* quack_pop_front (Quack* quack);
 
 /// Remove and return the item at the back of the Quack
-void* popBack (Quack* quack);
+void* quack_pop_back (Quack* quack);
 
 /// Return (without removing) the item at the front of the Quack
-void* front (Quack* quack);
+void* quack_front (Quack* quack);
 
 /// Return (without removing) the item at the back of the Quack
-void* back (Quack* quack);
+void* quack_back (Quack* quack);
 
 /// Remove and free the item at the front of the Quack
-void freeFront (Quack* quack);
+void quack_free_front (Quack* quack);
 
 /// Remove and free the item at the back of the Quack
-void freeBack (Quack* quack);
+void quack_free_back (Quack* quack);
 
 
 #endif

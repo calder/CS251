@@ -5,7 +5,7 @@
 #include "Util/Quack.h"
 
 
-Quack* createQuack ()
+Quack* quack_create ()
 {
     Quack* quack = (Quack*) malloc(sizeof(Quack));
     quack->size = 0;
@@ -16,40 +16,40 @@ Quack* createQuack ()
 }
 
 
-void freeQuack (Quack* quack)
+void quack_free (Quack* quack)
 {
     free(quack->array);
     free(quack);
 }
 
 
-void freeQuackAndContents (Quack* quack)
+void quack_free_with_contents (Quack* quack)
 {
-    while (!empty(quack)) { freeBack(quack); }
-    freeQuack(quack);
+    while (!quack_empty(quack)) { quack_free_back(quack); }
+    quack_free(quack);
 }
 
 
-int memIndex (Quack* quack, int index)
+int quack_mem_index (Quack* quack, int index)
 {
     if (index < 0) { index += quack->size; }
     return (quack->start + index + quack->capacity) % quack->capacity;
 }
 
 
-void* get (Quack* quack, int index)
+void* quack_get (Quack* quack, int index)
 {
-    return quack->array[memIndex(quack,index)];
+    return quack->array[quack_mem_index(quack,index)];
 }
 
 
-void set (Quack* quack, int index, void* item)
+void quack_set (Quack* quack, int index, void* item)
 {
-    quack->array[memIndex(quack,index)] = item;
+    quack->array[quack_mem_index(quack,index)] = item;
 }
 
 
-void debugPrint (Quack* quack)
+void quack_debug_print (Quack* quack)
 {
     printf("[");
     for (int i = 0; i < quack->capacity-1; ++i)
@@ -60,25 +60,25 @@ void debugPrint (Quack* quack)
 }
 
 
-void print (Quack* quack)
+void quack_print (Quack* quack)
 {
     printf("[");
     for (int i = 0; i < quack->size - 1; ++i)
     {
-        printf("%p ", get(quack, i));
+        printf("%p ", quack_get(quack, i));
     }
-    if (quack->size > 0) { printf("%p", get(quack, -1)); }
+    if (quack->size > 0) { printf("%p", quack_get(quack, -1)); }
     printf("]\n");
 }
 
 
-bool empty (Quack* quack)
+bool quack_empty (Quack* quack)
 {
     return quack->size == 0;
 }
 
 
-void resize (Quack* quack, int newCapacity)
+void quack_resize (Quack* quack, int newCapacity)
 {
     assert(newCapacity > 0);
     void** newArray = (void**) malloc(newCapacity * sizeof(void*));
@@ -110,83 +110,89 @@ void resize (Quack* quack, int newCapacity)
 }
 
 
-void grow (Quack* quack)
+void quack_grow_if_full (Quack* quack)
 {
     if (quack->size == quack->capacity)
     {
-        resize(quack, quack->size * 2);
+        quack_resize(quack, quack->size * 2);
     }
 }
 
 
-void shrink (Quack* quack)
+void quack_shrink_if_sparse (Quack* quack)
 {
     if (quack->size > 0 && quack->size < quack->capacity / 4)
     { 
-        resize(quack, quack->capacity / 2);
+        quack_resize(quack, quack->capacity / 2);
     }
 }
 
 
-void pushFront (Quack* quack, void* item)
+void quack_push_front (Quack* quack, void* item)
 {
-    grow(quack);
+    quack_grow_if_full(quack);
     quack->start = (quack->start - 1 + quack->capacity) % quack->capacity;
     quack->size += 1;
-    set(quack, 0, item);
+    quack_set(quack, 0, item);
 }
 
 
-void pushBack (Quack* quack, void* item)
+void quack_push_back (Quack* quack, void* item)
 {
-    grow(quack);
+    quack_grow_if_full(quack);
     quack->size += 1;
-    set(quack, -1, item);
+    quack_set(quack, -1, item);
 }
 
 
-void* popFront (Quack* quack)
+void* quack_pop_front (Quack* quack)
 {
     assert(quack->size > 0);
-    void* popped = get(quack, 0);
-    quack->start = memIndex(quack, 1);
+    void* popped = quack_get(quack, 0);
+    quack->start = quack_mem_index(quack, 1);
     quack->size -= 1;
-    shrink(quack);
+    quack_shrink_if_sparse(quack);
     return popped;
 }
 
 
-void* popBack (Quack* quack)
+void* quack_pop_back (Quack* quack)
 {
     assert(quack->size > 0);
-    void* popped = get(quack, -1);
+    void* popped = quack_get(quack, -1);
     quack->size -= 1;
-    shrink(quack);
+    quack_shrink_if_sparse(quack);
     return popped;
 }
 
 
-void* front (Quack* quack)
+void* quack_front (Quack* quack)
 {
     assert(quack->size > 0);
-    return get(quack, 0);
+    return quack_get(quack, 0);
 }
 
 
-void* back (Quack* quack)
+void* quack_back (Quack* quack)
 {
     assert(quack->size > 0);
-    return get(quack, -1);
+    return quack_get(quack, -1);
 }
 
 
-void freeFront (Quack* quack)
+void quack_free_front (Quack* quack)
 {
-    free(popFront(quack));
+    free(quack_pop_front(quack));
+}
+
+
+void quack_free_back (Quack* quack)
+{
+    free(quack_pop_back(quack));
 }
 
 
 void freeBack (Quack* quack)
 {
-    free(popBack(quack));
+    free(quack_pop_back(quack));
 }

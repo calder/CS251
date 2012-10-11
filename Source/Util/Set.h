@@ -15,28 +15,28 @@ typedef Set;
 
 
 /// Malloc and return a new Set
-Set* createSet ();
+Set* set_create ();
 
 /// Free the Set itself, leaving its contents untouched
-void freeSet (Set* set);
+void set_free (Set* set);
 
 /// Display the entire Set for debugging purposes
-void print (Set* set);
+void set_print (Set* set);
 
 /// Return the number of items in the Set
-int size (Set* set);
+int set_size (Set* set);
 
 /// Return true iff the Set's size is 0
-bool empty (Set* set);
+bool set_empty (Set* set);
 
 /// Insert a new item into the Set iff it isn't already in the set
-void add (Set* set, void* item);
+void set_add (Set* set, void* item);
 
 /// Remove an item from the Set
-void remove (Set* set, void* item);
+void set_remove (Set* set, void* item);
 
 /// Return true iff an item is in the Set
-bool contains (Set* set, void* item);
+bool set_contains (Set* set, void* item);
 
 
 #endif

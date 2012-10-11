@@ -7,78 +7,72 @@
 
 
 clock_t       startTime;
-int           testsPassed;
-int           testsFailed;
+int           testCount;
 
 const char*   currentTestName = NULL;
 clock_t       currentTestStart;
 
-void finishTest (bool passed);
+void finish_test ();
 
 
-void startTesting ()
+void start_testing ()
 {
     startTime = clock();
-    testsPassed = 0;
-    testsFailed = 0;
+    testCount = 0;
     printf("+----------------------------------------------------------+\n");
 }
 
 
-void finishTesting ()
+void finish_testing ()
 {
-    finishTest(true);
+    finish_test();
     double time = ((double)(clock() - startTime)) / CLOCKS_PER_SEC;
     char result[20];
-    sprintf(result, "%d FAILED", testsFailed);
-    if (testsFailed == 0) { sprintf(result, "ALL PASSED"); }
+    sprintf(result, "%d TESTS PASSED", testCount);
     printf("|                                                          |\n");
-    printf("| TOTAL                    %20s  %fs |\n", result, time);
+    printf("| %-20s                           %fs |\n", result, time);
     printf("+----------------------------------------------------------+\n");
 }
 
 
-void startTest (const char* testName)
+void start_test (const char* testName)
 {
-    finishTest(true);
+    finish_test();
     currentTestName = testName;
     currentTestStart = clock();
 }
 
 
-void finishTest (bool passed)
+void finish_test ()
 {
     if (currentTestName == NULL) { return; }
-    passed ? ++testsPassed : ++testsFailed;
-
+    ++testCount;
     const char* name = currentTestName;
-    const char* result = passed ? "PASSED" : "FAILED";
     double time = ((double)(clock() - currentTestStart)) / CLOCKS_PER_SEC;
-
-    printf("| %-37s  %s  %fs |\n", name, result, time);
+    printf("| %-43s    %fs |\n", name, time);
     currentTestName = NULL;
 }
 
 
 void fail ()
 {
-    finishTest(false);
+    assert(false);
 }
 
 
-void failIfTrue (bool x)
+void fail_if_true (bool x)
 {
     if (x) { fail(); }
 }
 
 
-void failIfFalse (bool x)
+void fail_if_false (bool x)
 {
     if (!x) { fail(); }
 }
 
 
-void failIfDifferent (const void* x, const void* y)
+void fail_if_different (const void* x, const void* y)
 {
     if (x != y) { fail(); }
 }

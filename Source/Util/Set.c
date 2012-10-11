@@ -1,49 +1,49 @@
 #include "Util/Set.h"
 
 
-Set* createSet ()
+Set* set_create ()
 {
     // Placeholder
 }
 
 
-void freeSet (Set* set)
+void set_free (Set* set)
 {
     // Placeholder
 }
 
 
-void print (Set* set)
+void set_print (Set* set)
 {
     // Placeholder
 }
 
 
-int size (Set* set)
+int set_size (Set* set)
 {
     // Placeholder
 }
 
 
-bool empty (Set* set)
+bool set_empty (Set* set)
 {
     // Placeholder
 }
 
 
-void add (Set* set, void* item)
+void set_add (Set* set, void* item)
 {
     // Placeholder
 }
 
 
-void remove (Set* set, void* item)
+void set_remove (Set* set, void* item)
 {
     // Placeholder
 }
 
 
-bool contains (Set* set, void* item)
+bool set_contains (Set* set, void* item)
 {
     // Placeholder
 }

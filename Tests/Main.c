@@ -1,17 +1,26 @@
 #include <stdio.h>
 
 #include "QuackTests.h"
+#include "SetTests.h"
+#include "VectorTests.h"
 #include "TestUtil.h"
 #include "TokenizerTests.h"
 
 
 int main (int argc, char** argv)
 {
-    startTesting();
+    start_testing();
 
-    testQuack();
-    testTokenizer();
+    // Data structures and utilities
+    test_quack();
+    test_set();
+    test_vector();
 
-    finishTesting();
+    // Tokenizer
+    test_tokenizer();
+
+    // Parser
+
+    finish_testing();
     return 0;
 }

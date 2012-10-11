@@ -1,14 +1,14 @@
-#ifndef TESTTOKENIZER_H
-#define TESTTOKENIZER_H
+#ifndef TOKENIZERTESTS_H
+#define TOKENIZERTESTS_H
 
 #include "Tokenizer/Tokenizer.h"
 #include "TestUtil.h"
 
 
-void testTokenizer ()
+void test_tokenizer ()
 {
-    startTest("Tokenizer");
-    failIfTrue(false);
+    start_test("Tokenizer");
+    // Placeholder
 }
 
 

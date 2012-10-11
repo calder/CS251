@@ -5,66 +5,66 @@
 #include "TestUtil.h"
 
 
-void testQuackQueue ()
+void test_quack_queue ()
 {
-    startTest("Quack - Queue");
-    Quack* quack = createQuack();
+    start_test("Quack - Queue");
+    Quack* quack = quack_create();
 
-    pushBack(quack, (void*) 1);
-    pushBack(quack, (void*) 2);
-    pushBack(quack, (void*) 3);
+    quack_push_back(quack, (void*) 1);
+    quack_push_back(quack, (void*) 2);
+    quack_push_back(quack, (void*) 3);
 
-    failIfDifferent(popFront(quack), (void*) 1);
-    failIfDifferent(popFront(quack), (void*) 2);
-    failIfDifferent(popFront(quack), (void*) 3);
+    fail_if_different(quack_pop_front(quack), (void*) 1);
+    fail_if_different(quack_pop_front(quack), (void*) 2);
+    fail_if_different(quack_pop_front(quack), (void*) 3);
 
-    freeQuack(quack);
+    quack_free(quack);
 }
 
 
-void testQuackStack ()
+void test_quack_stack ()
 {
-    startTest("Quack - Stack");
-    Quack* quack = createQuack();
+    start_test("Quack - Stack");
+    Quack* quack = quack_create();
 
-    pushFront(quack, (void*) 1);
-    pushFront(quack, (void*) 2);
-    pushFront(quack, (void*) 3);
+    quack_push_front(quack, (void*) 1);
+    quack_push_front(quack, (void*) 2);
+    quack_push_front(quack, (void*) 3);
 
-    failIfDifferent(popFront(quack), (void*) 3);
-    failIfDifferent(popFront(quack), (void*) 2);
-    failIfDifferent(popFront(quack), (void*) 1);
+    fail_if_different(quack_pop_front(quack), (void*) 3);
+    fail_if_different(quack_pop_front(quack), (void*) 2);
+    fail_if_different(quack_pop_front(quack), (void*) 1);
 
-    freeQuack(quack);
+    quack_free(quack);
 }
 
 
-void testQuackResize ()
+void test_quack_resize ()
 {
-    startTest("Quack - Resize");
-    Quack* quack = createQuack();
+    start_test("Quack - Resize");
+    Quack* quack = quack_create();
 
     for (int i = 0; i < 64; ++i)
     {
-        pushFront(quack, (void*) -i);
-        pushBack(quack, (void*) i);
+        quack_push_front(quack, (void*) -i);
+        quack_push_back(quack, (void*) i);
     }
 
     for (int i = 63; i >= 0; --i)
     {
-        failIfDifferent(popFront(quack), (void*) -i);
-        failIfDifferent(popBack(quack), (void*) i);
+        fail_if_different(quack_pop_front(quack), (void*) -i);
+        fail_if_different(quack_pop_back(quack), (void*) i);
     }
 
-    freeQuack(quack);
+    quack_free(quack);
 }
 
 
-void testQuack ()
+void test_quack ()
 {
-    testQuackQueue();
-    testQuackStack();
-    testQuackResize();
+    test_quack_queue();
+    test_quack_stack();
+    test_quack_resize();
 }
 
 
