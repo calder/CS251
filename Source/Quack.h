@@ -18,16 +18,16 @@ typedef Quack;
 /// Malloc and return a new Quack
 Quack* createQuack ();
 
-/// Free the Quack itself, leaving contents untouched
-void freeQuack (Quack*);
+/// Free the Quack itself, leaving its contents untouched
+void freeQuack (Quack* quack);
 
 /// Free the Quack and everything in it
-void freeQuackAndContents (Quack*);
+void freeQuackAndContents (Quack* quack);
 
 /// Display the entire Quack for debugging purposes
 void print (Quack* quack);
 
-/// Return true iff the quack contains no items
+/// Return true iff the Quack contains no items
 bool empty (Quack* quack);
 
 /// Add a new item to the front of the Quack

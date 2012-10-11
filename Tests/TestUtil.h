@@ -12,7 +12,7 @@ void finishTesting ();
 
 /// Mark the beginning of a new test
 /// @note start() may only be called when there is no test currently running.
-/// @note The calling function maintains ownership of <testName>.{{}}
+/// @note The calling function maintains ownership of the string <testName>.
 void startTest (const char* testName);
 
 /// Exit the current test and mark it as failed
