@@ -1,8 +1,8 @@
 COMPILER    = clang
 INCLUDE     = -ISource
-SOURCE      = Source/*.c
+SOURCE      = Source/*/*.c
+HEADERS     = Source/*/*.h
 TESTS       = Tests/*.c
-HEADERS     = Source/*.h
 TESTHEADERS = Tests/*.h
 
 

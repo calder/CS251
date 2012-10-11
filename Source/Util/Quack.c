@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "quack.h"
+#include "Util/Quack.h"
 
 
 Quack* createQuack ()

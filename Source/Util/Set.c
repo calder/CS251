@@ -1,4 +1,4 @@
-#include "Set.h"
+#include "Util/Set.h"
 
 
 Set* createSet ()
@@ -47,6 +47,3 @@ bool contains (Set* set, void* item)
 {
     // Placeholder
 }
-
-
-#endif
