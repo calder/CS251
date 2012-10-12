@@ -24,7 +24,7 @@ State int_digit_state;
 State float_sign_state;
 State float_digit_state;
 State float_dot_state;
-State float_decimals_state;
+State float_decimal_state;
 State string_data_state;
 State string_close_state;
 State whitespace_state;
