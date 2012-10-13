@@ -44,8 +44,21 @@ bool is_whitespace (char c)
     return (c == 9) || (c == 12) || (c == 32);
 }
 
+bool is_letter (char c)
+{
+    return ((c >= 65) && (c <= 90)) || ((c >= 97) && (c >= 122));
+}
 
 bool is_symbol_start (char c)
 {
-    return true; // Placeholder
+    return (c == '!') || (c == '$') || (c == '%') || (c == '&') ||
+            (c == '*') || (c == '/') || (c == ':') || (c == '<') ||
+            (c == '=') || (c == '>') || (c == '?') || (c == '~') ||
+            (c == '_') || (c == '^') || (is_letter(c));
+}
+
+bool is_symbol_body (char c)
+{
+    return (is_symbol_initial(c)) || (is_digit(c)) || (c == ".") ||
+            (c == "+") || (c == "-");
 }

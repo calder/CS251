@@ -20,3 +20,30 @@ void transition_from_start (char c, Set* states)
     if (is_symbol_start(c)) { set_add(states, &symbol_state); }
     if (is_whitespace(c))   { set_add(states, &whitespace_state); }
 }
+
+// Carissa
+void transition_from_symbol (char c, Set* states)
+{
+    if (is_digit(c))             { set_add(states, &symbol_state); }
+    if (is_symbol_subsequent(c)) { set_add(states, &symbol_state); }
+}
+
+void transition_from_openparen (char c, Set* states) 
+{
+    
+}
+
+void transition_from_closeparen (char c, Set* states)
+{
+    
+}
+
+void transition_from_comment_open (char c, Set* states)
+{
+    if (c != '\n')  { set_add(states, &comment_data_state); }
+}
+
+void transition_from_comment_data (char c, Set* states)
+{
+    if (c != '\n')  { set_add(states, &comment_data_state); }
+}
