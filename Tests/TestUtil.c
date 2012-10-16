@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include "TestUtil.h"
 
 
@@ -51,28 +50,4 @@ void finish_test ()
     double time = ((double)(clock() - currentTestStart)) / CLOCKS_PER_SEC;
     printf("| %-43s    %fs |\n", name, time);
     currentTestName = NULL;
-}
-
-
-void fail ()
-{
-    assert(false);
-}
-
-
-void fail_if_true (bool x)
-{
-    if (x) { fail(); }
-}
-
-
-void fail_if_false (bool x)
-{
-    if (!x) { fail(); }
-}
-
-
-void fail_if_different (const void* x, const void* y)
-{
-    if (x != y) { fail(); }
 }

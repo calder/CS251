@@ -1,6 +1,7 @@
 #ifndef QUACKTESTS_H
 #define QUACKTESTS_H
 
+#include <assert.h>
 #include "Util/Quack.h"
 #include "TestUtil.h"
 
@@ -14,9 +15,9 @@ void test_quack_queue ()
     quack_push_back(quack, (void*) 2);
     quack_push_back(quack, (void*) 3);
 
-    fail_if_different(quack_pop_front(quack), (void*) 1);
-    fail_if_different(quack_pop_front(quack), (void*) 2);
-    fail_if_different(quack_pop_front(quack), (void*) 3);
+    assert(quack_pop_front(quack) == (void*) 1);
+    assert(quack_pop_front(quack) == (void*) 2);
+    assert(quack_pop_front(quack) == (void*) 3);
 
     quack_free(quack);
 }
@@ -31,9 +32,9 @@ void test_quack_stack ()
     quack_push_front(quack, (void*) 2);
     quack_push_front(quack, (void*) 3);
 
-    fail_if_different(quack_pop_front(quack), (void*) 3);
-    fail_if_different(quack_pop_front(quack), (void*) 2);
-    fail_if_different(quack_pop_front(quack), (void*) 1);
+    assert(quack_pop_front(quack) == (void*) 3);
+    assert(quack_pop_front(quack) == (void*) 2);
+    assert(quack_pop_front(quack) == (void*) 1);
 
     quack_free(quack);
 }
@@ -52,8 +53,8 @@ void test_quack_resize ()
 
     for (int i = 63; i >= 0; --i)
     {
-        fail_if_different(quack_pop_front(quack), (void*) -i);
-        fail_if_different(quack_pop_back(quack), (void*) i);
+        assert(quack_pop_front(quack) == (void*) -i);
+        assert(quack_pop_back(quack) == (void*) i);
     }
 
     quack_free(quack);

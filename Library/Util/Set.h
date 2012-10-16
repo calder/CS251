@@ -20,6 +20,9 @@ Set* set_create ();
 /// Free the Set itself, leaving its contents untouched
 void set_free (Set* set);
 
+/// Remove everything from the Set
+void set_clear (Set* set);
+
 /// Display the entire Set for debugging purposes
 void set_print (Set* set);
 

@@ -11,12 +11,14 @@ Vector* vector_create ()
     vector->size = 0;
     vector->capacity = 4;
     vector->array = (void*) malloc(4 * sizeof(void*));
+    return vector;
 }
 
 
 void vector_free (Vector* vector)
 {
     free(vector->array);
+    free(vector);
 }
 
 
@@ -43,18 +45,18 @@ void vector_print (Vector* vector)
 
 void vector_insert (Vector* vector, int index, void* item)
 {
-    assert(index < 0 || index > vector->size);
+    assert((index >= 0) && (index < vector->size));
     if (vector->size == vector->capacity)
     {
-        void* newArray = (void*) malloc(2 * vector->capacity * sizeof(void*));
-        memmove(newArray, vector->array, vector->capacity * sizeof(void*));
+        void** newArray = (void**) malloc(2 * vector->capacity * sizeof(void*));
+        memcpy(newArray, vector->array, vector->capacity * sizeof(void*));
         free(vector->array);
         vector->array = newArray;
         vector->capacity *= 2;
     }
-    memmove(&vector->array[index+1],
-            &vector->array[index],
-            (vector->size - index) * sizeof(void*));
+    memcpy(&vector->array[index+1],
+           &vector->array[index],
+           (vector->size - index) * sizeof(void*));
     vector->array[index] = item;
     vector->size += 1;
 }
@@ -62,24 +64,24 @@ void vector_insert (Vector* vector, int index, void* item)
 
 void* vector_get (Vector* vector, int index)
 {
-    assert(index < 0 || index >= vector->size);
+    assert((index >= 0) && (index < vector->size));
     return vector->array[index];
 }
 
 
 void vector_set (Vector* vector, int index, void* item)
 {
-    assert(index < 0 || index >= vector->size);
+    assert((index >= 0) && (index < vector->size));
     vector->array[index] = item;
 }
 
 
 void vector_remove (Vector* vector, int index)
 {
-    assert(index < 0 || index >= vector->size);
-    memmove(&vector->array[index-1],
-            &vector->array[index],
-            (vector->size - index) * sizeof(void*));
+    assert((index >= 0) && (index < vector->size));
+    memcpy(&vector->array[index-1],
+           &vector->array[index],
+           (vector->size - index) * sizeof(void*));
     vector->size -= 1;
 }
 

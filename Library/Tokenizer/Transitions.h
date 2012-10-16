@@ -3,6 +3,7 @@
 
 #include "Util/Set.h"
 
+
 // Michael--you can make Carissa do some of these
 // because she feels bad now that she's not doing
 // the block comment stuff
@@ -24,7 +25,6 @@ void transition_from_whitespace (char c, Set* states);
 void transition_from_symbol (char c, Set* states);
 void transition_from_openparen (char c, Set* states);
 void transition_from_closeparen (char c, Set* states);
-void transition_from_comment_open (char c, Set* states);
 void transition_from_comment_data (char c, Set* states);
 
 
