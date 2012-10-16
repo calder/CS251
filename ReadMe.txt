@@ -1,16 +1,23 @@
 Build Instructions
 ==================
-    1. Install CMake
-    2. cd to this directory
-    3. To just produce a makefile and executables, run:
-        mkdir build
-        cd build
-        cmake ..
-        make
-    4. To build and Xcode project file, run:
-        mkdir build
-        cd build
-        cmake .. -G Xcode
+    1.  Install CMake
+
+    2.  cd to this directory
+
+    3.  To produce a makefile and executables, run:
+            mkdir build
+            cd build
+            cmake ..
+            make
+
+    4.  For command line development, the following is handy so long as you
+        remember to re-CMake every time you add a new file:
+            make && ./test
+
+    5.  To produce an Xcode project file, run:
+            mkdir build
+            cd build
+            cmake .. -G Xcode
 
 
 Coding Standards
