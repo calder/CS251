@@ -13,8 +13,7 @@ State* transition_from_string_data (char c);
 State* transition_from_string_close (char c);
 State* transition_from_whitespace (char c);
 State* transition_from_symbol (char c);
-State* transition_from_openparen (char c);
-State* transition_from_closeparen (char c);
+State* transition_from_paren (char c);
 State* transition_from_comment_data (char c);
 
 

@@ -2,6 +2,7 @@
 #define STATES_H
 
 #include <stdbool.h>
+#include "Tokens.h"
 
 
 /// An NFA state the tokenizer can be in
@@ -9,7 +10,7 @@ struct __State
 {
     bool accept;
     bool parse;
-    const char* type;
+    Token* (*tokenizer) (char*);
     struct __State* (*transition) (char);
 }
 typedef State;
@@ -25,8 +26,8 @@ State float_decimal_state;
 State string_data_state;
 State string_close_state;
 State symbol_state;
-State openparen_state;
-State closeparen_state;
+State oparen_state;
+State cparen_state;
 State whitespace_state;
 State comment_data_state;
 State blockcomment_open_state;

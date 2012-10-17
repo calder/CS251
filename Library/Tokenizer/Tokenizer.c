@@ -2,6 +2,7 @@
 #include <string.h>
 #include "Tokenizer/States.h"
 #include "Tokenizer/Tokenizer.h"
+#include "Tokenizer/Tokens.h"
 #include "Util/Quack.h"
 #include "Util/StringUtil.h"
 
