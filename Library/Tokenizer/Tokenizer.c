@@ -3,24 +3,24 @@
 #include "Tokenizer/States.h"
 #include "Tokenizer/Tokenizer.h"
 #include "Util/Quack.h"
-#include "Util/Set.h"
 #include "Util/StringUtil.h"
 
 
 Quack* tokenize (char* input)
 {
+    /*
     Quack* tokens = quack_create();
-    Set* nfa = set_create();
+    State* curState = &start_state;
 
     int token_start = 0;
     for (int i = 0; true; ++i)
     {
         char c = input[i];
         if (c == 0) { break; }
-        Set* next = advance_nfa(nfa, tokens, c);
+        State* nextState = advance_dfa(curState, tokens, c);
 
         // Push a completed token
-        if (set_empty(next))
+        if (nextState == NULL)
         {
             char* token = substring(input, token_start, i-token_start);
             quack_push_back(tokens, token);
@@ -31,19 +31,15 @@ Quack* tokenize (char* input)
         }
 
         // Extend the current token
-        else
-        {
-            set_free(nfa);
-            nfa = next;
-        }
+        else { curState = nextState; }
     }
-
-    set_free(nfa);
     return tokens;
+    */
+    return NULL; // Placeholder
 }
 
 
-Set* advance_nfa (Set* nfa, Quack* tokens, char c)
+State* advance_dfa (State* dfa, Quack* tokens, char c)
 {
     return NULL; // Placeholder
 }

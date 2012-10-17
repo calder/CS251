@@ -2,16 +2,15 @@
 #define STATES_H
 
 #include <stdbool.h>
-#include "Util/Set.h"
 
 
 /// An NFA state the tokenizer can be in
-struct
+struct __State
 {
     bool accept;
     bool parse;
     const char* type;
-    void (*transition) (char, Set*);
+    struct __State* (*transition) (char);
 }
 typedef State;
 
