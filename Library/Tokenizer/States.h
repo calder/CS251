@@ -21,8 +21,6 @@ State bool_hash_state;
 State bool_letter_state;
 State int_sign_state;
 State int_digit_state;
-State float_sign_state;
-State float_digit_state;
 State float_dot_state;
 State float_decimal_state;
 State string_data_state;

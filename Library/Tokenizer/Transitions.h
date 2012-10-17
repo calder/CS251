@@ -12,8 +12,6 @@ void transition_from_bool_hash (char c, Set* states);
 void transition_from_bool_letter (char c, Set* states);
 void transition_from_int_sign (char c, Set* states);
 void transition_from_int_digit (char c, Set* states);
-void transition_from_float_sign (char c, Set* states);
-void transition_from_float_digit (char c, Set* states);
 void transition_from_float_dot (char c, Set* states);
 void transition_from_float_decimal (char c, Set* states);
 void transition_from_string_data (char c, Set* states);
