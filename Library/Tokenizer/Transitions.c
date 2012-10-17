@@ -22,7 +22,7 @@ void transition_from_start (char c, Set* states)
 
 void transition_from_bool_hash (char c, Set* states)
 {
-  if ((c == 102) || (c == 116)) { set_add(states, &bool_letter_state); }
+  if ((c == 't') || (c == 'f')) { set_add(states, &bool_letter_state); }
 }
 
 
@@ -50,6 +50,31 @@ void transition_from_float_dot (char c, Set* states)
   if (is_digit(c)) { set_add(states, &float_decimal_state); }
 }
 
+
+void transition_from_float_decimal (char c, Set* states)
+{
+  // Placeholder
+}
+
+
+void transition_from_string_data (char c, Set* states)
+{
+  if (is_letter(c))     { set_add(states, &string_data_state); }
+  if (is_whitespace(c)) { set_add(states, &string_data_state); }
+  if (c == '"')         { set_add(states, &string_close_state); }
+}
+
+
+void transition_from_string_close (char c, Set* states)
+{
+  // Placeholder
+}
+
+
+void transition_from_whitespace (char c, Set* states)
+{
+  if (is_whitespace(c)) { set_add(states, &whitespace_state); }
+}
 
 void transition_from_symbol (char c, Set* states)
 {
