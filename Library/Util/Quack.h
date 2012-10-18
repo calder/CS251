@@ -21,9 +21,6 @@ Quack* quack_create ();
 /// Free the Quack itself, leaving its contents untouched
 void quack_free (Quack* quack);
 
-/// Free the Quack and everything in it
-void quack_free_with_contents (Quack* quack);
-
 /// Display the entire Quack for debugging purposes
 void quack_print (Quack* quack);
 
@@ -47,12 +44,6 @@ void* quack_front (Quack* quack);
 
 /// Return (without removing) the item at the back of the Quack
 void* quack_back (Quack* quack);
-
-/// Remove and free the item at the front of the Quack
-void quack_free_front (Quack* quack);
-
-/// Remove and free the item at the back of the Quack
-void quack_free_back (Quack* quack);
 
 
 #endif

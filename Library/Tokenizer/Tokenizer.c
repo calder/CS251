@@ -46,7 +46,6 @@ void print_tokens (Quack* tokens)
         Token* token = quack_pop_front(tokens);
         quack_push_back(temp,token);
         print_token(token);
-        free(token);
     }
     while (!quack_empty(temp))
     {
@@ -143,10 +142,9 @@ Token* tokenize_from_float_decimal (const char* input, int start, int* cur)
 Token* tokenize_from_string_data (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
-    if (is_letter(c))     { return tokenize_from_string_data(input,start,cur); }
-    if (is_whitespace(c)) { return tokenize_from_string_data(input,start,cur); }
-    if (c == '"')         { return tokenize_string(input,start,--(*cur)); }
-    return NULL;
+    if (c == EOF) { return NULL; }
+    if (c == '"') { return tokenize_string(input,start,*cur); }
+    return tokenize_from_string_data(input,start,cur);
 }
 
 

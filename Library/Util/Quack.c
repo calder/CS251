@@ -23,13 +23,6 @@ void quack_free (Quack* quack)
 }
 
 
-void quack_free_with_contents (Quack* quack)
-{
-    while (!quack_empty(quack)) { quack_free_back(quack); }
-    quack_free(quack);
-}
-
-
 int quack_mem_index (Quack* quack, int index)
 {
     if (index < 0) { index += quack->size; }
@@ -177,22 +170,4 @@ void* quack_back (Quack* quack)
 {
     assert(quack->size > 0);
     return quack_get(quack, -1);
-}
-
-
-void quack_free_front (Quack* quack)
-{
-    free(quack_pop_front(quack));
-}
-
-
-void quack_free_back (Quack* quack)
-{
-    free(quack_pop_back(quack));
-}
-
-
-void freeBack (Quack* quack)
-{
-    free(quack_pop_back(quack));
 }

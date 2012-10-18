@@ -1,0 +1,4 @@
+(define yak
+  (lambda quack
+    (let ((x +3.247))
+       x)))

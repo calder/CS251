@@ -13,6 +13,14 @@ Token* token_create (TokenType type)
 }
 
 
+void token_free (Token* token)
+{
+    if (token->type == STRING_TOKEN) { free(token->stringData); }
+    if (token->type == SYMBOL_TOKEN) { free(token->symbolData); }
+    free(token);
+}
+
+
 Token* tokenize_bool (const char* input, int start, int cur)
 {
     Token* token = token_create(BOOLEAN_TOKEN);

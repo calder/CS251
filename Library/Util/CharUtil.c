@@ -27,7 +27,7 @@
                       | Whitespace Characters |
                       +-----------------------+
                                9 - Tab 
-                              12 - Newline
+                              10 - Newline
                               32 - Space
 
 */
@@ -62,7 +62,7 @@ bool is_symbol_start (char c)
     return (c == '!') || (c == '$') || (c == '%') || (c == '&') ||
            (c == '*') || (c == '/') || (c == ':') || (c == '<') ||
            (c == '=') || (c == '>') || (c == '?') || (c == '~') ||
-           (c == '_') || (c == '^') || is_letter(c);
+           (c == '_') || (c == '^') || (c == '-') || is_letter(c);
 }
 
 
@@ -75,5 +75,5 @@ bool is_symbol_body (char c)
 
 bool is_whitespace (char c)
 {
-    return (c == 9) || (c == 12) || (c == 32);
+    return (c == '\t') || (c == '\n') || (c == ' ');
 }
