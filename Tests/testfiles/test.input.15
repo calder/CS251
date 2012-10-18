@@ -1,0 +1,5 @@
+(define foozle
+  (lambda woozle
+    (if (and #t (eq? 30 30))
+        42 ; The "answer;" ;;"""":":;
+        (+ woozle 1))))
