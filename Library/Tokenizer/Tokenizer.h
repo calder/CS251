@@ -6,7 +6,7 @@
 
 
 /// Return a new Quack of tokens parsed from a chunk of Scheme code
-Quack* tokenize (char* input);
+Quack* tokenize (const char* input);
 
 /// Display a Token Quack with the format "token:type" with one token per line
 void print_tokens (Quack* tokens);

@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "QuackTests.h"
 #include "StringBufferTests.h"
 #include "TestUtil.h"

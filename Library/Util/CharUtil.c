@@ -47,7 +47,7 @@ bool is_finalizer (char c)
 
 bool is_letter (char c)
 {
-    return ((c >= 65) && (c <= 90)) || ((c >= 97) && (c >= 122));
+    return ((c >= 65) && (c <= 90)) || ((c >= 97) && (c <= 122));
 }
 
 
@@ -62,13 +62,13 @@ bool is_symbol_start (char c)
     return (c == '!') || (c == '$') || (c == '%') || (c == '&') ||
            (c == '*') || (c == '/') || (c == ':') || (c == '<') ||
            (c == '=') || (c == '>') || (c == '?') || (c == '~') ||
-           (c == '_') || (c == '^') || (is_letter(c));
+           (c == '_') || (c == '^') || is_letter(c);
 }
 
 
 bool is_symbol_body (char c)
 {
-    return (is_symbol_start(c)) || (is_digit(c)) ||
+    return is_symbol_start(c) || is_digit(c) ||
            (c == '.') || (c == '+') || (c == '-');
 }
 

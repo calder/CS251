@@ -13,7 +13,7 @@ Token* token_create (TokenType type)
 }
 
 
-Token* tokenize_bool (char* input, int start, int cur)
+Token* tokenize_bool (const char* input, int start, int cur)
 {
     Token* token = token_create(BOOLEAN_TOKEN);
     token->boolData = input[start+1] == 't';
@@ -21,7 +21,7 @@ Token* tokenize_bool (char* input, int start, int cur)
 }
 
 
-Token* tokenize_int (char* input, int start, int cur)
+Token* tokenize_int (const char* input, int start, int cur)
 {
     Token* token = token_create(INTEGER_TOKEN);
     char* string = substring(input,start,cur);
@@ -31,7 +31,7 @@ Token* tokenize_int (char* input, int start, int cur)
 }
 
 
-Token* tokenize_float (char* input, int start, int cur)
+Token* tokenize_float (const char* input, int start, int cur)
 {
     Token* token = token_create(FLOAT_TOKEN);
     char* string = substring(input,start,cur);
@@ -41,7 +41,23 @@ Token* tokenize_float (char* input, int start, int cur)
 }
 
 
-Token* tokenize_string (char* input, int start, int cur)
+Token* tokenize_fluff (const char* input, int start, int cur)
+{
+    Token* token = malloc(sizeof(Token));
+    token->type = EMPTY_TOKEN;
+    return token;
+}
+
+
+Token* tokenize_paren (const char* input, int start, int cur)
+{
+    Token* token = token_create(PAREN_TOKEN);
+    token->parenData = input[start];
+    return token;
+}
+
+
+Token* tokenize_string (const char* input, int start, int cur)
 {
     Token* token = token_create(STRING_TOKEN);
     token->stringData = substring(input,start,cur);
@@ -49,26 +65,9 @@ Token* tokenize_string (char* input, int start, int cur)
 }
 
 
-Token* tokenize_symbol (char* input, int start, int cur)
+Token* tokenize_symbol (const char* input, int start, int cur)
 {
     Token* token = token_create(SYMBOL_TOKEN);
     token->stringData = substring(input,start,cur);
-    return token;
-}
-
-
-Token* tokenize_paren (char* input, int start, int cur)
-{
-    char c = input[start];
-    Token* token = token_create(OPAREN_TOKEN);
-    if ((c == ')') || (c == ']')) { token->type = CPAREN_TOKEN; }
-    return token;
-}
-
-
-Token* tokenize_fluff (char* input, int start, int cur)
-{
-    Token* token = malloc(sizeof(Token));
-    token->type = EMPTY_TOKEN;
     return token;
 }
