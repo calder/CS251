@@ -1,0 +1,4 @@
+[#t #f "true" 3 thisisasymbol]
+;a comment
+"merp"
+;another
