@@ -1,44 +1,48 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 
+#include <stdbool.h>
+
 
 /// All accepted token types
 enum
 {
-    ZERO,
-    BOOLEAN,
-    INTEGER,
-    FLOAT,
-    STRING,
-    SYMBOL,
-    OPEN,
-    CLOSE
+    EMPTY_TOKEN,
+    BOOLEAN_TOKEN,
+    INTEGER_TOKEN,
+    FLOAT_TOKEN,
+    STRING_TOKEN,
+    SYMBOL_TOKEN,
+    OPAREN_TOKEN,
+    CPAREN_TOKEN
 }
 typedef TokenType;
-
-
-/// All accepted token data
-union
-{
-}
-typedef TokenData;
 
 
 /// A single "word" or "punctuation mark" in a program
 struct
 {
     TokenType type;
-    char* value;
+    union
+    {
+        bool boolData;
+        int intData;
+        float floatData;
+        char* stringData;
+        char* symbolData;
+    };
 }
 typedef Token;
 
 
-Token* tokenize_bool (char* input);
-Token* tokenize_int (char* input);
-Token* tokenize_float (char* input);
-Token* tokenize_string (char* input);
-Token* tokenize_symbol (char* input);
-Token* tokenize_paren (char* input);
+Token* token_create (TokenType type);
+
+Token* tokenize_bool (char* input, int start, int end);
+Token* tokenize_int (char* input, int start, int end);
+Token* tokenize_float (char* input, int start, int end);
+Token* tokenize_string (char* input, int start, int end);
+Token* tokenize_symbol (char* input, int start, int end);
+Token* tokenize_paren (char* input, int start, int end);
 
 
 #endif

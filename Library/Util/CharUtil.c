@@ -39,15 +39,21 @@ bool is_digit (char c)
 }
 
 
-bool is_whitespace (char c)
+bool is_finalizer (char c)
 {
-    return (c == 9) || (c == 12) || (c == 32);
+    return is_whitespace(c) || is_paren(c) || (c == ';');
 }
 
 
 bool is_letter (char c)
 {
     return ((c >= 65) && (c <= 90)) || ((c >= 97) && (c >= 122));
+}
+
+
+bool is_paren (char c)
+{
+    return (c == '(') || (c == ')') || (c == '[') || (c == ']');
 }
 
 
@@ -64,4 +70,10 @@ bool is_symbol_body (char c)
 {
     return (is_symbol_start(c)) || (is_digit(c)) ||
            (c == '.') || (c == '+') || (c == '-');
+}
+
+
+bool is_whitespace (char c)
+{
+    return (c == 9) || (c == 12) || (c == 32);
 }
