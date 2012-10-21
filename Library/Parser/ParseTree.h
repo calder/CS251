@@ -5,7 +5,7 @@
 /// A parse tree (or subtree)
 struct __ParseTree
 {
-	Token* token;
+    Token* token;
     __ParseTree** children;
     int numChildren;
 }
