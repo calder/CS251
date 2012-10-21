@@ -24,8 +24,11 @@ void quack_free (Quack* quack);
 /// Display the entire Quack for debugging purposes
 void quack_print (Quack* quack);
 
-/// Return true iff the Quack contains no items
+/// Return true iff the Quack contains 0 items
 bool quack_empty (Quack* quack);
+
+/// Return the number of items in the Quack
+int quack_size (Quack* quack);
 
 /// Add a new item to the front of the Quack
 void quack_push_front (Quack* quack, void* item);

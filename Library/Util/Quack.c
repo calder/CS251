@@ -71,6 +71,12 @@ bool quack_empty (Quack* quack)
 }
 
 
+int quack_size (Quack* quack)
+{
+    return quack->size;
+}
+
+
 void quack_resize (Quack* quack, int newCapacity)
 {
     assert(newCapacity > 0);
