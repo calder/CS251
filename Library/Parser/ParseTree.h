@@ -1,15 +1,17 @@
 #ifndef PARSETREE_H
 #define PARSETREE_H
 
+#include "Tokenizer/Tokens.h"
+
 
 /// A parse tree (or subtree)
 struct __ParseTree
 {
     Token* token;
-    __ParseTree** children;
+    struct __ParseTree** children;
     int numChildren;
 }
-typedef ParseTreeNode;
+typedef ParseTree;
 
 
 ParseTree* parsetree_create (Token* token, int numChildren);

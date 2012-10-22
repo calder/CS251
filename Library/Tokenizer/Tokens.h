@@ -8,6 +8,7 @@
 enum
 {
     EMPTY_TOKEN,
+    END_TOKEN,
     BOOLEAN_TOKEN,
     FLOAT_TOKEN,
     INTEGER_TOKEN,

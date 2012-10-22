@@ -30,7 +30,8 @@ Quack* tokenize (const char* input)
     {
         Token* token = tokenize_from_start(input,start,&cur);
         start = cur;
-        if (token == NULL) { break; }
+        if (token == NULL)              { break; }
+        if (token->type == END_TOKEN)   { free(token); break; }
         if (token->type == EMPTY_TOKEN) { free(token); continue; }
         quack_push_back(tokens,token);
     }
@@ -73,6 +74,7 @@ void print_token (Token* token)
 Token* tokenize_from_start (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
+    if (c == 0)             { return token_create(END_TOKEN); }
     if (c == '#')           { return tokenize_from_bool_hash(input,start,cur); }
     if (c == '"')           { return tokenize_from_string_data(input,start,cur); }
     if (c == ';')           { return tokenize_from_comment_data(input,start,cur); }
@@ -157,7 +159,7 @@ Token* tokenize_from_symbol (const char* input, int start, int* cur)
 }
 
 
-Token* tokenize_from_paren (const char* input, int start, int* cur) 
+Token* tokenize_from_paren (const char* input, int start, int* cur)
 {
     return tokenize_paren(input,start,*cur);
 }
@@ -174,6 +176,6 @@ Token* tokenize_from_whitespace (const char* input, int start, int* cur)
 Token* tokenize_from_comment_data (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
-    if (c != '\n') { return tokenize_from_comment_data(input,start,cur); }
-    return tokenize_fluff(input,start,--(*cur));
+    if ((c == 0) || (c == '\n')) { return tokenize_fluff(input,start,*cur); }
+    return tokenize_from_comment_data(input,start,cur);
 }

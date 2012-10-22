@@ -41,7 +41,7 @@ bool is_digit (char c)
 
 bool is_finalizer (char c)
 {
-    return is_whitespace(c) || is_paren(c) || (c == ';');
+    return is_whitespace(c) || is_paren(c) || (c == ';') || (c == 0);
 }
 
 

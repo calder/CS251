@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "Util/ParseTree.h"
+#include "Parser/ParseTree.h"
 
 
 ParseTree* parsetree_create (Token* token, int numChildren)
@@ -7,12 +7,12 @@ ParseTree* parsetree_create (Token* token, int numChildren)
     ParseTree* tree = malloc(sizeof(ParseTree));
     tree->token = token;
     tree->children = malloc(sizeof(ParseTree) * numChildren);
-    tree->size = 0;
+    tree->numChildren = numChildren;
     return tree;
 }
 
 
-void parsetree_free (ParseTree*)
+void parsetree_free (ParseTree* tree)
 {
     free(tree->children);
     free(tree->token);

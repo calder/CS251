@@ -1,5 +1,10 @@
 #include <stdio.h>
-#include "Parser.h"
+#include "Parser/Parser.h"
+#include "Parser/ParseTree.h"
+#include "Tokenizer/Tokens.h"
+#include "Util/Quack.h"
+
+
 
 ParseTree* parse (Quack* tokens)
 {
