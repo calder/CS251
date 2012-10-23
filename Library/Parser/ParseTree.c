@@ -1,5 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "Parser/ParseTree.h"
+#include "Tokenizer/Tokens.h"
 
 
 ParseTree* parsetree_create (Token* token, int numChildren)
@@ -17,4 +19,17 @@ void parsetree_free (ParseTree* tree)
     free(tree->children);
     free(tree->token);
     free(tree);
+}
+
+void parsetree_print (ParseTree * tree)
+{
+	printf("(");
+	if (tree->token != NULL)
+	{
+		token_print(tree->token);
+	}
+	for (int i = 0; i < tree->numChildren; ++i)
+	{
+		parsetree_print(tree->children[i]);
+	}
 }

@@ -7,7 +7,7 @@ set(CMAKE_C_FLAGS -g)
 include_directories(Library)
 file(GLOB LIB_SOURCE Library/*.c Library/*/*.c)
 file(GLOB LIB_HEADER Library/*.h Library/*/*.h)
-add_library(cs251 ${LIB_SOURCE})
+add_library(cs251 ${LIB_SOURCE} ${LIB_HEADER})
 
 ### Tests ###
 file(GLOB TEST_SOURCE Tests/*.c Tests/*/*.c)
@@ -16,5 +16,9 @@ add_executable(test ${TEST_SOURCE} ${TEST_HEADER})
 target_link_libraries(test cs251)
 
 ### Tokenizer ###
-add_executable(tokenize ${LIB_SOURCE} ${LIB_HEADER} Executables/Tokenizer.c)
+add_executable(tokenize Executables/Tokenizer.c)
 target_link_libraries(tokenize cs251)
+
+### Parser ###
+add_executable(parse Executables/Parser.c)
+target_link_libraries(parse cs251)
