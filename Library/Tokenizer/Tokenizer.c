@@ -45,6 +45,7 @@ syntax_error:
     return NULL;
 }
 
+
 void print_tokens (Quack* tokens)
 {
     Quack* temp = quack_create();
@@ -52,28 +53,13 @@ void print_tokens (Quack* tokens)
     {
         Token* token = quack_pop_front(tokens);
         quack_push_back(temp,token);
-        print_token(token);
+        token_print(token);
     }
     while (!quack_empty(temp))
     {
         quack_push_back(tokens, quack_pop_front(temp));
     }
     free(temp);
-}
-
-
-void print_token (Token* token)
-{
-    switch (token->type)
-    {
-        case BOOLEAN_TOKEN: printf("boolean: %s\n", token->boolData ? "#t" : "#f"); break;
-        case INTEGER_TOKEN: printf("integer: %d\n", token->intData); break;
-        case FLOAT_TOKEN:   printf("float:   %f\n", token->floatData); break;
-        case STRING_TOKEN:  printf("string:  %s\n", token->stringData); break;
-        case SYMBOL_TOKEN:  printf("symbol:  %s\n", token->symbolData); break;
-        case PAREN_TOKEN:   printf("paren:   %c\n", token->parenData); break;
-        default: break;
-    }
 }
 
 

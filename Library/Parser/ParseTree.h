@@ -16,6 +16,7 @@ typedef ParseTree;
 
 ParseTree* parsetree_create (Token* token, int numChildren);
 void parsetree_free (ParseTree* tree);
+void parsetree_print (ParseTree * tree);
 
 
 #endif

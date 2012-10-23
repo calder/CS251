@@ -5,6 +5,8 @@
 #include "Util/Quack.h"
 
 
+/// Return a complete ParseTree or NULL if syntax error
+/// @note The token list MUST have matched parentheses.
 ParseTree* parse (Quack* tokens);
 
 

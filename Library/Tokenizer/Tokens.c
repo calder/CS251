@@ -21,6 +21,21 @@ void token_free (Token* token)
 }
 
 
+void token_print (Token* token)
+{
+    switch (token->type)
+    {
+        case BOOLEAN_TOKEN: printf("boolean: %s\n", token->boolData ? "#t" : "#f"); break;
+        case INTEGER_TOKEN: printf("integer: %d\n", token->intData); break;
+        case FLOAT_TOKEN:   printf("float:   %f\n", token->floatData); break;
+        case STRING_TOKEN:  printf("string:  %s\n", token->stringData); break;
+        case SYMBOL_TOKEN:  printf("symbol:  %s\n", token->symbolData); break;
+        case PAREN_TOKEN:   printf("paren:   %c\n", token->parenData); break;
+        default: break;
+    }
+}
+
+
 Token* tokenize_bool (const char* input, int start, int cur)
 {
     Token* token = token_create(BOOLEAN_TOKEN);
