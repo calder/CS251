@@ -10,15 +10,15 @@
 Token* tokenize_from_start (const char* input, int start, int* cur);
 Token* tokenize_from_bool_hash (const char* input, int start, int* cur);
 Token* tokenize_from_bool_letter (const char* input, int start, int* cur);
-Token* tokenize_from_int_sign (const char* input, int start, int* cur);
+Token* tokenize_from_sign (const char* input, int start, int* cur);
 Token* tokenize_from_int_digit (const char* input, int start, int* cur);
 Token* tokenize_from_float_dot (const char* input, int start, int* cur);
 Token* tokenize_from_float_decimal (const char* input, int start, int* cur);
-Token* tokenize_from_string_data (const char* input, int start, int* cur);
+Token* tokenize_from_string (const char* input, int start, int* cur);
 Token* tokenize_from_symbol (const char* input, int start, int* cur);
 Token* tokenize_from_paren (const char* input, int start, int* cur);
 Token* tokenize_from_whitespace (const char* input, int start, int* cur);
-Token* tokenize_from_comment_data (const char* input, int start, int* cur);
+Token* tokenize_from_comment (const char* input, int start, int* cur);
 
 
 Quack* tokenize (const char* input)
@@ -30,13 +30,19 @@ Quack* tokenize (const char* input)
     {
         Token* token = tokenize_from_start(input,start,&cur);
         start = cur;
-        if (token == NULL)              { break; }
+        if (token == NULL)              { goto syntax_error; }
         if (token->type == END_TOKEN)   { free(token); break; }
         if (token->type == EMPTY_TOKEN) { free(token); continue; }
         quack_push_back(tokens,token);
     }
 
     return tokens;
+
+syntax_error:
+    
+    while (!quack_empty(tokens)) { token_free(quack_pop_front(tokens)); }
+    quack_free(tokens);
+    return NULL;
 }
 
 void print_tokens (Quack* tokens)
@@ -76,11 +82,11 @@ Token* tokenize_from_start (const char* input, int start, int* cur)
     char c = input[(*cur)++];
     if (c == 0)             { return token_create(END_TOKEN); }
     if (c == '#')           { return tokenize_from_bool_hash(input,start,cur); }
-    if (c == '"')           { return tokenize_from_string_data(input,start,cur); }
-    if (c == ';')           { return tokenize_from_comment_data(input,start,cur); }
+    if (c == '"')           { return tokenize_from_string(input,start,cur); }
+    if (c == ';')           { return tokenize_from_comment(input,start,cur); }
     if (c == '.')           { return tokenize_from_float_dot(input,start,cur); }
-    if (c == '+')           { return tokenize_from_int_sign(input,start,cur); }
-    if (c == '-')           { return tokenize_from_int_sign(input,start,cur); }
+    if (c == '+')           { return tokenize_from_sign(input,start,cur); }
+    if (c == '-')           { return tokenize_from_sign(input,start,cur); }
     if (is_paren(c))        { return tokenize_from_paren(input,start,cur); }
     if (is_digit(c))        { return tokenize_from_int_digit(input,start,cur); }
     if (is_symbol_start(c)) { return tokenize_from_symbol(input,start,cur); }
@@ -101,15 +107,6 @@ Token* tokenize_from_bool_letter (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
     if (is_finalizer(c)) { return tokenize_bool(input,start,--(*cur)); }
-    return NULL;
-}
-
-
-Token* tokenize_from_int_sign (const char* input, int start, int* cur)
-{
-    char c = input[(*cur)++];
-    if (is_digit(c)) { return tokenize_from_int_digit(input,start,cur); }
-    if (c == '.')    { return tokenize_from_float_dot(input,start,cur); }
     return NULL;
 }
 
@@ -141,12 +138,23 @@ Token* tokenize_from_float_decimal (const char* input, int start, int* cur)
 }
 
 
-Token* tokenize_from_string_data (const char* input, int start, int* cur)
+Token* tokenize_from_sign (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
-    if (c == EOF) { return NULL; }
-    if (c == '"') { return tokenize_string(input,start,*cur); }
-    return tokenize_from_string_data(input,start,cur);
+    if (is_digit(c))     { return tokenize_from_int_digit(input,start,cur); }
+    if (c == '.')        { return tokenize_from_float_dot(input,start,cur); }
+    if (is_finalizer(c)) { return tokenize_symbol(input,start,*cur); }
+    return NULL;
+}
+
+
+Token* tokenize_from_string (const char* input, int start, int* cur)
+{
+    char c = input[(*cur)++];
+    if (c == 0)    { return NULL; }
+    if (c == '\n') { return NULL; }
+    if (c == '"')  { return tokenize_string(input,start,*cur); }
+    return tokenize_from_string(input,start,cur);
 }
 
 
@@ -173,9 +181,9 @@ Token* tokenize_from_whitespace (const char* input, int start, int* cur)
 }
 
 
-Token* tokenize_from_comment_data (const char* input, int start, int* cur)
+Token* tokenize_from_comment (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
     if ((c == 0) || (c == '\n')) { return tokenize_fluff(input,start,*cur); }
-    return tokenize_from_comment_data(input,start,cur);
+    return tokenize_from_comment(input,start,cur);
 }

@@ -59,10 +59,20 @@ void test_tokenizer_parens ()
 }
 
 
+void test_tokenizer_error ()
+{
+    start_test("Tokenizer - Syntax Errors");
+
+    assert(tokenize("\"") == NULL);
+    assert(tokenize("\"\n\"") == NULL);
+}
+
+
 void test_tokenizer ()
 {
     test_tokenizer_primitives();
     test_tokenizer_parens();
+    test_tokenizer_error();
 }
 
 

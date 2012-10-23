@@ -16,8 +16,8 @@ int main (int argc, char** argv)
         strbuf_append(buf, c);
     }
 
-    strbuf_append(buf,'\n');
     Quack* tokens = tokenize(strbuf_data(buf));
+    if (tokens == NULL) { printf("syntax error\n"); return 1; }
     print_tokens(tokens);
 
     while (!quack_empty(tokens))

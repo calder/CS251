@@ -29,16 +29,6 @@ Token* tokenize_bool (const char* input, int start, int cur)
 }
 
 
-Token* tokenize_int (const char* input, int start, int cur)
-{
-    Token* token = token_create(INTEGER_TOKEN);
-    char* string = substring(input,start,cur);
-    sscanf(string, "%d", &token->intData);
-    free(string);
-    return token;
-}
-
-
 Token* tokenize_float (const char* input, int start, int cur)
 {
     Token* token = token_create(FLOAT_TOKEN);
@@ -53,6 +43,16 @@ Token* tokenize_fluff (const char* input, int start, int cur)
 {
     Token* token = malloc(sizeof(Token));
     token->type = EMPTY_TOKEN;
+    return token;
+}
+
+
+Token* tokenize_int (const char* input, int start, int cur)
+{
+    Token* token = token_create(INTEGER_TOKEN);
+    char* string = substring(input,start,cur);
+    sscanf(string, "%d", &token->intData);
+    free(string);
     return token;
 }
 
