@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "ParserTests.h"
 #include "QuackTests.h"
 #include "StringBufferTests.h"
 #include "TestUtil.h"
@@ -17,6 +17,7 @@ int main (int argc, char** argv)
     test_tokenizer();
 
     // Parser
+    test_parser();
 
     finish_testing();
     return 0;
