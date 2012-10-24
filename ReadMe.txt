@@ -1,3 +1,9 @@
+Testing Insructions
+===================
+To run both the parser and tokenizer against all tests at once, use the
+RunTests.sh script in the Other folder.  You will need CMake installed.
+
+
 Build Instructions
 ==================
     1.  Install CMake

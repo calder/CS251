@@ -1,0 +1,1 @@
+( define valid-bst? ( lambda ( bst ) ( if ( list? bst ) ( if ( null-bst? bst ) #t ( if ( and ( list? ( left bst ) ) ( list? ( right bst ) ) ) #t #f ) ) #f ) ) ) 

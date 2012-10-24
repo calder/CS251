@@ -1,0 +1,19 @@
+  paren : (
+ symbol : define
+ symbol : null-bst?
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : bst
+  paren : )
+  paren : (
+ symbol : if
+  paren : (
+ symbol : empty?
+ symbol : bst
+  paren : )
+boolean : #t
+boolean : #f
+  paren : )
+  paren : )
+  paren : )

@@ -1,0 +1,9 @@
+  paren : (
+ symbol : define
+ symbol : x
+  paren : (
+ symbol : lambda
+ symbol : z
+integer : 5
+  paren : )
+  paren : )

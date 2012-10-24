@@ -1,0 +1,14 @@
+  paren : (
+ symbol : a
+  paren : (
+integer : 5
+boolean : #t
+  paren : )
+  paren : [
+  float : 1.000000
+  paren : (
+boolean : #f
+  paren : )
+ symbol : b
+  paren : ]
+  paren : )

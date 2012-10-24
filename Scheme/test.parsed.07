@@ -1,0 +1,1 @@
+( define insert ( lambda ( v bst ) ( cond ( ( null? bst ) ( list v ( ) ( ) ) ) ( ( = ( car bst ) v ) bst ) ( ( > ( car bst ) v ) ( list ( car bst ) ( insert v ( left bst ) ) ( right bst ) ) ) ( ( < ( car bst ) v ) ( list ( car bst ) ( left bst ) ( insert v ( right bst ) ) ) ) ) ) ) 

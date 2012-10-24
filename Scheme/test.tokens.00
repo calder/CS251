@@ -1,0 +1,8 @@
+  paren : [
+boolean : #t
+boolean : #f
+ string : "true"
+integer : 3
+ symbol : thisisasymbol
+  paren : ]
+ string : "merp"

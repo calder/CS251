@@ -1,0 +1,26 @@
+  paren : (
+ symbol : define
+ symbol : foozle
+  paren : (
+ symbol : lambda
+ symbol : woozle
+  paren : (
+ symbol : if
+  paren : (
+ symbol : and
+boolean : #t
+  paren : (
+ symbol : eq?
+integer : 30
+integer : 30
+  paren : )
+  paren : )
+integer : 42
+  paren : (
+ symbol : + 
+ symbol : woozle
+integer : 1
+  paren : )
+  paren : )
+  paren : )
+  paren : )

@@ -11,18 +11,19 @@ void test_parser_primitives ()
 {
     start_test("Parser - Primitives");
     Quack* trees = parse("123 #f 9001");
+    ParseTree* tree;
 
-    ParseTree* tree1 = quack_pop_front(trees);
-    check_int(tree1->token, 123);
-    parsetree_free(tree1);
+    tree = quack_pop_front(trees);
+    check_int(tree->token, 123);
+    parsetree_free(tree);
 
-    ParseTree* tree2 = quack_pop_front(trees);
-    check_bool(tree2->token, false);
-    parsetree_free(tree2);
+    tree = quack_pop_front(trees);
+    check_bool(tree->token, false);
+    parsetree_free(tree);
 
-    ParseTree* tree3 = quack_pop_front(trees);
-    check_int(tree3->token, 9001);
-    parsetree_free(tree3);
+    tree = quack_pop_front(trees);
+    check_int(tree->token, 9001);
+    parsetree_free(tree);
 
     assert(quack_empty(trees));
     quack_free(trees);
@@ -52,10 +53,21 @@ void test_parser_parens ()
 }
 
 
+void test_parser_error ()
+{
+    start_test("Parser - Syntax Errors");
+    
+    assert(parse("(a (5 6) [1.0 (#f] b))") == NULL);
+    assert(parse("\"\n\"") == NULL);
+    assert(parse("(;)") == NULL);
+}
+
+
 void test_parser ()
 {
     test_parser_primitives();
     test_parser_parens();
+    test_parser_error();
 }
 
 

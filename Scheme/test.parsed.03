@@ -1,0 +1,1 @@
+( define inorder ( lambda ( bst ) ( if ( valid-bst? bst ) ( begin ( if ( not ( null? bst ) ) ( begin ( inorder ( left bst ) ) ( display ( car bst ) ) ( inorder ( right bst ) ) ) ) ) ( display ( ) ) ) ) ) 

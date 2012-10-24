@@ -1,0 +1,5 @@
+  paren : (
+boolean : #t
+boolean : #f
+ string : "blarg"
+ symbol : blarg

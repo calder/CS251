@@ -1,0 +1,1 @@
+( define foozle ( lambda woozle ( if ( and #t ( eq? 30 30 ) ) 42 ( +  woozle 1 ) ) ) ) 
