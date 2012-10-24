@@ -52,19 +52,10 @@ void test_parser_parens ()
 }
 
 
-void test_parser_temp ()
-{
-    start_test("Parser - Temp");
-    char* string = "\"murgle\nthis shouldn't work\"";
-    parsetree_print(quack_front(parse(string)));
-}
-
-
 void test_parser ()
 {
     test_parser_primitives();
     test_parser_parens();
-    test_parser_temp();
 }
 
 
