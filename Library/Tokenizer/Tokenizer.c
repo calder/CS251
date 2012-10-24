@@ -147,8 +147,8 @@ Token* tokenize_from_string (const char* input, int start, int* cur)
 Token* tokenize_from_symbol (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
-    if (is_symbol_start(c) || is_digit(c)) { return tokenize_from_symbol(input,start,cur); }
-    if (is_finalizer(c)) { return tokenize_symbol(input,start,--(*cur)); }
+    if (is_symbol_body(c)) { return tokenize_from_symbol(input,start,cur); }
+    if (is_finalizer(c))   { return tokenize_symbol(input,start,--(*cur)); }
     return NULL;
 }
 
