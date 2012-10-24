@@ -13,19 +13,19 @@ ParseTree* parse (Quack* tokens)
         Token* curToken = quack_pop_front(tokens);
         if (curToken->type == PAREN_TOKEN && (curToken->parenData == ')' || curToken->parenData == ']'))
         {
-            Quack* newStack = quack_create();
+            Quack* expressionStack = quack_create();
             while (quack_front(parseStack) != NULL)
             {
-                quack_push_front(newStack, quack_pop_front(parseStack));
+                quack_push_front(expressionStack, quack_pop_front(parseStack));
             }
             // Pop the remaining null pointer from the Quack
             quack_pop_front(parseStack);
 
-            parseTree = parsetree_create(NULL, quack_size(newStack));
+            parseTree = parsetree_create(NULL, quack_size(expressionStack));
             int j = 0;
-            while (quack_size(newStack) > 0)
+            while (quack_size(expressionStack) > 0)
             {
-                parseTree->children[j++] = quack_pop_front(newStack);
+                parseTree->children[j++] = quack_pop_front(expressionStack);
             }
             quack_push_front(parseStack, parseTree);
         }
@@ -42,5 +42,6 @@ ParseTree* parse (Quack* tokens)
             }
         }
     }
+    quack_free(tokens);
     return parseTree;
 }

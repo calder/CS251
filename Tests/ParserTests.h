@@ -19,9 +19,21 @@ void test_parser_parens ()
 }
 
 
+void test_parser_lonestring ()
+{
+	start_test("Parser - Unparenthesized String");
+    ParseTree* tree = parse(tokenize("\"merp\""));
+
+    parsetree_print(tree);
+    printf("\n");
+
+    parsetree_free(tree);
+}
+
 void test_parser ()
 {
     test_parser_parens();
+    test_parser_lonestring();
 }
 
 

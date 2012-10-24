@@ -53,17 +53,18 @@ int main (int argc, char** argv)
                         free(quack_pop_back(parenStack));
                     }
 
-                    if (quack_empty(parenStack))
+                }
+                if (quack_empty(parenStack))
+                {
+                    ParseTree* parsedTemp = parse(cumulativeTokens);
+                    cumulativeTokens = quack_create();`
+
+                    parsetree_print(parsedTemp);
+                    printf("\n");
+                    parsetree_free(parsedTemp);
+                    while (!quack_empty(cumulativeTokens))
                     {
-                        ParseTree* parsedTemp = parse(cumulativeTokens);
-                        
-                        parsetree_print(parsedTemp);
-                        printf("\n");
-                        parsetree_free(parsedTemp);
-                        while (!quack_empty(cumulativeTokens))
-                        {
-                            token_free(quack_pop_front(cumulativeTokens));
-                        }
+                        token_free(quack_pop_front(cumulativeTokens));
                     }
                 }
             }
