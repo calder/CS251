@@ -36,18 +36,19 @@ struct
 typedef Token;
 
 
+/// Malloc and return a new Token
 Token* token_create (TokenType type);
-void token_free (Token* token);
-void token_print (Token* token);
-void token_print_parser (Token* token);
 
-Token* tokenize_bool (const char* input, int start, int end);
-Token* tokenize_float (const char* input, int start, int end);
-Token* tokenize_fluff (const char* input, int start, int end);
-Token* tokenize_int (const char* input, int start, int end);
-Token* tokenize_paren (const char* input, int start, int end);
-Token* tokenize_string (const char* input, int start, int end);
-Token* tokenize_symbol (const char* input, int start, int end);
+/// Free all memory associated with a token
+/// @note stringData and symbolData are both assumed to be dynamically allocated
+/// memory and will be freed.
+void token_free (Token* token);
+
+/// Print a token's value followed by a space
+void token_print (Token* token);
+
+/// Print a token as "type: value"
+void token_print_debug (Token* token);
 
 
 #endif

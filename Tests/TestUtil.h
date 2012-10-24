@@ -1,6 +1,11 @@
 #ifndef TESTUTIL_H
 #define TESTUTIL_H
 
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 /// Initialize the testing environment
 /// @note TestUtil is an extremely lightweight unit testing framework.  Because

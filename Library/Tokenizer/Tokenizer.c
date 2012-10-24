@@ -7,18 +7,26 @@
 #include "Util/CharUtil.h"
 
 
-Token* tokenize_from_start (const char* input, int start, int* cur);
-Token* tokenize_from_bool_hash (const char* input, int start, int* cur);
-Token* tokenize_from_bool_letter (const char* input, int start, int* cur);
-Token* tokenize_from_sign (const char* input, int start, int* cur);
-Token* tokenize_from_int_digit (const char* input, int start, int* cur);
-Token* tokenize_from_float_dot (const char* input, int start, int* cur);
+Token* tokenize_bool   (const char* input, int start, int end);
+Token* tokenize_float  (const char* input, int start, int end);
+Token* tokenize_fluff  (const char* input, int start, int end);
+Token* tokenize_int    (const char* input, int start, int end);
+Token* tokenize_paren  (const char* input, int start, int end);
+Token* tokenize_string (const char* input, int start, int end);
+Token* tokenize_symbol (const char* input, int start, int end);
+
+Token* tokenize_from_start         (const char* input, int start, int* cur);
+Token* tokenize_from_bool_hash     (const char* input, int start, int* cur);
+Token* tokenize_from_bool_letter   (const char* input, int start, int* cur);
+Token* tokenize_from_sign          (const char* input, int start, int* cur);
+Token* tokenize_from_int_digit     (const char* input, int start, int* cur);
+Token* tokenize_from_float_dot     (const char* input, int start, int* cur);
 Token* tokenize_from_float_decimal (const char* input, int start, int* cur);
-Token* tokenize_from_string (const char* input, int start, int* cur);
-Token* tokenize_from_symbol (const char* input, int start, int* cur);
-Token* tokenize_from_paren (const char* input, int start, int* cur);
-Token* tokenize_from_whitespace (const char* input, int start, int* cur);
-Token* tokenize_from_comment (const char* input, int start, int* cur);
+Token* tokenize_from_string        (const char* input, int start, int* cur);
+Token* tokenize_from_symbol        (const char* input, int start, int* cur);
+Token* tokenize_from_paren         (const char* input, int start, int* cur);
+Token* tokenize_from_whitespace    (const char* input, int start, int* cur);
+Token* tokenize_from_comment       (const char* input, int start, int* cur);
 
 
 Quack* tokenize (const char* input)
@@ -53,13 +61,13 @@ void print_tokens (Quack* tokens)
     {
         Token* token = quack_pop_front(tokens);
         quack_push_back(temp,token);
-        token_print(token);
+        token_print_debug(token);
     }
     while (!quack_empty(temp))
     {
         quack_push_back(tokens, quack_pop_front(temp));
     }
-    free(temp);
+    quack_free(temp);
 }
 
 

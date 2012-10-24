@@ -1,7 +1,6 @@
 #ifndef QUACKTESTS_H
 #define QUACKTESTS_H
 
-#include <assert.h>
 #include "Util/Quack.h"
 #include "TestUtil.h"
 

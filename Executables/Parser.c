@@ -52,12 +52,11 @@ int main (int argc, char** argv)
                         }
                         free(quack_pop_back(parenStack));
                     }
-
                 }
                 if (quack_empty(parenStack))
                 {
                     ParseTree* parsedTemp = parse(cumulativeTokens);
-                    cumulativeTokens = quack_create();`
+                    cumulativeTokens = quack_create();
 
                     parsetree_print(parsedTemp);
                     printf("\n");
@@ -75,7 +74,7 @@ int main (int argc, char** argv)
 
     if (!quack_empty(cumulativeTokens))
     {
-        printf("Syntax Error\n");
+        printf("Syntax Error!\n");
         while (!quack_empty(cumulativeTokens))
         {   
             token_free(quack_pop_front(cumulativeTokens));
