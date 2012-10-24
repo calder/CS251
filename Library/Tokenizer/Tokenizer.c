@@ -146,6 +146,7 @@ Token* tokenize_from_string (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
     if (c == 0)    { return NULL; }
+    if (c == EOF)  { return NULL; }
     if (c == '\n') { return NULL; }
     if (c == '"')  { return tokenize_string(input,start,*cur); }
     return tokenize_from_string(input,start,cur);
@@ -178,6 +179,6 @@ Token* tokenize_from_whitespace (const char* input, int start, int* cur)
 Token* tokenize_from_comment (const char* input, int start, int* cur)
 {
     char c = input[(*cur)++];
-    if ((c == 0) || (c == '\n')) { return tokenize_fluff(input,start,*cur); }
+    if ((c == 0) || (c == '\n')) { return tokenize_fluff(input,start,--(*cur)); }
     return tokenize_from_comment(input,start,cur);
 }

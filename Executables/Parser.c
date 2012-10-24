@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "Parser/Parser.h"
 #include "Tokenizer/Tokenizer.h"
 #include "Tokenizer/Tokens.h"
@@ -10,82 +8,52 @@
 
 int main (int argc, char** argv)
 {
+    // Read standard input character by character, appending to a buffer.  When
+    // a newline is read, ship the line off to the tokenizer for tokenization.
+    // Then read through each token, and whenever the net parentheses hit 0
+    // parse the expression.
+
+    char c = 50;
     StringBuffer* buf = strbuf_create();
-    Quack* cumulativeTokens = quack_create();
-    Quack* parenStack = quack_create();
+    Quack* parens = quack_create();
+    Quack* tokens = quack_create();
+    Quack* expressions = quack_create();
 
-
-    while (true)
+    while (c != 0 && c != EOF)
     {
-        char c = getchar();
-        
-        if (c != EOF) { strbuf_append(buf, c); }
-        else { strbuf_append(buf, '\n'); }
-        if (c == '\n' || c == EOF)
-        { 
-            Quack* temptokens = tokenize(strbuf_data(buf));
-            if (temptokens == NULL)
-            {
-                printf("Syntax Error\n");
-                return 1;
-            }
-            strbuf_clear(buf);
-            while (!quack_empty(temptokens))
-            {
-                quack_push_back(cumulativeTokens, quack_pop_front(temptokens));
-                if (((Token*)quack_back(cumulativeTokens))->type == PAREN_TOKEN)
-                {
-                    if (((Token*)quack_back(cumulativeTokens))->parenData == '[' || ((Token*)quack_back(cumulativeTokens))->parenData == '(')
-                    {
-                        char *tmp = malloc(sizeof(int));
-                        *tmp = (((Token*)quack_back(cumulativeTokens))->parenData);
-                        quack_push_back(parenStack, tmp);
-                    }
-                    else
-                    {
-                        // Brackets and parenthese are close to their matches in the ascii alphabet, but are not close to their non matched pairs
-                        if (quack_empty(parenStack)) {printf("Syntax Error\n");}
-                        if (((int)((Token*)quack_back(cumulativeTokens))->parenData) - (*((int*)quack_back(parenStack)))  > 3)
-                        {
-                            printf("Syntax Error\n");
-                            return 1;
-                        }
-                        free(quack_pop_back(parenStack));
-                    }
-                }
-                if (quack_empty(parenStack))
-                {
-                    ParseTree* parsedTemp = parse(cumulativeTokens);
-                    cumulativeTokens = quack_create();
+        c = getchar();
+        strbuf_append(buf, c);
+        if (c != '\n' && c != EOF) { continue; }
 
-                    parsetree_print(parsedTemp);
-                    printf("\n");
-                    parsetree_free(parsedTemp);
-                    while (!quack_empty(cumulativeTokens))
-                    {
-                        token_free(quack_pop_front(cumulativeTokens));
-                    }
-                }
-            }
-            quack_free(temptokens);
-        }
-        if (c == EOF) { break; }
+        // Tokenize line
+        if (!parse_partial(strbuf_data(buf), parens, tokens, expressions))
+            { goto syntax_error; }
+        strbuf_clear(buf);
     }
 
-    if (!quack_empty(cumulativeTokens))
+    // Make sure input didn't end mid-expression
+    if (!quack_empty(parens)) { goto syntax_error; }
+
+    // Print each expression's parse tree
+    while (!quack_empty(expressions))
     {
-        printf("Syntax Error!\n");
-        while (!quack_empty(cumulativeTokens))
-        {   
-            token_free(quack_pop_front(cumulativeTokens));
-        }
+        ParseTree* expression = quack_pop_front(expressions);
+        parsetree_print(expression);
+        parsetree_free(expression);
     }
-    quack_free(cumulativeTokens);
-    while (!quack_empty(parenStack))
-    {
-        token_free(quack_pop_front(parenStack));
-    }
-    quack_free(parenStack);
+
     strbuf_free(buf);
+    quack_free(parens);
+    quack_free(tokens);
+    quack_free(expressions);
     return 0;
+
+syntax_error:
+    
+    strbuf_free(buf);
+    quack_free(parens);
+    quack_free(tokens);
+    quack_free(expressions);
+    printf("Syntax Error!\n");
+    return 1;
 }

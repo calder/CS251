@@ -7,21 +7,33 @@
 #include "TokenUtil.h"
 
 
-void test_parser_primitive ()
+void test_parser_primitives ()
 {
-    start_test("Parser - Primitive");
-    ParseTree* tree = parse(tokenize("\"merp\""));
+    start_test("Parser - Primitives");
+    Quack* trees = parse("123 #f 9001");
 
-    parsetree_print(tree);
+    ParseTree* tree1 = quack_pop_front(trees);
+    check_int(tree1->token, 123);
+    parsetree_free(tree1);
 
-    parsetree_free(tree);
+    ParseTree* tree2 = quack_pop_front(trees);
+    check_bool(tree2->token, false);
+    parsetree_free(tree2);
+
+    ParseTree* tree3 = quack_pop_front(trees);
+    check_int(tree3->token, 9001);
+    parsetree_free(tree3);
+
+    assert(quack_empty(trees));
+    quack_free(trees);
 }
 
 
 void test_parser_parens ()
 {
     start_test("Parser - Parentheses");
-    ParseTree* tree = parse(tokenize("(a (5 6) [1.0 (#f) b])"));
+    Quack* trees = parse("(a (5 6) [1.0 (#f) b])");
+    ParseTree* tree = quack_pop_front(trees);
 
     assert       (tree->token == NULL);
     check_symbol (tree->children[0]->token, "a");
@@ -35,21 +47,24 @@ void test_parser_parens ()
     check_symbol (tree->children[2]->children[2]->token, "b");
 
     parsetree_free(tree);
+    assert(quack_empty(trees));
+    quack_free(trees);
 }
 
 
-void test_parser_broken_parens ()
+void test_parser_temp ()
 {
-    start_test("Parser - Broken Parentheses");
-    parsetree_print(parse(tokenize("(a (5 6) [1.0 (#f] b)")));
+    start_test("Parser - Temp");
+    char* string = "\"murgle\nthis shouldn't work\"";
+    parsetree_print(quack_front(parse(string)));
 }
 
 
 void test_parser ()
 {
-    // test_parser_primitive();
+    test_parser_primitives();
     test_parser_parens();
-    test_parser_broken_parens();
+    test_parser_temp();
 }
 
 

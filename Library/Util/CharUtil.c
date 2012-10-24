@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 #include "Util/CharUtil.h"
 
 
@@ -41,7 +42,7 @@ bool is_digit (char c)
 
 bool is_finalizer (char c)
 {
-    return is_whitespace(c) || is_paren(c) || (c == ';') || (c == 0);
+    return (c == ';') || (c == 0) || is_whitespace(c) || is_paren(c);
 }
 
 
@@ -75,5 +76,5 @@ bool is_symbol_body (char c)
 
 bool is_whitespace (char c)
 {
-    return (c == '\t') || (c == '\n') || (c == ' ');
+    return (c == '\t') || (c == '\n') || (c == ' ') || (c == EOF);
 }
