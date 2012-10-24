@@ -8,10 +8,10 @@ ParseTree* parse (Quack* tokens)
     ParseTree* parseTree;
     Quack* parseStack = quack_create();
 
-    for (int i = 0; i < quack_size(tokens); i++)
+    while (quack_size(tokens) > 0)
     {
         Token* curToken = quack_pop_front(tokens);
-        if (curToken->type == PAREN_TOKEN && curToken->parenData == ')')
+        if (curToken->type == PAREN_TOKEN && (curToken->parenData == ')' || curToken->parenData == ']'))
         {
             Quack* newStack = quack_create();
             while (quack_front(parseStack) != NULL)
@@ -22,15 +22,16 @@ ParseTree* parse (Quack* tokens)
             quack_pop_front(parseStack);
 
             parseTree = parsetree_create(NULL, quack_size(newStack));
-            for (int j = 0; j < quack_size(newStack); j++)
+            int j = 0;
+            while (quack_size(newStack) > 0)
             {
-                parseTree->children[j] = quack_pop_front(newStack);
+                parseTree->children[j++] = quack_pop_front(newStack);
             }
             quack_push_front(parseStack, parseTree);
         }
         else
         {
-            if (curToken->type == PAREN_TOKEN && curToken->parenData == '(')
+            if (curToken->type == PAREN_TOKEN && (curToken->parenData == '(' || curToken->parenData == '['))
             {
                 quack_push_front(parseStack, NULL);
             }

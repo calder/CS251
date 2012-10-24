@@ -39,6 +39,7 @@ typedef Token;
 Token* token_create (TokenType type);
 void token_free (Token* token);
 void token_print (Token* token);
+void token_print_parser (Token* token);
 
 Token* tokenize_bool (const char* input, int start, int end);
 Token* tokenize_float (const char* input, int start, int end);

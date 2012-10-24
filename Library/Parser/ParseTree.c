@@ -16,20 +16,25 @@ ParseTree* parsetree_create (Token* token, int numChildren)
 
 void parsetree_free (ParseTree* tree)
 {
+    // FREE THE CHILDREN!
     free(tree->children);
     free(tree->token);
     free(tree);
 }
 
-void parsetree_print (ParseTree * tree)
+void parsetree_print (ParseTree* tree)
 {
-    printf("(");
     if (tree->token != NULL)
     {
-        token_print(tree->token);
+        token_print_parser(tree->token);
     }
-    for (int i = 0; i < tree->numChildren; ++i)
+    else
     {
-        parsetree_print(tree->children[i]);
+        printf("( ");
+        for (int i = 0; i < tree->numChildren; ++i)
+        {
+            parsetree_print(tree->children[i]);
+        }
+        printf(") ");
     }
 }
