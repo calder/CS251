@@ -13,7 +13,7 @@ int main (int argc, char** argv)
     // Then read through each token, and whenever the net parentheses hit 0
     // parse the expression.
 
-    char c = 50;
+    char c = 7;
     StringBuffer* buf = strbuf_create();
     Quack* parens = quack_create();
     Quack* tokens = quack_create();

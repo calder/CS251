@@ -1,0 +1,7 @@
+  paren : (
+ string : "first expression"
+  paren : )
+  paren : (
+ symbol : second
+ symbol : expression
+  paren : )
