@@ -30,8 +30,11 @@ void environment_release (Environment* environment);
 /// Display an Environment
 void environment_print (Environment* environment);
 
-/// Return the bound value of a particular symbol, or NULL if unbound
-Value* environment_get (const char* symbol);
+/// Return the Value bound to a symbol, or NULL if unbound
+Value* environment_get (Environment* environment, const char* symbol);
+
+/// Set the Value bound to a symbol and reserve the Value
+void environment_set (Environment* environment, const char* symbol, Value* value);
 
 
 #endif

@@ -37,16 +37,28 @@ void vector_print (Vector* vector)
 }
 
 
+int vector_empty (Vector* vector)
+{
+    return vector->size == 0;
+}
+
+
+int vector_size (Vector* vector)
+{
+    return vector->size;
+}
+
+
 void* vector_get (Vector* vector, int index)
 {
-    assert(index < 0 || index >= vector->size);
+    assert(index >= 0 && index < vector->size);
     return vector->array[index];
 }
 
 
 void vector_set (Vector* vector, int index, void* item)
 {
-    assert(index < 0 || index >= vector->size);
+    assert(index >= 0 && index < vector->size);
     vector->array[index] = item;
 }
 
@@ -59,7 +71,7 @@ void vector_append (Vector* vector, void* item)
 
 void vector_insert (Vector* vector, int index, void* item)
 {
-    assert(index < 0 || index > vector->size);
+    assert(index >= 0 && index <= vector->size);
     if (vector->size == vector->capacity)
     {
         void* newArray = (void*) malloc(2 * vector->capacity * sizeof(void*));
@@ -78,7 +90,7 @@ void vector_insert (Vector* vector, int index, void* item)
 
 void vector_remove (Vector* vector, int index)
 {
-    assert(index < 0 || index >= vector->size);
+    assert(index >= 0 && index < vector->size);
     memmove(&vector->array[index-1],
             &vector->array[index],
             (vector->size - index) * sizeof(void*));

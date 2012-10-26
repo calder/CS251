@@ -24,5 +24,8 @@ void binding_free (Binding* binding);
 /// Display a Binding as "SYMBOL:VALUE "
 void binding_print (Binding* binding);
 
+/// Change the Value bound to this symbol
+void binding_set (Binding* binding, Value* value);
+
 
 #endif

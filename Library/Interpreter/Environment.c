@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Interpreter/Binding.h"
 #include "Interpreter/Environment.h"
 
@@ -50,9 +51,40 @@ void environment_print (Environment* environment)
     {
         binding_print(vector_get(environment->bindings, i));
     }
-    if (environment->parent != NULL)
+    if (environment->parent == NULL) { printf("\n"); }
+    else
     {
         printf(">> ");
         environment_print(environment->parent);
     }
+}
+
+
+Value* environment_get (Environment* environment, const char* symbol)
+{
+    for (int i = 0; i < vector_size(environment->bindings); ++i)
+    {
+        Binding* binding = vector_get(environment->bindings, i);
+        if (!strcmp(symbol, binding->symbol))
+        {
+            return binding->value;
+        }
+    }
+    if (environment->parent != NULL) { return environment_get(environment->parent, symbol); }
+    return NULL;
+}
+
+
+void environment_set (Environment* environment, const char* symbol, Value* value)
+{
+    for (int i = 0; i < vector_size(environment->bindings); ++i)
+    {
+        Binding* binding = vector_get(environment->bindings, i);
+        if (!strcmp(symbol, binding->symbol))
+        {
+            binding_set(binding, value);
+            return;
+        }
+    }
+    vector_append(environment->bindings, binding_create(symbol,value));
 }

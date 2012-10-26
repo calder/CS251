@@ -1,7 +1,8 @@
+#include <stdlib.h>
 #include "Interpreter/Interpreter.h"
 
 
 Value* evaluate (ParseTree* parseTree, Environment* environment)
 {
-    // Placeholder
+    return NULL; // Placeholder
 }

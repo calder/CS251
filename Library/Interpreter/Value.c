@@ -39,5 +39,14 @@ void value_release (Value* value)
 
 void value_print (Value* value)
 {
-    // Placeholder
+    switch (value->type)
+    {
+        case BOOLEAN_VALUE: printf("%s ", value->boolVal ? "#t" : "#f"); break;
+        case INTEGER_VALUE: printf("%d ", value->intVal); break;
+        case FLOAT_VALUE:   printf("%f ", value->floatVal); break;
+        case LAMBDA_VALUE:  printf("lambda "); break;
+        case STRING_VALUE:  printf("%s ", value->stringVal); break;
+        case SYMBOL_VALUE:  printf("%s ", value->symbolVal); break;
+        default: break;
+    }
 }
