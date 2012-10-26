@@ -22,3 +22,7 @@ target_link_libraries(tokenize cs251)
 ### Parser ###
 add_executable(parse Executables/Parser.c)
 target_link_libraries(parse cs251)
+
+### Interpreter ###
+add_executable(scheme Executables/Interpreter.c)
+target_link_libraries(scheme cs251)
