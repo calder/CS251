@@ -15,6 +15,9 @@ struct __Environment
 typedef Environment;
 
 
+/// Initialize a new default Environment containing all built-in functions
+Environment* environment_create_default ();
+
 /// Malloc and return a new Environment with a refCount of 1
 /// @note The parent environment will be reserved.
 /// @note The root environment should pass NULL as it's parent; create() will

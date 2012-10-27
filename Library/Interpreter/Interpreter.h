@@ -7,7 +7,8 @@
 
 
 /// Return the result of recursively turning a ParseTree into a Value
-/// @note The tree is left untouched by this operation.
+/// @note The original parseTree is completely freed in the process.
+/// @note The returned Value* has a refCount of 1.
 Value* evaluate (ParseTree* parseTree, Environment* environment);
 
 

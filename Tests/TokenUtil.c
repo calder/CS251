@@ -8,42 +8,42 @@
 void check_bool (Token* token, bool value)
 {
     assert(token->type == BOOLEAN_TOKEN);
-    assert(token->boolData == value);
+    assert(token->boolVal == value);
 }
 
 
 void check_float (Token* token, float value)
 {
     assert(token->type == FLOAT_TOKEN);
-    assert(token->floatData == value);
+    assert(token->floatVal == value);
 }
 
 
 void check_int (Token* token, int value)
 {
     assert(token->type == INTEGER_TOKEN);
-    assert(token->intData == value);
+    assert(token->intVal == value);
 }
 
 
 void check_paren (Token* token, char value)
 {
     assert(token->type == PAREN_TOKEN);
-    assert(token->parenData == value);
+    assert(token->parenVal == value);
 }
 
 
 void check_string (Token* token, char* value)
 {
     assert(token->type == STRING_TOKEN);
-    assert(!strcmp(token->stringData,value));
+    assert(!strcmp(token->stringVal,value));
 }
 
 
 void check_symbol (Token* token, char* value)
 {
     assert(token->type == SYMBOL_TOKEN);
-    assert(!strcmp(token->symbolData,value));
+    assert(!strcmp(token->symbolVal,value));
 }
 
 

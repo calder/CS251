@@ -25,12 +25,12 @@ struct
     TokenType type;
     union
     {
-        bool boolData;
-        int intData;
-        float floatData;
-        char parenData;
-        char* stringData;
-        char* symbolData;
+        bool boolVal;
+        int intVal;
+        float floatVal;
+        char parenVal;
+        char* stringVal;
+        char* symbolVal;
     };
 }
 typedef Token;
@@ -40,7 +40,7 @@ typedef Token;
 Token* token_create (TokenType type);
 
 /// Free all memory associated with a token
-/// @note stringData and symbolData are both assumed to be dynamically allocated
+/// @note stringVal and symbolVal are both assumed to be dynamically allocated
 /// memory and will be freed.
 void token_free (Token* token);
 

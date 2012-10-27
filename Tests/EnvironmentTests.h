@@ -41,10 +41,22 @@ void test_environment_shadow ()
 }
 
 
+void test_environment_missing ()
+{
+    start_test("Environment - Missing");
+    Environment* environment = environment_create(NULL);
+
+    assert(environment_get(environment, "x") == NULL);
+
+    environment_release(environment);
+}
+
+
 void test_environment ()
 {
     test_environment_overwrite();
     test_environment_shadow();
+    test_environment_missing();
 }
 
 

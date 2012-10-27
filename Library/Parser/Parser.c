@@ -49,12 +49,12 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
         if (token->type == PAREN_TOKEN)
         {
             // Open paren case
-            if      (token->parenData == '[') { quack_push_back(parens, "["); }
-            else if (token->parenData == '(') { quack_push_back(parens, "("); }
+            if      (token->parenVal == '[') { quack_push_back(parens, "["); }
+            else if (token->parenVal == '(') { quack_push_back(parens, "("); }
 
             // Close paren case
             else if (quack_empty(parens) ||
-                    (token->parenData - ((char*)quack_back(parens))[0] > 2))
+                    (token->parenVal - ((char*)quack_back(parens))[0] > 2))
                 { goto syntax_error; }
             else { quack_pop_back(parens); }
         }
@@ -90,14 +90,14 @@ ParseTree* parse_expression (Quack* tokens)
     {
         Token* curToken = quack_pop_front(tokens);
         if (curToken->type == PAREN_TOKEN &&
-            (curToken->parenData == ')' ||
-             curToken->parenData == ']'))
+            (curToken->parenVal == ')' ||
+             curToken->parenVal == ']'))
         {
             make_parsetree_from_stack(parseStack);
         }
         else
         {
-            if (curToken->type == PAREN_TOKEN && (curToken->parenData == '(' || curToken->parenData == '['))
+            if (curToken->type == PAREN_TOKEN && (curToken->parenVal == '(' || curToken->parenVal == '['))
             {
                 quack_push_front(parseStack, NULL);
             }

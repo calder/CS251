@@ -8,12 +8,13 @@
 /// All first class objects in Scheme
 enum
 {
+    NULL_VALUE,
     BOOLEAN_VALUE,
     FLOAT_VALUE,
     INTEGER_VALUE,
     LAMBDA_VALUE,
+    LIST_VALUE,
     STRING_VALUE,
-    SYMBOL_VALUE,
 }
 typedef ValueType;
 
@@ -30,7 +31,6 @@ struct
         int intVal;
         Closure lambdaVal;
         char* stringVal;
-        char* symbolVal;
     };
 }
 typedef Value;

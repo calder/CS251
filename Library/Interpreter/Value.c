@@ -17,7 +17,6 @@ void value_free (Value* value)
 {
     assert(value->refCount == 0);
     if (value->type == STRING_VALUE) { free(value->stringVal); }
-    if (value->type == SYMBOL_VALUE) { free(value->symbolVal); }
     free(value);
 }
 
@@ -46,7 +45,6 @@ void value_print (Value* value)
         case FLOAT_VALUE:   printf("%f ", value->floatVal); break;
         case LAMBDA_VALUE:  printf("lambda "); break;
         case STRING_VALUE:  printf("%s ", value->stringVal); break;
-        case SYMBOL_VALUE:  printf("%s ", value->symbolVal); break;
-        default: break;
+        default:            printf("??? "); break;
     }
 }

@@ -6,6 +6,13 @@
 #include "Interpreter/Environment.h"
 
 
+Environment* environment_create_default ()
+{
+    Environment* environment = environment_create(NULL);
+    return environment;
+}
+
+
 Environment* environment_create (Environment* parent)
 {
     Environment* environment = malloc(sizeof(Environment));
