@@ -32,8 +32,18 @@ Quack* interpret (const char* input)
 
 Value* evaluate (ParseTree* parseTree, Environment* environment)
 {
-    if (parseTree->token != NULL) { return evaluate_primitive(parseTree, environment); }
-    else                          { return evaluate_function(parseTree, environment); }
+    Value* value;
+    if (parseTree->token != NULL) { value = evaluate_primitive(parseTree, environment); }
+    else                          { value = evaluate_function(parseTree, environment); }
+
+    if (value->type == EXPRESSION_VALUE)
+    { 
+        Value* finalValue = evaluate(value->exprVal, environment);
+        value_release(value);
+        value = finalValue;
+    }
+    
+    return value;
 }
 
 

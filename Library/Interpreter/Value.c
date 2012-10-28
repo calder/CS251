@@ -17,15 +17,25 @@ Value* value_create (ValueType type)
 
 void value_free (Value* value)
 {
-    if (value->type == STRING_VALUE) { free(value->stringVal); }
-    if (value->type == FUNCTION_VALUE)
+    switch (value->type)
     {
+    case FUNCTION_VALUE:
         environment_release(value->funcVal.environment);
         if (value->funcVal.parseTree != NULL)
         {
             parsetree_release(value->funcVal.parseTree);
         }
+        break;
+    case EXPRESSION_VALUE:
+        parsetree_release(value->exprVal);
+        break;
+    case STRING_VALUE:
+        free(value->stringVal);
+        break;
+    default:
+        break;
     }
+
     free(value);
 }
 
@@ -54,6 +64,15 @@ void value_print (Value* value)
         case STRING_VALUE:   printf("%s ", value->stringVal); break;
         default:             printf("??? "); break;
     }
+}
+
+
+Value* value_create_expression (ParseTree* parseTree)
+{
+    Value* value = value_create(EXPRESSION_VALUE);
+    value->exprVal = parseTree;
+    parsetree_reserve(value->exprVal);
+    return value;
 }
 
 

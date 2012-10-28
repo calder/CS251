@@ -25,5 +25,6 @@ Value* function_lambda (Closure* closure, ParseTree* args)
 
 Value* function_quote (Closure* closure, ParseTree* args)
 {
-    return NULL; // Placeholder
+    if (args->numChildren != 2) { return NULL; }
+    return value_create_expression(args->children[1]);
 }

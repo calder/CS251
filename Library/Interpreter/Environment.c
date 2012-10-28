@@ -25,6 +25,7 @@ void environment_free (Environment* environment)
         binding_free(vector_get(environment->bindings, i));
     }
     vector_free(environment->bindings);
+    if (environment->parent != NULL) { environment_release(environment->parent); }
     free(environment);
 }
 
