@@ -8,10 +8,10 @@
 
 StringBuffer* strbuf_create ()
 {
-    StringBuffer* buf = (StringBuffer*) malloc(sizeof(StringBuffer*));
+    StringBuffer* buf = malloc(sizeof(StringBuffer));
     buf->length = 0;
     buf->capacity = 4;
-    buf->data = (char*) malloc(4 * sizeof(char*));
+    buf->data = malloc(buf->capacity * sizeof(char*));
     buf->data[0] = 0;
     return buf;
 }
@@ -39,9 +39,9 @@ void strbuf_print (StringBuffer* buf)
 
 void strbuf_append (StringBuffer* buf, char c)
 {
-    if (buf->length + 1 >= buf->capacity)
+    if (buf->length + 2 >= buf->capacity)
     {
-        char* newData = (char*) malloc(2 * buf->capacity * sizeof(char));
+        char* newData = malloc(2 * buf->capacity * sizeof(char));
         memcpy(newData, buf->data, buf->capacity * sizeof(char));
         free(buf->data);
         buf->data = newData;
@@ -56,11 +56,11 @@ void strbuf_append (StringBuffer* buf, char c)
 void strbuf_append_string (StringBuffer* buf, const char* string)
 {
     int l = strlen(string);
-    if (buf->length + l >= buf->capacity)
+    if (buf->length + l + 1 >= buf->capacity)
     {
         int newCapacity = buf->capacity;
         while (buf->length + l >= newCapacity) { newCapacity *= 2; }
-        char* newData = (char*) malloc(newCapacity * sizeof(char));
+        char* newData = malloc(newCapacity * sizeof(char));
         memcpy(newData, buf->data, buf->capacity * sizeof(char));
         free(buf->data);
         buf->data = newData;
