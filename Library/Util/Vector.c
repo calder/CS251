@@ -11,7 +11,7 @@ void vector_remove (Vector* vector, int index);
 
 Vector* vector_create ()
 {
-    Vector* vector = (Vector*) malloc(sizeof(Vector*));
+    Vector* vector = malloc(sizeof(Vector));
     vector->size = 0;
     vector->capacity = 4;
     vector->array = (void*) malloc(4 * sizeof(void*));
