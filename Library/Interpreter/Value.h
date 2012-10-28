@@ -34,6 +34,8 @@ struct Closure
 {
     struct Value* (*function) (struct Closure*,ParseTree*);
     struct Environment* environment;
+    int numParams;
+    char** params;
     ParseTree* parseTree;
 }
 typedef Closure;
@@ -59,9 +61,9 @@ struct Value
         float floatVal;
         int intVal;
         char* stringVal;
-        List listVal;
-        Closure funcVal;
         ParseTree* exprVal;
+        Closure funcVal;
+        List listVal;
     };
 }
 typedef Value;
