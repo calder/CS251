@@ -7,7 +7,7 @@
 ParseTree* make_parsetree_from_stack (Quack* parseStack);
 
 
-Quack* parse (char* input)
+Quack* parse (const char* input)
 {
     Quack* parens = quack_create();
     Quack* tokens = quack_create();

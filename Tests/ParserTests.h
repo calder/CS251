@@ -15,15 +15,15 @@ void test_parser_primitives ()
 
     tree = quack_pop_front(trees);
     check_int(tree->token, 123);
-    parsetree_free(tree);
+    parsetree_release(tree);
 
     tree = quack_pop_front(trees);
     check_bool(tree->token, false);
-    parsetree_free(tree);
+    parsetree_release(tree);
 
     tree = quack_pop_front(trees);
     check_int(tree->token, 9001);
-    parsetree_free(tree);
+    parsetree_release(tree);
 
     assert(quack_empty(trees));
     quack_free(trees);
@@ -47,7 +47,7 @@ void test_parser_parens ()
     check_bool   (tree->children[2]->children[1]->children[0]->token, false);
     check_symbol (tree->children[2]->children[2]->token, "b");
 
-    parsetree_free(tree);
+    parsetree_release(tree);
     assert(quack_empty(trees));
     quack_free(trees);
 }

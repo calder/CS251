@@ -6,23 +6,23 @@
 
 
 /// A reference counted list of variable bindings
-struct __Environment
+struct Environment
 {
     int refCount;
-    struct __Environment* parent;
+    struct Environment* parent;
     Vector* bindings;
 }
 typedef Environment;
 
-
-/// Initialize a new default Environment containing all built-in functions
-Environment* environment_create_default ();
 
 /// Malloc and return a new Environment with a refCount of 1
 /// @note The parent environment will be reserved.
 /// @note The root environment should pass NULL as it's parent; create() will
 /// not attempt to reserve NULL.
 Environment* environment_create (Environment* parent);
+
+/// Convenience function to initialize an environment with all built-ins defined
+Environment* environment_create_default ();
 
 /// Increase an environment's refCount by 1
 void environment_reserve (Environment* environment);

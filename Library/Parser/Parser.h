@@ -8,7 +8,7 @@
 /// Parse the string input into a ParseTree for each top-level expressions
 /// @note parse() returns NULL if it encounters a syntax error or reaches the
 /// end of input part way through an expression.
-Quack* parse (char* input);
+Quack* parse (const char* input);
 
 /// Read another line, parsing and appending any full expressions encountered
 /// @return true iff no syntax errors were encountered.

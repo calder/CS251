@@ -39,7 +39,7 @@ int main (int argc, char** argv)
     {
         ParseTree* expression = quack_pop_front(expressions);
         parsetree_print(expression);
-        parsetree_free(expression);
+        parsetree_release(expression);
     }
 
     strbuf_free(buf);

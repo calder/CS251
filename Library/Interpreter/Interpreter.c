@@ -1,21 +1,51 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "Interpreter/Interpreter.h"
+#include "Interpreter/Value.h"
+#include "Parser/Parser.h"
 #include "Tokenizer/Tokens.h"
 #include "Util/StringUtil.h"
 
 
+Value* evaluate_function (ParseTree* parseTree, Environment* environment);
 Value* evaluate_primitive (ParseTree* parseTree, Environment* environment);
+
+
+Quack* interpret (const char* input)
+{
+    Environment* environment = environment_create_default();
+    Quack* values = quack_create();
+    Quack* expressions = parse(input);
+
+    while (!quack_empty(expressions))
+    {
+        ParseTree* parseTree = quack_pop_front(expressions);
+        Value* value = evaluate(parseTree, environment);
+        parsetree_release(parseTree);
+        quack_push_back(values, value);
+    }
+
+    quack_free(expressions);
+    return values;
+}
 
 
 Value* evaluate (ParseTree* parseTree, Environment* environment)
 {
-    if (parseTree->token != NULL) { return evaluate_primitive(parseTree,environment); }
+    if (parseTree->token != NULL) { return evaluate_primitive(parseTree, environment); }
+    else                          { return evaluate_function(parseTree, environment); }
+}
 
-syntax_error:
 
-    parsetree_free(parseTree);
-    return NULL;
+Value* evaluate_function (ParseTree* parseTree, Environment* environment)
+{
+    if (parseTree->numChildren < 1) { return NULL; }
+    Value* f = evaluate(parseTree->children[0], environment);
+    if (f->type != FUNCTION_VALUE) { value_release(f); return NULL; }
+
+    Value* result = f->funcVal.function(&f->funcVal, parseTree);
+    value_release(f);
+    return result;
 }
 
 
@@ -49,6 +79,5 @@ Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
         assert(false);
     }
 
-    parsetree_free(parseTree);
     return value;
 }
