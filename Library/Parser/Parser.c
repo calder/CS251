@@ -22,6 +22,8 @@ Quack* parse (const char* input)
 
 syntax_error:
     
+    while (!quack_empty(tokens)) { token_free(quack_pop_front(tokens)); }
+    while (!quack_empty(parseTrees)) { parsetree_release(quack_pop_front(parseTrees)); }
     quack_free(parens);
     quack_free(tokens);
     quack_free(parseTrees);
@@ -73,10 +75,7 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
 
 syntax_error:
 
-    while (!quack_empty(newTokens))
-    {
-        token_free(quack_pop_front(newTokens));
-    }
+    while (!quack_empty(newTokens)) { token_free(quack_pop_front(newTokens)); }
     quack_free(newTokens);
     return false;
 }
@@ -94,17 +93,19 @@ ParseTree* parse_expression (Quack* tokens)
              curToken->parenVal == ']'))
         {
             make_parsetree_from_stack(parseStack);
+            token_free(curToken);
         }
         else
         {
             if (curToken->type == PAREN_TOKEN && (curToken->parenVal == '(' || curToken->parenVal == '['))
             {
                 quack_push_front(parseStack, NULL);
+                token_free(curToken);
             }
             else 
             {
                 ParseTree* node = parsetree_create(curToken, 0);
-                quack_push_front(parseStack, node);   
+                quack_push_front(parseStack, node);
             }
         }
     }

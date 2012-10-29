@@ -25,6 +25,7 @@ Quack* interpret (const char* input)
         quack_push_back(values, value);
     }
 
+    environment_release(environment);
     quack_free(expressions);
     return values;
 }
