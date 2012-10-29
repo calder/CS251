@@ -24,6 +24,11 @@ void value_free (Value* value)
         if (value->funcVal.parseTree != NULL)
         {
             parsetree_release(value->funcVal.parseTree);
+            for (int i = 0; i < value->funcVal.numParams; ++i)
+            {
+                free(value->funcVal.params[i]);
+            }
+            free(value->funcVal.params);
         }
         break;
     case EXPRESSION_VALUE:
@@ -83,17 +88,5 @@ Value* value_create_function_builtin (struct Environment* environment, Value*(*f
     value->funcVal.environment = environment;
     value->funcVal.parseTree = NULL;
     environment_reserve(environment);
-    return value;
-}
-
-
-Value* value_create_function_scheme (struct Environment* environment, ParseTree* parseTree)
-{
-    Value* value = value_create(FUNCTION_VALUE);
-    value->funcVal.function = &function_lambda;
-    value->funcVal.environment = environment;
-    value->funcVal.parseTree = parseTree;
-    environment_reserve(environment);
-    parsetree_reserve(parseTree);
     return value;
 }
