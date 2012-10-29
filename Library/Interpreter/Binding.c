@@ -32,6 +32,6 @@ void binding_print (Binding* binding)
 void binding_set (Binding* binding, Value* value)
 {
     value_release(binding->value);
-    value_reserve(value);
     binding->value = value;
+    value_reserve(binding->value);
 }

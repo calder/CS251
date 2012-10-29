@@ -94,6 +94,7 @@ Environment* environment_create_default ()
 
     environment_set(env, "if",     value_create_function_builtin(env, &function_if));
     environment_set(env, "lambda", value_create_function_builtin(env, &function_lambda));
+    environment_set(env, "let",    value_create_function_builtin(env, &function_let));
     environment_set(env, "quote",  value_create_function_builtin(env, &function_quote));
 
     return env;

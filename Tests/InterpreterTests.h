@@ -28,9 +28,26 @@ void test_interpreter_if ()
 }
 
 
+void test_interpreter_let ()
+{
+    start_test("Interpreter - Let");
+    Quack* values = interpret("(let ((x 123) (y 456)) y)");
+
+    assert(!quack_empty(values));
+    Value* value = quack_pop_front(values);
+    assert(value->type == INTEGER_VALUE);
+    assert(value->intVal == 456);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter ()
 {
     test_interpreter_if();
+    test_interpreter_let();
 }
 
 

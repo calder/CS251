@@ -85,6 +85,7 @@ Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
         break;
     case SYMBOL_TOKEN:
         value = environment_get(environment, token->symbolVal);
+        value_reserve(value);
         break;
     default:
         assert(false);
