@@ -1,0 +1,4 @@
+integer : 9001
+boolean : #f
+ string : Hello world!
+  float : 3.141593

@@ -1,0 +1,19 @@
+  paren : (
+ symbol : quote
+  paren : (
+ symbol : a
+ symbol : b
+ symbol : c
+  paren : (
+integer : 1
+integer : 2
+integer : 3
+  paren : )
+  paren : (
+  paren : (
+  paren : )
+  paren : )
+  paren : (
+  paren : )
+  paren : )
+  paren : )

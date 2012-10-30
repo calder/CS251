@@ -6,6 +6,10 @@
 #include "Interpreter/Value.h"
 
 
+void value_print_lambda (Value* list);
+void value_print_list (Value* list);
+
+
 Value* value_create (ValueType type)
 {
     Value* value = malloc(sizeof(Value));
@@ -71,13 +75,39 @@ void value_print (Value* value)
     {
         case BOOLEAN_VALUE:  printf("%s ", value->boolVal ? "#t" : "#f"); break;
         case FLOAT_VALUE:    printf("%f ", value->floatVal); break;
-        case FUNCTION_VALUE: printf("lambda "); break;
+        case FUNCTION_VALUE: value_print_lambda(value); break;
         case INTEGER_VALUE:  printf("%d ", value->intVal); break;
-        case LIST_VALUE:     printf("list "); break;
+        case LIST_VALUE:     value_print_list(value); break;
         case STRING_VALUE:   printf("\"%s\" ", value->stringVal); break;
         case SYMBOL_VALUE:   printf("%s ", value->stringVal); break;
         default:             printf("??? "); break;
     }
+}
+
+
+void value_print_lambda (Value* lambda)
+{
+    printf("( lambda ");
+    printf("( ");
+    for (int i = 0; i < lambda->funcVal.numParams; ++i)
+    {
+        printf("%s ", lambda->funcVal.params[i]);
+    }
+    printf(") ");
+    parsetree_print(lambda->funcVal.parseTree);
+    printf(") ");
+}
+
+
+void value_print_list (Value* list)
+{
+    printf("( ");
+    while (list->listVal.head != NULL)
+    {
+        value_print(list->listVal.head);
+        list = list->listVal.tail;
+    }
+    printf(") ");
 }
 
 

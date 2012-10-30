@@ -38,7 +38,7 @@ int main (int argc, char** argv)
     while (!quack_empty(expressions))
     {
         ParseTree* expression = quack_pop_front(expressions);
-        parsetree_print(expression);
+        parsetree_print_debug(expression);
         parsetree_release(expression);
     }
 

@@ -88,6 +88,7 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
 
     // Evaluate the first argument (which is hopefully a function)
     Value* f = evaluate(parseTree->children[0], environment);
+    if (f == NULL) { return NULL; }
     if (f->type != FUNCTION_VALUE) { value_release(f); return NULL; }
 
     // Apply the first argument as a function

@@ -1,5 +1,5 @@
   paren : (
- string : "first expression"
+ string : first expression
   paren : )
   paren : (
  symbol : second

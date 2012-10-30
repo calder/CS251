@@ -24,8 +24,11 @@ void parsetree_reserve (ParseTree* tree);
 /// Decrease a ParseTree's refCount by 1, and free it if refCount hits 0
 void parsetree_release (ParseTree* tree);
 
-/// Recursively print an entire ParseTree for debugging purposes
+/// Recursively print an entire ParseTree
 void parsetree_print (ParseTree * tree);
+
+/// Recursively print an entire ParseTree with a newline at the end
+void parsetree_print_debug (ParseTree * tree);
 
 
 #endif

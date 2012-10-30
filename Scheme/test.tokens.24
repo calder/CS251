@@ -1,0 +1,28 @@
+  paren : (
+ symbol : let
+  paren : (
+  paren : (
+ symbol : x
+integer : 123
+  paren : )
+  paren : (
+ symbol : y
+integer : 456
+  paren : )
+  paren : )
+ symbol : x
+  paren : )
+  paren : (
+ symbol : let
+  paren : (
+  paren : (
+ symbol : x
+integer : 123
+  paren : )
+  paren : (
+ symbol : y
+integer : 456
+  paren : )
+  paren : )
+ symbol : y
+  paren : )

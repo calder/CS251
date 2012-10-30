@@ -17,6 +17,7 @@ for FILE in Scheme/test.input.*
 do
     cat $FILE | build/tokenize > Scheme/test.tokens.${FILE##*.}
     cat $FILE | build/parse    > Scheme/test.parsed.${FILE##*.}
+    cat $FILE | build/scheme   > Scheme/test.output.${FILE##*.}
 done
 
 # Change back to original directory

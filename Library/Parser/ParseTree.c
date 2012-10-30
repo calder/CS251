@@ -4,9 +4,6 @@
 #include "Tokenizer/Tokens.h"
 
 
-void parsetree_print_internal (ParseTree* tree);
-
-
 ParseTree* parsetree_create (Token* token, int numChildren)
 {
     ParseTree* tree = malloc(sizeof(ParseTree));
@@ -46,21 +43,21 @@ void parsetree_release (ParseTree* tree)
 
 void parsetree_print (ParseTree* tree)
 {
-    parsetree_print_internal(tree);
-    printf("\n");
-}
-
-
-void parsetree_print_internal (ParseTree* tree)
-{
     if (tree->token != NULL) { token_print(tree->token); }
     else
     {
         printf("( ");
         for (int i = 0; i < tree->numChildren; ++i)
         {
-            parsetree_print_internal(tree->children[i]);
+            parsetree_print(tree->children[i]);
         }
         printf(") ");
     }
+}
+
+
+void parsetree_print_debug (ParseTree* tree)
+{
+    parsetree_print(tree);
+    printf("\n");
 }

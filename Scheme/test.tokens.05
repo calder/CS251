@@ -1,5 +1,5 @@
   paren : (
 boolean : #t
 boolean : #f
- string : "blarg"
+ string : blarg
  symbol : blarg

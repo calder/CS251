@@ -1,0 +1,72 @@
+  paren : (
+ symbol : if
+boolean : #t
+integer : 123
+integer : 456
+  paren : )
+  paren : (
+ symbol : if
+boolean : #f
+integer : 123
+integer : 456
+  paren : )
+  paren : (
+ symbol : let
+  paren : (
+  paren : (
+ symbol : a
+boolean : #t
+  paren : )
+  paren : (
+ symbol : b
+boolean : #f
+  paren : )
+  paren : )
+  paren : (
+ symbol : if
+ symbol : a
+integer : 123
+integer : 456
+  paren : )
+  paren : )
+  paren : (
+ symbol : let
+  paren : (
+  paren : (
+ symbol : a
+boolean : #t
+  paren : )
+  paren : (
+ symbol : b
+boolean : #f
+  paren : )
+  paren : )
+  paren : (
+ symbol : if
+ symbol : b
+integer : 123
+integer : 456
+  paren : )
+  paren : )
+  paren : (
+ symbol : if
+  paren : (
+ symbol : if
+boolean : #t
+boolean : #f
+boolean : #t
+  paren : )
+integer : 123
+integer : 456
+  paren : )
+  paren : (
+ symbol : if
+  paren : (
+ symbol : if
+boolean : #f
+boolean : #f
+boolean : #t
+  paren : )
+integer : 123
+integer : 456
+  paren : )

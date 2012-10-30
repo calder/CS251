@@ -1,8 +1,8 @@
   paren : [
 boolean : #t
 boolean : #f
- string : "true"
+ string : true
 integer : 3
  symbol : thisisasymbol
   paren : ]
- string : "merp"
+ string : merp
