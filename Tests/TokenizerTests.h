@@ -18,7 +18,7 @@ void test_tokenizer_primitives ()
     check_and_free_float  (quack_pop_front(tokens), 7.89);
     check_and_free_bool   (quack_pop_front(tokens), true);
     check_and_free_bool   (quack_pop_front(tokens), false);
-    check_and_free_string (quack_pop_front(tokens), "\"Hello!\"");
+    check_and_free_string (quack_pop_front(tokens), "Hello!");
     check_and_free_symbol (quack_pop_front(tokens), "W0rld");
 
     assert(quack_empty(tokens));

@@ -31,11 +31,15 @@ void value_free (Value* value)
             free(value->funcVal.params);
         }
         break;
-    case EXPRESSION_VALUE:
-        parsetree_release(value->exprVal);
+    case LIST_VALUE:
+        value_release(value->listVal.head);
+        value_release(value->listVal.tail);
         break;
     case STRING_VALUE:
         free(value->stringVal);
+        break;
+    case SYMBOL_VALUE:
+        free(value->symbolVal);
         break;
     default:
         break;
@@ -47,12 +51,14 @@ void value_free (Value* value)
 
 void value_reserve (Value* value)
 {
+    if (value == NULL) { return; }
     value->refCount += 1;
 }
 
 
 void value_release (Value* value)
 {
+    if (value == NULL) { return; }
     value->refCount -= 1;
     if (value->refCount <= 0) { value_free(value); }
 }
@@ -60,33 +66,36 @@ void value_release (Value* value)
 
 void value_print (Value* value)
 {
+    if (value == NULL) { return; }
     switch (value->type)
     {
         case BOOLEAN_VALUE:  printf("%s ", value->boolVal ? "#t" : "#f"); break;
-        case INTEGER_VALUE:  printf("%d ", value->intVal); break;
         case FLOAT_VALUE:    printf("%f ", value->floatVal); break;
         case FUNCTION_VALUE: printf("lambda "); break;
-        case STRING_VALUE:   printf("%s ", value->stringVal); break;
+        case INTEGER_VALUE:  printf("%d ", value->intVal); break;
+        case LIST_VALUE:     printf("list "); break;
+        case STRING_VALUE:   printf("\"%s\" ", value->stringVal); break;
+        case SYMBOL_VALUE:   printf("%s ", value->stringVal); break;
         default:             printf("??? "); break;
     }
 }
 
 
-Value* value_create_expression (ParseTree* parseTree)
-{
-    Value* value = value_create(EXPRESSION_VALUE);
-    value->exprVal = parseTree;
-    parsetree_reserve(value->exprVal);
-    return value;
-}
-
-
-Value* value_create_function_builtin (struct Environment* environment, Value*(*function)(Closure*,ParseTree*))
+Value* value_create_function (struct Environment* environment, Value*(*function)(Closure*,ParseTree*))
 {
     Value* value = value_create(FUNCTION_VALUE);
     value->funcVal.function = function;
     value->funcVal.environment = environment;
     value->funcVal.parseTree = NULL;
     environment_reserve(environment);
+    return value;
+}
+
+
+Value* value_create_list_empty ()
+{
+    Value* value = value_create(LIST_VALUE);
+    value->listVal.head = NULL;
+    value->listVal.tail = NULL;
     return value;
 }

@@ -148,7 +148,7 @@ Token* tokenize_from_string (const char* input, int start, int* cur)
     if (c == 0)    { return NULL; }
     if (c == EOF)  { return NULL; }
     if (c == '\n') { return NULL; }
-    if (c == '"')  { return tokenize_string(input,start,*cur); }
+    if (c == '"')  { return tokenize_string(input,start+1,*cur-1); }
     return tokenize_from_string(input,start,cur);
 }
 

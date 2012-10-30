@@ -17,5 +17,11 @@ Quack* interpret (const char* input);
 /// @note The returned Value* has a refCount of 1.
 Value* evaluate (ParseTree* parseTree, Environment* environment);
 
+/// Return the result of recursively evaluating a list literal
+/// @note This function is exactly like evaluate() with two exceptions:
+///   - Subtrees are treated as lists instead of function calls.
+///   - Symbols are kept as symbols rather than being evaluated.
+Value* evaluate_list (ParseTree* parseTree);
+
 
 #endif

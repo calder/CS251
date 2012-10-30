@@ -19,7 +19,7 @@ enum
     INTEGER_VALUE,
     LIST_VALUE,
     STRING_VALUE,
-    EXPRESSION_VALUE,
+    SYMBOL_VALUE,
 }
 typedef ValueType;
 
@@ -61,6 +61,7 @@ struct Value
         float floatVal;
         int intVal;
         char* stringVal;
+        char* symbolVal;
         ParseTree* exprVal;
         Closure funcVal;
         List listVal;
@@ -72,14 +73,11 @@ typedef Value;
 /// Malloc and return a new Value with a refCount of 1
 Value* value_create (ValueType type);
 
-/// Convenience function to create an unevaluated expression
-Value* value_create_expression (ParseTree* parseTree);
+/// Create a C built-in function
+Value* value_create_function (struct Environment* environment, Value*(*func)(Closure*,ParseTree*));
 
-/// Convenience function to create a C built-in function
-Value* value_create_function_builtin (struct Environment* environment, Value*(*func)(Closure*,ParseTree*));
-
-/// Convenience function to create a Scheme lambda expression
-Value* value_create_function_scheme (struct Environment* environment, ParseTree* parseTree);
+/// Create an empty Scheme list
+Value* value_create_list_empty ();
 
 /// Increase a value's refCount by 1
 void value_reserve (Value* value);

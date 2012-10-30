@@ -90,12 +90,12 @@ void environment_set (Environment* environment, const char* symbol, Value* value
 
 Environment* environment_create_default ()
 {
+    // NOTE: The following special case psuedo-functions are handled by
+    // evaluate() directly: if, let, lambda, quote
+
     Environment* env = environment_create(NULL);
 
-    environment_set(env, "if",     value_create_function_builtin(env, &function_if));
-    environment_set(env, "lambda", value_create_function_builtin(env, &function_lambda));
-    environment_set(env, "let",    value_create_function_builtin(env, &function_let));
-    environment_set(env, "quote",  value_create_function_builtin(env, &function_quote));
+    // environment_set(env, "plus", value_create_function(env, &function_plus));
 
     return env;
 }
