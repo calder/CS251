@@ -2,9 +2,8 @@
 #define TOKENIZERTESTS_H
 
 #include "Tokenizer/Tokenizer.h"
-#include "Tokenizer/Tokens.h"
 #include "Util/Quack.h"
-#include "TokenUtil.h"
+#include "ValueUtil.h"
 #include "TestUtil.h"
 
 

@@ -3,15 +3,15 @@
 #include <string.h>
 #include "Interpreter/Functions.h"
 #include "Interpreter/Interpreter.h"
-#include "Interpreter/PsuedoFunctions.h"
-#include "Interpreter/Value.h"
+#include "Tokenizer/Value.h"
 #include "Parser/Parser.h"
-#include "Tokenizer/Tokens.h"
 #include "Util/StringUtil.h"
 
 
 Value* evaluate_function (ParseTree* parseTree, Environment* environment);
 Value* evaluate_primitive (ParseTree* parseTree, Environment* environment);
+
+Value* evaluate_lambda (Value* lambda, ParseTree* args);
 
 
 Quack* interpret (const char* input)
@@ -39,11 +39,8 @@ Quack* interpret (const char* input)
 
 Value* evaluate (ParseTree* parseTree, Environment* environment)
 {
-    // Primitive case (leaf)
     if (parseTree->token != NULL) { return evaluate_primitive(parseTree,environment); }
-
-    // Function application case (subtree)
-    return evaluate_function(parseTree,environment);
+    else                          { return evaluate_function(parseTree,environment); }
 }
 
 
@@ -59,8 +56,8 @@ Value* evaluate_list (ParseTree* parseTree)
         Value* item = evaluate_list(parseTree->children[i]);
         if (item == NULL) { value_release(list); return NULL; }
         Value* head = value_create(LIST_VALUE);
-        head->listVal.head = item;
-        head->listVal.tail = list;
+        head->head = item;
+        head->tail = list;
         list = head;
     }
     return list;
@@ -72,27 +69,14 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
     // Check number of arguments
     if (parseTree->numChildren < 1) { return NULL; }
 
-    // Special case out psuedo-functions (herp derp Scheme)
-    if (parseTree->children[0]->token != NULL &&
-        parseTree->children[0]->token->type == SYMBOL_TOKEN)
-    {
-        if (!strcmp(parseTree->children[0]->token->symbolVal, "if"))
-            { return function_if(environment,parseTree); }
-        if (!strcmp(parseTree->children[0]->token->symbolVal, "lambda"))
-            { return function_lambda(environment,parseTree); }
-        if (!strcmp(parseTree->children[0]->token->symbolVal, "let"))
-            { return function_let(environment,parseTree); }
-        if (!strcmp(parseTree->children[0]->token->symbolVal, "quote"))
-            { return function_quote(environment,parseTree); }
-    }
-
     // Evaluate the first argument (which is hopefully a function)
     Value* f = evaluate(parseTree->children[0], environment);
     if (f == NULL) { return NULL; }
-    if (f->type != FUNCTION_VALUE) { value_release(f); return NULL; }
 
-    // Apply the first argument as a function
-    Value* result = f->funcVal.function(&f->funcVal, parseTree);
+    // Apply function and return result
+    Value* result = NULL;
+    if (f->type == FUNCTION_VALUE) { result = f->function(environment, parseTree); }
+    if (f->type == LAMBDA_VALUE)   { result = evaluate_lambda(f, parseTree); }
     value_release(f);
     return result;
 }
@@ -100,37 +84,37 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
 
 Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
 {
-    Token* token = parseTree->token;
+    Value* token = parseTree->token;
     Value* value;
 
     switch (token->type)
     {
-    case BOOLEAN_TOKEN:
+    case BOOLEAN_VALUE:
         value = value_create(BOOLEAN_VALUE);
         value->boolVal = token->boolVal;
         break;
-    case FLOAT_TOKEN:
+    case FLOAT_VALUE:
         value = value_create(FLOAT_VALUE);
         value->floatVal = token->floatVal;
         break;
-    case INTEGER_TOKEN:
+    case INTEGER_VALUE:
         value = value_create(INTEGER_VALUE);
         value->intVal = token->intVal;
         break;
-    case STRING_TOKEN:
+    case STRING_VALUE:
         value = value_create(STRING_VALUE);
-        value->stringVal = dupstring(token->stringVal);
+        value->string = dupstring(token->string);
         break;
-    case SYMBOL_TOKEN:
+    case SYMBOL_VALUE:
         if (environment == NULL)
         {
             value = value_create(SYMBOL_VALUE);
-            value->symbolVal = dupstring(token->symbolVal);
+            value->symbol = dupstring(token->symbol);
         }
         else
         {
-            value = environment_get(environment, token->symbolVal);
-            value_reserve(value);
+            value = environment_get(environment, token->symbol);
+            if (value != NULL) { value_reserve(value); }
         }
         break;
     default:
@@ -138,4 +122,10 @@ Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
     }
 
     return value;
+}
+
+
+Value* evaluate_lambda (Value* lambda, ParseTree* args)
+{
+    return NULL; // Placeholder
 }

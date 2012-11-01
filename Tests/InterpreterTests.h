@@ -38,7 +38,7 @@ void test_interpreter_let ()
 
     Value* value = quack_pop_front(values);
     assert(quack_empty(values));
-    check_int_value(value, 456);
+    check_int(value, 456);
     value_release(value);
 
     quack_free(values);
@@ -54,18 +54,18 @@ void test_interpreter_quote ()
     assert(quack_empty(values));
 
     Value* box1 = list;
-    check_list_value(box1);
-    check_int_value(box1->listVal.head, 123);
+    check_list(box1);
+    check_int(box1->head, 123);
 
-    Value* box2 = box1->listVal.tail;
-    check_list_value(box2);
-    check_list_value(box2->listVal.head);
-    assert(box2->listVal.head->listVal.head == NULL);
-    assert(box2->listVal.head->listVal.tail == NULL);
+    Value* box2 = box1->tail;
+    check_list(box2);
+    check_list(box2->head);
+    assert(box2->head->head == NULL);
+    assert(box2->head->tail == NULL);
 
-    Value* box3 = box2->listVal.tail;
-    check_list_value(box3);
-    check_symbol_value(box3->listVal.head, "hello");
+    Value* box3 = box2->tail;
+    check_list(box3);
+    check_symbol(box3->head, "hello");
 
     value_release(list);
     quack_free(values);

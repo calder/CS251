@@ -4,7 +4,7 @@
 #include "Parser/Parser.h"
 #include "Tokenizer/Tokenizer.h"
 #include "TestUtil.h"
-#include "TokenUtil.h"
+#include "ValueUtil.h"
 
 
 void test_parser_primitives ()

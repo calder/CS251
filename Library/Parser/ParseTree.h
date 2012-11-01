@@ -1,14 +1,14 @@
 #ifndef PARSETREE_H
 #define PARSETREE_H
 
-#include "Tokenizer/Tokens.h"
+#include "Tokenizer/Value.h"
 
 
 /// A parse tree (or subtree)
 struct ParseTree
 {
     int refCount;
-    Token* token;
+    Value* token;
     struct ParseTree** children;
     int numChildren;
 }
@@ -16,7 +16,7 @@ typedef ParseTree;
 
 
 /// Malloc and return an empty ParseTree with a refCount of 1
-ParseTree* parsetree_create (Token* token, int numChildren);
+ParseTree* parsetree_create (Value* token, int numChildren);
 
 /// Increase a ParseTree's refCount by 1
 void parsetree_reserve (ParseTree* tree);

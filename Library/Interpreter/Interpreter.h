@@ -2,8 +2,8 @@
 #define INTERPRETER_H
 
 #include "Interpreter/Environment.h"
-#include "Interpreter/Value.h"
 #include "Parser/ParseTree.h"
+#include "Tokenizer/Value.h"
 #include "Util/Quack.h"
 
 

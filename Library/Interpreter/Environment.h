@@ -1,7 +1,7 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include "Interpreter/Value.h"
+#include "Tokenizer/Value.h"
 #include "Util/Vector.h"
 
 

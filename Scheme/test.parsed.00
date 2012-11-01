@@ -1,2 +1,2 @@
-( #t #f true 3 thisisasymbol ) 
-merp 
+( #t #f "true" 3 thisisasymbol ) 
+"merp" 

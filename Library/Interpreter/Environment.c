@@ -95,7 +95,14 @@ Environment* environment_create_default ()
 
     Environment* env = environment_create(NULL);
 
-    // environment_set(env, "plus", value_create_function(env, &function_plus));
+    // Keyword functions (not first-class objects)
+    environment_set(env, "if",     value_create_keyword(&function_if));
+    environment_set(env, "lambda", value_create_keyword(&function_lambda));
+    environment_set(env, "let",    value_create_keyword(&function_let));
+    environment_set(env, "quote",  value_create_keyword(&function_quote));
+
+    // True functions
+    // environment_set(env, "+", value_create_function(env, &function_plus));
 
     return env;
 }

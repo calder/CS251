@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "Interpreter/Interpreter.h"
 #include "Parser/Parser.h"
-#include "Tokenizer/Tokenizer.h"
-#include "Tokenizer/Tokens.h"
+#include "Tokenizer/Value.h"
 #include "Util/StringBuffer.h"
 
 

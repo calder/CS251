@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Parser/ParseTree.h"
-#include "Tokenizer/Tokens.h"
+#include "Tokenizer/Value.h"
 
 
-ParseTree* parsetree_create (Token* token, int numChildren)
+ParseTree* parsetree_create (Value* value, int numChildren)
 {
     ParseTree* tree = malloc(sizeof(ParseTree));
     tree->refCount = 1;
-    tree->token = token;
+    tree->token = value;
     tree->children = malloc(sizeof(ParseTree) * numChildren);
     tree->numChildren = numChildren;
     return tree;
@@ -23,7 +23,7 @@ void parsetree_free (ParseTree* tree)
         parsetree_release(tree->children[i]);
     }
     free(tree->children);
-    if (tree->token != NULL) { token_free(tree->token); }
+    if (tree->token != NULL) { value_release(tree->token); }
     free(tree);
 }
 
@@ -43,7 +43,7 @@ void parsetree_release (ParseTree* tree)
 
 void parsetree_print (ParseTree* tree)
 {
-    if (tree->token != NULL) { token_print(tree->token); }
+    if (tree->token != NULL) { value_print(tree->token); }
     else
     {
         printf("( ");

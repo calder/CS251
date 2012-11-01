@@ -1,7 +1,7 @@
 #ifndef BINDING_H
 #define BINDING_H
 
-#include "Interpreter/Value.h"
+#include "Tokenizer/Value.h"
 
 
 /// A symbol and the value it is set to

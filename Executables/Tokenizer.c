@@ -22,7 +22,7 @@ int main (int argc, char** argv)
 
     while (!quack_empty(tokens))
     {
-        token_free(quack_pop_front(tokens));
+        value_release(quack_pop_front(tokens));
     }
     quack_free(tokens);
     strbuf_free(buf);
