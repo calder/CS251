@@ -27,6 +27,9 @@ enum ValueType
     LIST_VALUE,
     STRING_VALUE,
     SYMBOL_VALUE,
+
+    NULL_VALUE,
+
 }
 typedef ValueType;
 
@@ -48,8 +51,8 @@ struct Value
     union
     {
         char paren;      /// PAREN_TOKEN
-        char* symbol;    /// SYMBOL_TOKEN
 
+        char* symbol;    /// SYMBOL_VALUE
         bool boolVal;    /// BOOLEAN_VALUE
         int intVal;      /// INTEGER_VALUE
         float floatVal;  /// FLOAT_VALUE

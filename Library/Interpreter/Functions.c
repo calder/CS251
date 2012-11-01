@@ -3,6 +3,24 @@
 #include "Interpreter/Functions.h"
 
 
+Value* function_define (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren != 3) { return NULL; }
+    ParseTree* var = args->children[1];
+    ParseTree* val = args->children[2];
+
+    if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
+
+    Value* value = evaluate(val, environment);
+    if (value == NULL) { return NULL; }
+    environment_set(environment, var->token->symbol, value);
+    value_release(value);
+
+    return value_create(NULL_VALUE);
+}
+
+
 Value* function_if (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
@@ -80,6 +98,12 @@ Value* function_let (Environment* environment, ParseTree* args)
     Value* value = evaluate(code, env);
     environment_release(env);
     return value;
+}
+
+
+Value* function_letrec (Environment* environment, ParseTree* args)
+{
+    return NULL; // Placeholder
 }
 
 
