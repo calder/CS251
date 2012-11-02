@@ -1,6 +1,14 @@
+#include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "Interpreter/Interpreter.h"
 #include "Interpreter/Functions.h"
+#include "Parser/Parser.h"
+#include "Util/Stringbuffer.h"
 
 
 Value* function_define (Environment* environment, ParseTree* args)
@@ -107,6 +115,54 @@ Value* function_letrec (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_load (Environment* environment, ParseTree* args)
+{
+    // Check arguments
+    if (args->numChildren != 2) { return NULL; }
+    if (args->children[1]->token->type != STRING_VALUE) { return NULL; }
+
+    int f = open(args->children[1]->token->string, O_RDONLY);
+    if (f == -1) { return NULL; }
+
+    struct stat statbuf;
+    if (fstat(f, &statbuf) == -1) { return NULL; }
+
+    char* file = mmap(NULL, statbuf.st_size, PROT_READ, MAP_SHARED, f, 0);
+    if (file == MAP_FAILED) { return NULL; }
+    close(f);
+
+    StringBuffer* fileContents = strbuf_create();
+    for (int i = 0; i<statbuf.st_size; ++i)
+    {
+        strbuf_append(fileContents, file[i]);
+    }
+
+    Environment* topEnvironment = environment;
+    while (topEnvironment->parent != NULL)
+    {
+        topEnvironment = topEnvironment->parent;
+    }
+    Quack* expressions = parse(strbuf_data(fileContents));
+    while (!quack_empty(expressions))
+    {
+        ParseTree* expression = quack_pop_front(expressions);
+        Value* value = evaluate(expression, environment);
+        if (value == NULL) { return NULL; }
+        value_print(value);
+        printf("\n");
+        value_release(value);
+        parsetree_release(expression);
+    }
+
+    strbuf_free(fileContents);
+    quack_free(expressions);
+
+    munmap(file, statbuf.st_size);
+
+    return value_create(NULL_VALUE);   
+}
+
+
 Value* function_quote (Environment* environment, ParseTree* args)
 {
     // Check arguments
@@ -124,3 +180,4 @@ Value* function_quote (Environment* environment, ParseTree* args)
     list->tail = value_create_list_empty();
     return list;
 }
+

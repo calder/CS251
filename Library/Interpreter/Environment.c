@@ -99,6 +99,7 @@ Environment* environment_create_default ()
     environment_set(env, "if",     value_create_keyword(&function_if));
     environment_set(env, "lambda", value_create_keyword(&function_lambda));
     environment_set(env, "let",    value_create_keyword(&function_let));
+    environment_set(env, "load",   value_create_keyword(&function_load));
     environment_set(env, "quote",  value_create_keyword(&function_quote));
 
     // True functions

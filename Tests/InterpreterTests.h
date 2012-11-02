@@ -45,6 +45,13 @@ void test_interpreter_let ()
 }
 
 
+void test_interpreter_load()
+{
+    start_test("Interpreter - Load");
+    interpret("(load \"sample.rkt\")");
+}
+
+
 void test_interpreter_quote ()
 {
     start_test("Interpreter - Quote");
@@ -76,6 +83,7 @@ void test_interpreter ()
 {
     test_interpreter_if();
     test_interpreter_let();
+    //test_interpreter_load();
     test_interpreter_quote();
 }
 

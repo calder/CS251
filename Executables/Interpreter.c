@@ -39,6 +39,7 @@ int main (int argc, char** argv)
         value_print(value);
         printf("\n");
         value_release(value);
+        parsetree_release(expression);
     }
 
     strbuf_free(buf);
