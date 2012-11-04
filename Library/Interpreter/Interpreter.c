@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "Interpreter/Functions.h"
 #include "Interpreter/Interpreter.h"
 #include "Tokenizer/Value.h"

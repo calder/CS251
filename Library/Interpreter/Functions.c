@@ -163,6 +163,46 @@ Value* function_load (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_plus (Environment*  environment, ParseTree* args)
+{
+    //Check arguments
+    if (args->numChildren < 2) { return NULL; }
+
+    float sum = 0.0;
+    bool floatResult = 0;
+    for (int i = 1; i< args->numChildren; ++i)
+    {
+        if (args->children[i]->token == NULL) { return NULL; }
+        Value* curvalue = evaluate(args->children[i], environment);
+        if (curvalue->type == FLOAT_VALUE)
+        {
+            floatResult = 1;
+            sum = sum + curvalue->floatVal;
+            value_release(curvalue);
+        }
+        else if (curvalue->type == INTEGER_VALUE)
+        {
+            sum = sum + curvalue->intVal;
+            value_release(curvalue);
+        }
+        else { value_release(curvalue); return NULL; }
+    }
+
+    Value* toreturn;
+    if (floatResult)
+    {
+        toreturn = value_create(FLOAT_VALUE);
+        toreturn->floatVal = sum;
+    }
+    else
+    {
+        toreturn = value_create(INTEGER_VALUE);
+        toreturn->intVal = (int)sum;
+    }
+    return toreturn;
+}
+
+
 Value* function_quote (Environment* environment, ParseTree* args)
 {
     // Check arguments

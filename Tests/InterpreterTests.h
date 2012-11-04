@@ -52,6 +52,47 @@ void test_interpreter_load()
 }
 
 
+void test_interpreter_plus()
+{
+    start_test("Interpreter - Plus");
+
+    Quack* values = interpret("(plus 5 4 3)");
+    assert(!quack_empty(values));
+    Value* sum = quack_pop_front(values);
+    assert(quack_empty(values));
+    
+    assert(sum != NULL);
+    assert(sum->type == INTEGER_VALUE);
+    
+    assert(sum->intVal == 12);
+    value_release(sum);
+
+    quack_free(values);
+
+    values = interpret("(plus 5.0 4.0 3.0)");
+    assert(!quack_empty(values));
+    sum = quack_pop_front(values);
+    assert(quack_empty(values));
+
+    assert(sum->type == FLOAT_VALUE);
+    assert(sum->floatVal == 12.0);
+    value_release(sum);
+
+    quack_free(values);
+
+    values = interpret("(plus 5.0 4 3)");
+    assert(!quack_empty(values));
+    sum = quack_pop_front(values);
+    assert(quack_empty(values));
+
+    assert(sum->type == FLOAT_VALUE);
+    assert(sum->floatVal == 12.0);
+    value_release(sum);
+
+    quack_free(values);
+}
+
+
 void test_interpreter_quote ()
 {
     start_test("Interpreter - Quote");
@@ -84,6 +125,7 @@ void test_interpreter ()
     test_interpreter_if();
     test_interpreter_let();
     //test_interpreter_load();
+    test_interpreter_plus();
     test_interpreter_quote();
 }
 

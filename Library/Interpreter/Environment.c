@@ -103,7 +103,7 @@ Environment* environment_create_default ()
     environment_set(env, "quote",  value_create_keyword(&function_quote));
 
     // True functions
-    // environment_set(env, "+", value_create_function(env, &function_plus));
+    environment_set(env, "plus",   value_create_function(&function_plus));
 
     return env;
 }
