@@ -122,7 +122,22 @@ void test_interpreter_letrec ()
 void test_interpreter_load ()
 {
     start_test("Interpreter - Load");
-    interpret("(load \"sample.rkt\")");
+    Quack* values = interpret("(lambda () 5) (load \"../Tests/LoadTest.scheme\")");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    assert(value != NULL && value->type == LAMBDA_VALUE);
+    Environment* environment = value->environment;
+    check_int(environment_get(environment, "x"), 9001);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    assert(value != NULL && value->type == NULL_VALUE);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
 }
 
 
@@ -241,7 +256,7 @@ void test_interpreter ()
     test_interpreter_lambda();
     test_interpreter_let();
     test_interpreter_letrec();
-    //test_interpreter_load();
+    test_interpreter_load();
     test_interpreter_minus();
     test_interpreter_null();
     test_interpreter_plus();
