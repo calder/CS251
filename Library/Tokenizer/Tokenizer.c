@@ -15,6 +15,7 @@ Value* tokenize_from_float_dot     (const char* input, int start, int* cur);
 Value* tokenize_from_float_decimal (const char* input, int start, int* cur);
 Value* tokenize_from_single        (const char* input, int start, int* cur);
 Value* tokenize_from_string        (const char* input, int start, int* cur);
+Value* tokenize_from_string_escape (const char* input, int start, int* cur);
 Value* tokenize_from_symbol        (const char* input, int start, int* cur);
 Value* tokenize_from_paren         (const char* input, int start, int* cur);
 Value* tokenize_from_whitespace    (const char* input, int start, int* cur);
@@ -159,7 +160,22 @@ Value* tokenize_from_string (const char* input, int start, int* cur)
     if (c == EOF)  { return NULL; }
     if (c == '\n') { return NULL; }
     if (c == '"')  { return tokenize_string(input,start+1,*cur-1); }
+    if (c == '\\') { return tokenize_from_string_escape(input,start,cur); }
     return tokenize_from_string(input,start,cur);
+}
+
+
+Value* tokenize_from_string_escape (const char* input, int start, int* cur)
+{
+    char c = input[(*cur)++];
+    if (c == 0)    { return NULL; }
+    if (c == EOF)  { return NULL; }
+    if (c == '\n') { return NULL; }
+    if (c == '"')  { return tokenize_from_string(input,start,cur); }
+    if (c == '\\') { return tokenize_from_string(input,start,cur); }
+    if (c == 'n')  { return tokenize_from_string(input,start,cur); }
+    if (c == 't')  { return tokenize_from_string(input,start,cur); }
+    return NULL;
 }
 
 
@@ -241,7 +257,19 @@ Value* tokenize_paren (const char* input, int start, int cur)
 Value* tokenize_string (const char* input, int start, int cur)
 {
     Value* value = value_create(STRING_VALUE);
-    value->string = substring(input,start,cur);
+    value->string = malloc(sizeof(char) * (cur - start + 1));
+    int j = 0;
+    for (int i = start; i < cur; ++i)
+    {
+        if (input[i] == '\\')
+        {
+            ++i;
+            if (input[i] == 'n') { value->string[j++] = '\n'; continue; }
+            if (input[i] == 't') { value->string[j++] = '\t'; continue; }
+        }
+        value->string[j++] = input[i];
+    }
+    value->string[j] = 0;
     return value;
 }
 
