@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -8,7 +9,7 @@
 #include "Interpreter/Interpreter.h"
 #include "Interpreter/Functions.h"
 #include "Parser/Parser.h"
-#include "Util/Stringbuffer.h"
+#include "Util/StringBuffer.h"
 
 
 bool check_let_args (ParseTree* args);
@@ -53,7 +54,8 @@ Value* function_if (Environment* environment, ParseTree* args)
 Value* function_lambda (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
-    if (args->numChildren != 3) { return NULL; }
+    // FIXME! This can have a lot of children.
+    if (args->numChildren < 3) { printf("Too many children!\n"); return NULL; }
 
     // Check parameter list
     for (int i = 0; i < args->children[1]->numChildren; ++i)
@@ -67,7 +69,7 @@ Value* function_lambda (Environment* environment, ParseTree* args)
     char** params = malloc(numParams * sizeof(char**));
     for (int i = 0; i < numParams; ++i)
     {
-        params[i] = args->children[1]->children[i]->token->symbol;
+        params[i] = strdup(args->children[1]->children[i]->token->symbol);
     }
     ParseTree* code = args->children[2];
 
@@ -128,6 +130,10 @@ Value* function_letrec (Environment* environment, ParseTree* args)
     // Evaluate the expression within that and return the value
     // Remember to release UNDEF_VALUEs
 
+    // Evaluate and return inner expression
+    Value* value = evaluate(code, env);
+    environment_release(env);
+    return value;
 }
 
 

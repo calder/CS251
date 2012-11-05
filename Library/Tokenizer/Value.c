@@ -38,6 +38,7 @@ Value* value_create_keyword (Value* (*func) (Environment*, ParseTree*))
     return value;
 }
 
+
 Value* value_create_lambda (Environment* environment, int numParams, char** params, ParseTree* code)
 {
     Value* value = value_create(LAMBDA_VALUE);
@@ -82,6 +83,7 @@ void value_free (Value* value)
         break;
     case LAMBDA_VALUE:
         parsetree_release(value->code);
+        environment_release(value->environment);
         for (int i = 0; i < value->numParams; ++i) { free(value->params[i]); }
         free(value->params);
         break;
@@ -116,6 +118,25 @@ void value_print (Value* value)
         case LIST_VALUE:     value_print_list(value); break;
         case STRING_VALUE:   printf("\"%s\" ", value->string); break;
         case SYMBOL_VALUE:   printf("%s ", value->string); break;
+        default:             printf("??? "); break;
+    }
+}
+
+
+void value_print_debug (Value* value)
+{
+    if (value == NULL) { return; }
+    switch (value->type)
+    {
+        case BOOLEAN_VALUE:  printf("BOOLEAN_VALUE: %s ", value->boolVal ? "#t" : "#f"); break;
+        case FLOAT_VALUE:    printf("FLOAT_VALUE: %f ", value->floatVal); break;
+        case FUNCTION_VALUE: printf("func "); break;
+        case INTEGER_VALUE:  printf("INTEGER_VALUE: %d ", value->intVal); break;
+        case LAMBDA_VALUE:   value_print_lambda(value); break;
+        case LIST_VALUE:     value_print_list(value); break;
+        case STRING_VALUE:   printf("STRING_VALUE: \"%s\" ", value->string); break;
+        case SYMBOL_VALUE:   printf("SYMBOL_VALUE: %s ", value->string); break;
+        case UNDEF_VALUE:    printf("UNDEFINED_VALUE"); break;
         default:             printf("??? "); break;
     }
 }

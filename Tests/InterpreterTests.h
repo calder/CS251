@@ -33,7 +33,7 @@ void test_interpreter_if ()
 void test_interpreter_lambda ()
 {
     start_test("Interpreter - Lambda");
-    Quack* values = interpret("((lambda (x) x) 25)");
+    Quack* values = interpret("((lambda () (lambda () 5) y) 25)");
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
@@ -63,11 +63,11 @@ void test_interpreter_let ()
 void test_interpreter_letrec ()
 {
     start_test("Interpreter - Letrec");
-    Quack* values = interpret("(letrec (()) )");
+    Quack* values = interpret("(letrec ((start (lambda (n) (end n))) (end (lambda (n) n))) (start 19))");
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
-    check_int(value, 456);
+    check_int(value, 19);
     value_release(value);
 
     assert(quack_empty(values));

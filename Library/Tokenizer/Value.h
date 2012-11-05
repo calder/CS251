@@ -112,6 +112,9 @@ void value_release (Value* value);
 /// Display a Value followed by a space
 void value_print (Value* value);
 
+/// Display a Value Type and the Value itself followed by a space
+void value_print_debug (Value* value);
+
 /// Display a token Value in the form "type : value\n"
 void token_print (Value* token);
 

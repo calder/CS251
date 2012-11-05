@@ -128,14 +128,13 @@ Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
 
 Value* evaluate_lambda (Value* lambda, ParseTree* args)
 {
-    if (args->numChildren != lambda->numParams) { return NULL; }
+    if ((args->numChildren - 1) != lambda->numParams) { return NULL; }
     Environment* env = environment_create(lambda->environment);
 
     for (int i = 0; i < lambda->numParams; ++i)
     {
-        environment_set(env, lambda->params[i], args->children[i+1]);
+        environment_set(env, lambda->params[i], args->children[i+1]->token);
     }
-
     Value* value = evaluate(lambda->code, env);
     environment_release(env);
     return value;
