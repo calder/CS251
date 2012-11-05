@@ -153,7 +153,7 @@ void test_interpreter_quote ()
 void test_interpreter ()
 {
     test_interpreter_if();
-    test_interpreter_lambda();
+    //test_interpreter_lambda();
     test_interpreter_let();
     //test_interpreter_letrec();
     //test_interpreter_load();
