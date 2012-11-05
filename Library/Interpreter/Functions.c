@@ -272,6 +272,24 @@ Value* function_minus (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_null (Environment* environment, ParseTree* args)
+{
+    // Check that there's only a single argument
+    if (args->numChildren != 2) { return NULL; }
+
+    // Evaluate argument and test for null-ness
+    Value* value = evaluate(args->children[1], environment);
+    if (value == NULL) { return NULL; }
+    bool null = false;
+    if (value->type == LIST_VALUE &&
+        value->head == NULL &&
+        value->tail == NULL)
+        { null = true; }
+    value_release(value);
+    return value_create_bool(null);
+}
+
+
 Value* function_plus (Environment* environment, ParseTree* args)
 {
     // Check arguments
@@ -322,28 +340,6 @@ Value* function_quote (Environment* environment, ParseTree* args)
 }
 
 
-bool check_let_args (ParseTree* args)
-{
-    // Check number of arguments
-    if (args->numChildren < 3) { return false; }
-    ParseTree* vars = args->children[1];
-
-    // Check bindings
-    if (vars->token != NULL) { return false; }
-    for (int i = 0; i < vars->numChildren; ++i)
-    {
-        if (vars->children[i]->token != NULL) { return false; }
-        ParseTree* var = vars->children[i]->children[0];
-        ParseTree* val = vars->children[i]->children[1];
-        if (var->token == NULL) { return false; }
-        if (var->token->type != SYMBOL_VALUE) { return false; }
-    }
-
-    // Hooray!
-    return true;
-}
-
-
 Value* function_times (Environment* environment, ParseTree* args)
 {
     // Check arguments
@@ -372,4 +368,26 @@ Value* function_times (Environment* environment, ParseTree* args)
     // Return product as the correct type
     if (integer) { return value_create_int(prod); }
     else         { return value_create_float(prod); }
+}
+
+
+bool check_let_args (ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren < 3) { return false; }
+    ParseTree* vars = args->children[1];
+
+    // Check bindings
+    if (vars->token != NULL) { return false; }
+    for (int i = 0; i < vars->numChildren; ++i)
+    {
+        if (vars->children[i]->token != NULL) { return false; }
+        ParseTree* var = vars->children[i]->children[0];
+        ParseTree* val = vars->children[i]->children[1];
+        if (var->token == NULL) { return false; }
+        if (var->token->type != SYMBOL_VALUE) { return false; }
+    }
+
+    // Hooray!
+    return true;
 }

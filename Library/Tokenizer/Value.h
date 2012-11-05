@@ -89,6 +89,9 @@ typedef Value;
 /// Malloc and return a new Value with a refCount of 1
 Value* value_create (ValueType type);
 
+/// Create a BOOLEAN_VALUE
+Value* value_create_bool (bool b);
+
 /// Create a FLOAT_VALUE
 Value* value_create_float (float x);
 

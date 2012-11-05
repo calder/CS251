@@ -106,6 +106,7 @@ Environment* environment_create_default ()
     environment_set(env, "-",      value_create_function(&function_minus));
     environment_set(env, "*",      value_create_function(&function_times));
     environment_set(env, "/",      value_create_function(&function_divide));
+    environment_set(env, "null?",  value_create_function(&function_null));
 
     return env;
 }

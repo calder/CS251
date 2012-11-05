@@ -146,6 +146,26 @@ void test_interpreter_minus ()
 }
 
 
+void test_interpreter_null()
+{
+    start_test("Interpreter - Null?");
+    Quack* values = interpret("(null? (quote ())) (null? (quote (())))");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_bool(value,true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value,false);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_plus ()
 {
     start_test("Interpreter - Plus");
@@ -223,6 +243,7 @@ void test_interpreter ()
     test_interpreter_letrec();
     //test_interpreter_load();
     test_interpreter_minus();
+    test_interpreter_null();
     test_interpreter_plus();
     test_interpreter_quote();
     test_interpreter_times();

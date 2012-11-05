@@ -21,6 +21,14 @@ Value* value_create (ValueType type)
 }
 
 
+Value* value_create_bool (bool b)
+{
+    Value* value = value_create(BOOLEAN_VALUE);
+    value->boolVal = b;
+    return value;
+}
+
+
 Value* value_create_float (float x)
 {
     Value* value = value_create(FLOAT_VALUE);

@@ -27,6 +27,7 @@ Quack* interpret (const char* input)
     {
         ParseTree* parseTree = quack_pop_front(expressions);
         Value* value = evaluate(parseTree, environment);
+        if (value == NULL) { goto syntax_error; }
         parsetree_release(parseTree);
         quack_push_back(values, value);
     }
@@ -35,6 +36,13 @@ Quack* interpret (const char* input)
     environment_release(environment);
     quack_free(expressions);
     return values;
+
+syntax_error:
+    
+    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(expressions)); }
+    environment_release(environment);
+    quack_free(expressions);
+    return NULL;
 }
 
 
