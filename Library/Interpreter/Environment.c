@@ -103,6 +103,9 @@ Environment* environment_create_default ()
 
     // Real Amurican functions
     environment_set(env, "+",      value_create_function(&function_plus));
+    environment_set(env, "-",      value_create_function(&function_minus));
+    environment_set(env, "*",      value_create_function(&function_times));
+    environment_set(env, "/",      value_create_function(&function_divide));
 
     return env;
 }

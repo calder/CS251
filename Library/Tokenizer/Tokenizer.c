@@ -13,6 +13,7 @@ Value* tokenize_from_sign          (const char* input, int start, int* cur);
 Value* tokenize_from_int_digit     (const char* input, int start, int* cur);
 Value* tokenize_from_float_dot     (const char* input, int start, int* cur);
 Value* tokenize_from_float_decimal (const char* input, int start, int* cur);
+Value* tokenize_from_single        (const char* input, int start, int* cur);
 Value* tokenize_from_string        (const char* input, int start, int* cur);
 Value* tokenize_from_symbol        (const char* input, int start, int* cur);
 Value* tokenize_from_paren         (const char* input, int start, int* cur);
@@ -80,6 +81,8 @@ Value* tokenize_from_start (const char* input, int start, int* cur)
     if (c == '.')           { return tokenize_from_float_dot(input,start,cur); }
     if (c == '+')           { return tokenize_from_sign(input,start,cur); }
     if (c == '-')           { return tokenize_from_sign(input,start,cur); }
+    if (c == '*')           { return tokenize_from_single(input,start,cur); }
+    if (c == '/')           { return tokenize_from_single(input,start,cur); }
     if (is_paren(c))        { return tokenize_from_paren(input,start,cur); }
     if (is_digit(c))        { return tokenize_from_int_digit(input,start,cur); }
     if (is_symbol_start(c)) { return tokenize_from_symbol(input,start,cur); }
@@ -136,6 +139,14 @@ Value* tokenize_from_sign (const char* input, int start, int* cur)
     char c = input[(*cur)++];
     if (is_digit(c))     { return tokenize_from_int_digit(input,start,cur); }
     if (c == '.')        { return tokenize_from_float_dot(input,start,cur); }
+    if (is_finalizer(c)) { return tokenize_symbol(input,start,--(*cur)); }
+    return NULL;
+}
+
+
+Value* tokenize_from_single (const char* input, int start, int* cur)
+{
+    char c = input[(*cur)++];
     if (is_finalizer(c)) { return tokenize_symbol(input,start,--(*cur)); }
     return NULL;
 }

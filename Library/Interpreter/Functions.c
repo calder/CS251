@@ -33,6 +33,71 @@ Value* function_define (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_divide (Environment* environment, ParseTree* args)
+{
+    // Check arguments
+    if (args->numChildren < 2) { return NULL; }
+
+    // Multiplicative inverse case
+    if (args->numChildren == 2)
+    {
+        Value* v = evaluate(args->children[1], environment);
+        if (v == NULL) { return NULL; }
+        if (v->type == INTEGER_VALUE && (v->intVal == 1 || v->intVal == -1))
+            { value_release(v); return value_create_int(v->intVal); }
+        else if (v->type == INTEGER_VALUE || v->type == FLOAT_VALUE)
+            { value_release(v); return value_create_float(1.0 / v->intVal); }
+        else
+            { value_release(v); return NULL; }
+    }
+
+    // Actual quotient cases
+    else
+    {
+        double quotient = 1;
+        bool integer = true;
+        for (int i = 1; i < args->numChildren; ++i)
+        {
+            // Evaluate and check argument
+            Value* value = evaluate(args->children[i], environment);
+            if (value == NULL) { parsetree_print(args->children[i]); return NULL; }
+            if (value->type != FLOAT_VALUE && value->type != INTEGER_VALUE)
+            {
+                value_release(value);
+                return NULL;
+            }
+
+            // Dividor case
+            if (i == 1)
+            {
+                if (value->type == FLOAT_VALUE) { quotient = value->floatVal; integer = false; }
+                else if (value->type == INTEGER_VALUE) { quotient = value->intVal; }
+            }
+
+            // Divisor case
+            else
+            {
+                if (value->type == FLOAT_VALUE)
+                {
+                    quotient /= value->floatVal;
+                    integer = false;
+                }
+                else if (value->type == INTEGER_VALUE)
+                {
+                    quotient /= value->intVal;
+                    if ((int)quotient % value->intVal != 0) { integer = false; }
+                }
+            }
+            value_release(value);
+        }
+
+        // Return quotient as the correct type
+        if (integer) { return value_create_int(quotient); }
+        else         { return value_create_float(quotient); }
+    }
+}
+
+
 Value* function_if (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
@@ -173,13 +238,47 @@ Value* function_load (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_minus (Environment* environment, ParseTree* args)
+{
+    // Check arguments
+    if (args->numChildren < 2) { return NULL; }
+
+    // Sum everything up
+    double sum = 0;
+    bool integer = true;
+    for (int i = 1; i < args->numChildren; ++i)
+    {
+        // Evaluate and check argument
+        Value* value = evaluate(args->children[i], environment);
+        if (value == NULL) { return NULL; }
+        if (value->type != FLOAT_VALUE && value->type != INTEGER_VALUE)
+        {
+            value_release(value);
+            return NULL;
+        }
+
+        // Add (or subtract) value from total
+        double v;
+        if (value->type == FLOAT_VALUE) { v = value->floatVal; integer = false; }
+        else if (value->type == INTEGER_VALUE) { v = value->intVal; }
+        if (i != 1 || args->numChildren == 2) { v *= -1; }
+        sum += v;
+        value_release(value);
+    }
+
+    // Return sum as the correct type
+    if (integer) { return value_create_int(sum); }
+    else         { return value_create_float(sum); }
+}
+
+
 Value* function_plus (Environment* environment, ParseTree* args)
 {
     // Check arguments
     if (args->numChildren < 2) { return NULL; }
 
     // Sum everything up
-    float sum = 0;
+    double sum = 0;
     bool integer = true;
     for (int i = 1; i < args->numChildren; ++i)
     {
@@ -242,4 +341,35 @@ bool check_let_args (ParseTree* args)
 
     // Hooray!
     return true;
+}
+
+
+Value* function_times (Environment* environment, ParseTree* args)
+{
+    // Check arguments
+    if (args->numChildren < 2) { return NULL; }
+
+    // Sum everything up
+    double prod = 1;
+    bool integer = true;
+    for (int i = 1; i < args->numChildren; ++i)
+    {
+        // Evaluate and check argument
+        Value* value = evaluate(args->children[i], environment);
+        if (value == NULL) { return NULL; }
+        if (value->type != FLOAT_VALUE && value->type != INTEGER_VALUE)
+        {
+            value_release(value);
+            return NULL;
+        }
+
+        // Multiply value into total
+        if (value->type == FLOAT_VALUE) { prod *= value->floatVal; integer = false; }
+        else if (value->type == INTEGER_VALUE) { prod *= value->intVal; }
+        value_release(value);
+    }
+
+    // Return product as the correct type
+    if (integer) { return value_create_int(prod); }
+    else         { return value_create_float(prod); }
 }

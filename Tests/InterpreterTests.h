@@ -31,6 +31,26 @@ void test_interpreter_define ()
 }
 
 
+void test_interpreter_divide ()
+{
+    start_test("Interpreter - Divide");
+    Quack* values = interpret("(/ 500 5 10) (/ (/ 2) 5)");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_int(value, 10);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_float(value, 0.1);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_if ()
 {
     start_test("Interpreter - If");
@@ -106,6 +126,26 @@ void test_interpreter_load ()
 }
 
 
+void test_interpreter_minus ()
+{
+    start_test("Interpreter - Minus");
+    Quack* values = interpret("(- 500 40 3) (- (- 0.14) 3)");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_int(value, 457);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_float(value, -3.14);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_plus ()
 {
     start_test("Interpreter - Plus");
@@ -153,16 +193,39 @@ void test_interpreter_quote ()
 }
 
 
+void test_interpreter_times ()
+{
+    start_test("Interpreter - Times");
+    Quack* values = interpret("(* 4 6 4) (* (* 1.5) 4)");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_int(value, 96);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_float(value, 6.0);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter ()
 {
     test_interpreter_define();
+    test_interpreter_divide();
     test_interpreter_if();
     test_interpreter_lambda();
     test_interpreter_let();
     test_interpreter_letrec();
     //test_interpreter_load();
+    test_interpreter_minus();
     test_interpreter_plus();
     test_interpreter_quote();
+    test_interpreter_times();
 }
 
 

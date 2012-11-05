@@ -1,0 +1,2 @@
+(letrec ((x 5) (y (+ 2 x))) y)
+; should be 7
