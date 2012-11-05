@@ -25,17 +25,15 @@ enum ValueType
     INTEGER_VALUE,
     LAMBDA_VALUE,
     LIST_VALUE,
+    NULL_VALUE,
     STRING_VALUE,
     SYMBOL_VALUE,
     UNDEF_VALUE,
-    
-    NULL_VALUE,
-
 }
 typedef ValueType;
 
 
-///
+/// 
 enum ErrorType
 {
     SYNTAX_ERROR,
@@ -44,7 +42,7 @@ enum ErrorType
 typedef ErrorType;
 
 
-/// A token
+/// A raw token or full Scheme value
 struct Value
 {
     int refCount;
@@ -91,8 +89,14 @@ typedef Value;
 /// Malloc and return a new Value with a refCount of 1
 Value* value_create (ValueType type);
 
+/// Create a FLOAT_VALUE
+Value* value_create_float (float x);
+
 /// Create a C built-in function (like +, -, map, etc...)
 Value* value_create_function (Value* (*func) (struct Environment*, struct ParseTree*));
+
+/// Create a INTEGER_VALUE
+Value* value_create_int (int x);
 
 /// Create a C built-in keyword (like if, lambda, let, quote)
 Value* value_create_keyword (Value* (*func) (struct Environment*, struct ParseTree*));

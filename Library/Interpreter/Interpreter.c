@@ -65,6 +65,23 @@ Value* evaluate_list (ParseTree* parseTree)
 }
 
 
+Value* evaluate_bodies (ParseTree* parseTree, Environment* environment)
+{
+    // Evaluate each body expression
+    Value* value = NULL;
+    for (int i = 2; i < parseTree->numChildren; ++i)
+    {
+        if (value != NULL) { value_release(value); }
+        value = evaluate(parseTree->children[i], environment);
+        if (value == NULL) { break; }
+    }
+
+    // And return the last
+    environment_release(environment);
+    return value;
+}
+
+
 Value* evaluate_function (ParseTree* parseTree, Environment* environment)
 {
     // Check number of arguments
@@ -135,7 +152,5 @@ Value* evaluate_lambda (Value* lambda, ParseTree* args)
     {
         environment_set(env, lambda->params[i], args->children[i+1]->token);
     }
-    Value* value = evaluate(lambda->code, env);
-    environment_release(env);
-    return value;
+    return evaluate_bodies(lambda->code, env);
 }

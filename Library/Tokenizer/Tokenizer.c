@@ -136,7 +136,7 @@ Value* tokenize_from_sign (const char* input, int start, int* cur)
     char c = input[(*cur)++];
     if (is_digit(c))     { return tokenize_from_int_digit(input,start,cur); }
     if (c == '.')        { return tokenize_from_float_dot(input,start,cur); }
-    if (is_finalizer(c)) { return tokenize_symbol(input,start,*cur); }
+    if (is_finalizer(c)) { return tokenize_symbol(input,start,--(*cur)); }
     return NULL;
 }
 

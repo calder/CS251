@@ -36,8 +36,7 @@ int main (int argc, char** argv)
         ParseTree* expression = quack_pop_front(expressions);
         Value* value = evaluate(expression, environment);
         if (value == NULL) { goto syntax_error; }
-        value_print(value);
-        printf("\n");
+        if (value->type != NULL_VALUE) { value_print(value); printf("\n"); }
         value_release(value);
         parsetree_release(expression);
     }

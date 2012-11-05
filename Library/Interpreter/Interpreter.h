@@ -17,6 +17,11 @@ Quack* interpret (const char* input);
 /// @note The returned Value* has a refCount of 1.
 Value* evaluate (ParseTree* parseTree, Environment* environment);
 
+/// Evaluate children 2 through N, and return the value of the final child
+/// @note The environment is assumed to be a temporary and will be released by
+/// this function.
+Value* evaluate_bodies (ParseTree* parseTree, Environment* environment);
+
 /// Return the result of recursively evaluating a list literal
 /// @note This function is exactly like evaluate() with two exceptions:
 ///   - Subtrees are treated as lists instead of function calls.

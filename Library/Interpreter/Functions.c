@@ -17,13 +17,13 @@ bool check_let_args (ParseTree* args);
 
 Value* function_define (Environment* environment, ParseTree* args)
 {
-    // Check number of arguments
+    // Check arguments
     if (args->numChildren != 3) { return NULL; }
     ParseTree* var = args->children[1];
     ParseTree* val = args->children[2];
-
     if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
 
+    // Evaluate value and store in variable
     Value* value = evaluate(val, environment);
     if (value == NULL) { return NULL; }
     environment_set(environment, var->token->symbol, value);
@@ -54,8 +54,7 @@ Value* function_if (Environment* environment, ParseTree* args)
 Value* function_lambda (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
-    // FIXME! This can have a lot of children.
-    if (args->numChildren < 3) { printf("Too many children!\n"); return NULL; }
+    if (args->numChildren < 3) { return NULL; }
 
     // Check parameter list
     for (int i = 0; i < args->children[1]->numChildren; ++i)
@@ -71,17 +70,16 @@ Value* function_lambda (Environment* environment, ParseTree* args)
     {
         params[i] = strdup(args->children[1]->children[i]->token->symbol);
     }
-    ParseTree* code = args->children[2];
 
-    return value_create_lambda(environment, numParams, params, code);
+    return value_create_lambda(environment, numParams, params, args);
 }
 
 
 Value* function_let (Environment* environment, ParseTree* args)
 {
+    // Check arguments
     if (!check_let_args(args)) { return NULL; }
     ParseTree* vars = args->children[1];
-    ParseTree* code = args->children[2];
 
     // Create environment from bindings
     Environment* env = environment_create(environment);
@@ -95,21 +93,18 @@ Value* function_let (Environment* environment, ParseTree* args)
         value_release(value);
     }
 
-    // Evaluate and return inner expression
-    Value* value = evaluate(code, env);
-    environment_release(env);
-    return value;
+    return evaluate_bodies(args, env);
 }
 
 
 Value* function_letrec (Environment* environment, ParseTree* args)
 {
+    // Check arguments
     if (!check_let_args(args)) { return NULL; }
     ParseTree* vars = args->children[1];
-    ParseTree* code = args->children[2];
 
+    // Initialize environment with undefineds
     Environment* env = environment_create(environment);
-
     for (int i = 0; i < vars->numChildren; ++i)
     {
         Value* value = value_create(UNDEF_VALUE);
@@ -117,23 +112,16 @@ Value* function_letrec (Environment* environment, ParseTree* args)
         value_release(value);
     }
 
+    // Evaluate and store actual values
     for (int i = 0; i < vars->numChildren; ++i)
     {
         Value* value = evaluate(vars->children[i]->children[1], env);
+        if (value == NULL) { environment_release(env); return NULL; }
         environment_set(env, vars->children[i]->children[0]->token->symbol, value);
         value_release(value);
     }
 
-    // Create an environment
-    // For each <var>, create an UNDEF_VALUE
-    // For each <var>, evaluate the <init> and put it in teh environment
-    // Evaluate the expression within that and return the value
-    // Remember to release UNDEF_VALUEs
-
-    // Evaluate and return inner expression
-    Value* value = evaluate(code, env);
-    environment_release(env);
-    return value;
+    return evaluate_bodies(args, env);
 }
 
 
@@ -185,43 +173,34 @@ Value* function_load (Environment* environment, ParseTree* args)
 }
 
 
-Value* function_plus (Environment*  environment, ParseTree* args)
+Value* function_plus (Environment* environment, ParseTree* args)
 {
-    //Check arguments
+    // Check arguments
     if (args->numChildren < 2) { return NULL; }
 
-    float sum = 0.0;
-    bool floatResult = 0;
-    for (int i = 1; i< args->numChildren; ++i)
+    // Sum everything up
+    float sum = 0;
+    bool integer = true;
+    for (int i = 1; i < args->numChildren; ++i)
     {
-        if (args->children[i]->token == NULL) { return NULL; }
-        Value* curvalue = evaluate(args->children[i], environment);
-        if (curvalue->type == FLOAT_VALUE)
+        // Evaluate and check argument
+        Value* value = evaluate(args->children[i], environment);
+        if (value == NULL) { return NULL; }
+        if (value->type != FLOAT_VALUE && value->type != INTEGER_VALUE)
         {
-            floatResult = 1;
-            sum = sum + curvalue->floatVal;
-            value_release(curvalue);
+            value_release(value);
+            return NULL;
         }
-        else if (curvalue->type == INTEGER_VALUE)
-        {
-            sum = sum + curvalue->intVal;
-            value_release(curvalue);
-        }
-        else { value_release(curvalue); return NULL; }
+
+        // Add value to total
+        if (value->type == FLOAT_VALUE) { sum += value->floatVal; integer = false; }
+        else if (value->type == INTEGER_VALUE) { sum += value->intVal; }
+        value_release(value);
     }
 
-    Value* toreturn;
-    if (floatResult)
-    {
-        toreturn = value_create(FLOAT_VALUE);
-        toreturn->floatVal = sum;
-    }
-    else
-    {
-        toreturn = value_create(INTEGER_VALUE);
-        toreturn->intVal = (int)sum;
-    }
-    return toreturn;
+    // Return sum as the correct type
+    if (integer) { return value_create_int(sum); }
+    else         { return value_create_float(sum); }
 }
 
 
@@ -247,7 +226,7 @@ Value* function_quote (Environment* environment, ParseTree* args)
 bool check_let_args (ParseTree* args)
 {
     // Check number of arguments
-    if (args->numChildren != 3) { return false; }
+    if (args->numChildren < 3) { return false; }
     ParseTree* vars = args->children[1];
 
     // Check bindings

@@ -21,11 +21,27 @@ Value* value_create (ValueType type)
 }
 
 
+Value* value_create_float (float x)
+{
+    Value* value = value_create(FLOAT_VALUE);
+    value->floatVal = x;
+    return value;
+}
+
+
 Value* value_create_function (Value* (*func) (Environment*, ParseTree*))
 {
     Value* value = value_create(FUNCTION_VALUE);
     value->function = func;
     value->keyword = false;
+    return value;
+}
+
+
+Value* value_create_int (int x)
+{
+    Value* value = value_create(INTEGER_VALUE);
+    value->intVal = x;
     return value;
 }
 

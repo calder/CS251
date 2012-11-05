@@ -65,7 +65,6 @@ Value* environment_get (Environment* environment, const char* symbol)
         Binding* binding = vector_get(environment->bindings, i);
         if (!strcmp(symbol, binding->symbol))
         {
-            if (binding->value->type == UNDEF_VALUE) { return NULL; }
             return binding->value;
         }
     }
@@ -91,12 +90,10 @@ void environment_set (Environment* environment, const char* symbol, Value* value
 
 Environment* environment_create_default ()
 {
-    // NOTE: The following special case psuedo-functions are handled by
-    // evaluate() directly: if, let, lambda, quote
-
     Environment* env = environment_create(NULL);
 
     // Keyword functions (not first-class objects)
+    environment_set(env, "define", value_create_keyword(&function_define));
     environment_set(env, "if",     value_create_keyword(&function_if));
     environment_set(env, "lambda", value_create_keyword(&function_lambda));
     environment_set(env, "let",    value_create_keyword(&function_let));
@@ -104,8 +101,8 @@ Environment* environment_create_default ()
     environment_set(env, "load",   value_create_keyword(&function_load));
     environment_set(env, "quote",  value_create_keyword(&function_quote));
 
-    // True functions
-    environment_set(env, "plus",   value_create_function(&function_plus));
+    // Real Amurican functions
+    environment_set(env, "+",      value_create_function(&function_plus));
 
     return env;
 }

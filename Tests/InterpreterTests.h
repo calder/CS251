@@ -7,6 +7,30 @@
 #include "ValueUtil.h"
 
 
+void test_interpreter_define ()
+{
+    start_test("Interpreter - Define");
+    Quack* values = interpret("(define x 321) (define x 654) x");
+    assert(!quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    assert(value != NULL && value->type == NULL_VALUE);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    assert(value != NULL && value->type == NULL_VALUE);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_int(value, 654);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_if ()
 {
     start_test("Interpreter - If");
@@ -33,11 +57,11 @@ void test_interpreter_if ()
 void test_interpreter_lambda ()
 {
     start_test("Interpreter - Lambda");
-    Quack* values = interpret("((lambda () (lambda () 5) y) 25)");
+    Quack* values = interpret("(((lambda (x y) (lambda () x x y)) 123 456))");
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
-    check_int(value, 25);
+    check_int(value, 456);
     value_release(value);
 
     assert(quack_empty(values));
@@ -48,7 +72,7 @@ void test_interpreter_lambda ()
 void test_interpreter_let ()
 {
     start_test("Interpreter - Let");
-    Quack* values = interpret("(let ((x 123) (y 456)) y)");
+    Quack* values = interpret("(let ((x 123) (y 456)) x x y)");
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
@@ -62,12 +86,12 @@ void test_interpreter_let ()
 
 void test_interpreter_letrec ()
 {
-    start_test("Interpreter - Letrec");
-    Quack* values = interpret("(letrec ((start (lambda (n) (end n))) (end (lambda (n) n))) (start 19))");
+    start_test("Interpreter - LetRec");
+    Quack* values = interpret("(letrec ((f 456) (g (lambda () f))) (g))");
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
-    check_int(value, 19);
+    check_int(value,456);
     value_release(value);
 
     assert(quack_empty(values));
@@ -75,50 +99,29 @@ void test_interpreter_letrec ()
 }
 
 
-void test_interpreter_load()
+void test_interpreter_load ()
 {
     start_test("Interpreter - Load");
     interpret("(load \"sample.rkt\")");
 }
 
 
-void test_interpreter_plus()
+void test_interpreter_plus ()
 {
     start_test("Interpreter - Plus");
-
-    Quack* values = interpret("(plus 5 4 3)");
+    Quack* values = interpret("(+ 500 40 3) (+ (+ 0.14) 3)");
     assert(!quack_empty(values));
-    Value* sum = quack_pop_front(values);
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_int(value, 543);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_float(value, 3.14);
+    value_release(value);
+
     assert(quack_empty(values));
-    
-    assert(sum != NULL);
-    assert(sum->type == INTEGER_VALUE);
-    
-    assert(sum->intVal == 12);
-    value_release(sum);
-
-    quack_free(values);
-
-    values = interpret("(plus 5.0 4.0 3.0)");
-    assert(!quack_empty(values));
-    sum = quack_pop_front(values);
-    assert(quack_empty(values));
-
-    assert(sum->type == FLOAT_VALUE);
-    assert(sum->floatVal == 12.0);
-    value_release(sum);
-
-    quack_free(values);
-
-    values = interpret("(plus 5.0 4 3)");
-    assert(!quack_empty(values));
-    sum = quack_pop_front(values);
-    assert(quack_empty(values));
-
-    assert(sum->type == FLOAT_VALUE);
-    assert(sum->floatVal == 12.0);
-    value_release(sum);
-
     quack_free(values);
 }
 
@@ -152,10 +155,11 @@ void test_interpreter_quote ()
 
 void test_interpreter ()
 {
+    test_interpreter_define();
     test_interpreter_if();
-    //test_interpreter_lambda();
+    test_interpreter_lambda();
     test_interpreter_let();
-    //test_interpreter_letrec();
+    test_interpreter_letrec();
     //test_interpreter_load();
     test_interpreter_plus();
     test_interpreter_quote();
