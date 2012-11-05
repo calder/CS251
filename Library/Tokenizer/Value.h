@@ -27,7 +27,8 @@ enum ValueType
     LIST_VALUE,
     STRING_VALUE,
     SYMBOL_VALUE,
-
+    UNDEF_VALUE,
+    
     NULL_VALUE,
 
 }

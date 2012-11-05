@@ -41,9 +41,11 @@ Value* value_create_keyword (Value* (*func) (Environment*, ParseTree*))
 Value* value_create_lambda (Environment* environment, int numParams, char** params, ParseTree* code)
 {
     Value* value = value_create(LAMBDA_VALUE);
+    value->environment = environment;
     value->numParams = numParams;
     value->params = params;
     value->code = code;
+    environment_reserve(environment);
     parsetree_reserve(code);
     return value;
 }

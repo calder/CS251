@@ -11,6 +11,9 @@
 #include "Util/Stringbuffer.h"
 
 
+bool check_let_args (ParseTree* args);
+
+
 Value* function_define (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
@@ -74,21 +77,9 @@ Value* function_lambda (Environment* environment, ParseTree* args)
 
 Value* function_let (Environment* environment, ParseTree* args)
 {
-    // Check number of arguments
-    if (args->numChildren != 3) { return NULL; }
+    if (!check_let_args(args)) { return NULL; }
     ParseTree* vars = args->children[1];
     ParseTree* code = args->children[2];
-
-    // Check bindings
-    if (vars->token != NULL) { return NULL; }
-    for (int i = 0; i < vars->numChildren; ++i)
-    {
-        if (vars->children[i]->token != NULL) { return NULL; }
-        ParseTree* var = vars->children[i]->children[0];
-        ParseTree* val = vars->children[i]->children[1];
-        if (var->token == NULL) { return NULL; }
-        if (var->token->type != SYMBOL_VALUE) { return NULL; }
-    }
 
     // Create environment from bindings
     Environment* env = environment_create(environment);
@@ -111,7 +102,32 @@ Value* function_let (Environment* environment, ParseTree* args)
 
 Value* function_letrec (Environment* environment, ParseTree* args)
 {
-    return NULL; // Placeholder
+    if (!check_let_args(args)) { return NULL; }
+    ParseTree* vars = args->children[1];
+    ParseTree* code = args->children[2];
+
+    Environment* env = environment_create(environment);
+
+    for (int i = 0; i < vars->numChildren; ++i)
+    {
+        Value* value = value_create(UNDEF_VALUE);
+        environment_set(env, vars->children[i]->children[0]->token->symbol, value);
+        value_release(value);
+    }
+
+    for (int i = 0; i < vars->numChildren; ++i)
+    {
+        Value* value = evaluate(vars->children[i]->children[1], env);
+        environment_set(env, vars->children[i]->children[0]->token->symbol, value);
+        value_release(value);
+    }
+
+    // Create an environment
+    // For each <var>, create an UNDEF_VALUE
+    // For each <var>, evaluate the <init> and put it in teh environment
+    // Evaluate the expression within that and return the value
+    // Remember to release UNDEF_VALUEs
+
 }
 
 
@@ -221,3 +237,24 @@ Value* function_quote (Environment* environment, ParseTree* args)
     return list;
 }
 
+
+bool check_let_args (ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren != 3) { return false; }
+    ParseTree* vars = args->children[1];
+
+    // Check bindings
+    if (vars->token != NULL) { return false; }
+    for (int i = 0; i < vars->numChildren; ++i)
+    {
+        if (vars->children[i]->token != NULL) { return false; }
+        ParseTree* var = vars->children[i]->children[0];
+        ParseTree* val = vars->children[i]->children[1];
+        if (var->token == NULL) { return false; }
+        if (var->token->type != SYMBOL_VALUE) { return false; }
+    }
+
+    // Hooray!
+    return true;
+}

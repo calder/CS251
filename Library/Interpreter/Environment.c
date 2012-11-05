@@ -65,6 +65,7 @@ Value* environment_get (Environment* environment, const char* symbol)
         Binding* binding = vector_get(environment->bindings, i);
         if (!strcmp(symbol, binding->symbol))
         {
+            if (binding->value->type == UNDEF_VALUE) { return NULL; }
             return binding->value;
         }
     }

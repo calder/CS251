@@ -30,6 +30,21 @@ void test_interpreter_if ()
 }
 
 
+void test_interpreter_lambda ()
+{
+    start_test("Interpreter - Lambda");
+    Quack* values = interpret("((lambda (x) x) 25)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_int(value, 25);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_let ()
 {
     start_test("Interpreter - Let");
@@ -37,10 +52,25 @@ void test_interpreter_let ()
     assert(!quack_empty(values));
 
     Value* value = quack_pop_front(values);
-    assert(quack_empty(values));
     check_int(value, 456);
     value_release(value);
 
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
+void test_interpreter_letrec ()
+{
+    start_test("Interpreter - Letrec");
+    Quack* values = interpret("(letrec (()) )");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_int(value, 456);
+    value_release(value);
+
+    assert(quack_empty(values));
     quack_free(values);
 }
 
@@ -123,7 +153,9 @@ void test_interpreter_quote ()
 void test_interpreter ()
 {
     test_interpreter_if();
+    test_interpreter_lambda();
     test_interpreter_let();
+    //test_interpreter_letrec();
     //test_interpreter_load();
     test_interpreter_plus();
     test_interpreter_quote();
