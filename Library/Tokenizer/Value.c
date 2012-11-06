@@ -136,9 +136,9 @@ void value_print (Value* value)
     {
         case BOOLEAN_VALUE:  printf("%s ", value->boolVal ? "#t" : "#f"); break;
         case FLOAT_VALUE:    printf("%f ", value->floatVal); break;
-        case FUNCTION_VALUE: printf("func "); break;
+        case FUNCTION_VALUE: printf("#<procedure> "); break;
         case INTEGER_VALUE:  printf("%d ", value->intVal); break;
-        case LAMBDA_VALUE:   value_print_lambda(value); break;
+        case LAMBDA_VALUE:   printf("#<procedure> "); break;
         case LIST_VALUE:     value_print_list(value); break;
         case STRING_VALUE:   printf("\"%s\" ", value->string); break;
         case SYMBOL_VALUE:   printf("%s ", value->string); break;

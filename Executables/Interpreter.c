@@ -23,19 +23,19 @@ int main (int argc, char** argv)
 
         // Tokenize line
         if (!parse_partial(strbuf_data(buf), parens, tokens, expressions))
-            { goto syntax_error; }
+            { printf("Syntax Error\n"); goto error; }
         strbuf_clear(buf);
     }
 
     // Make sure input didn't end mid-expression
-    if (!quack_empty(parens)) { goto syntax_error; }
+    if (!quack_empty(parens)) { printf("Syntax Error\n"); goto error; }
 
     // Evaluate and print each expression
     while (!quack_empty(expressions))
     {
         ParseTree* expression = quack_pop_front(expressions);
         Value* value = evaluate(expression, environment);
-        if (value == NULL) { goto syntax_error; }
+        if (value == NULL) { printf("Error\n"); goto error; }
         if (value->type != NULL_VALUE) { value_print(value); printf("\n"); }
         value_release(value);
         parsetree_release(expression);
@@ -48,13 +48,12 @@ int main (int argc, char** argv)
     environment_release(environment);
     return 0;
 
-syntax_error:
+error:
     
     strbuf_free(buf);
     quack_free(parens);
     quack_free(tokens);
     quack_free(expressions);
     environment_release(environment);
-    printf("Syntax Error!\n");
     return 1;
 }
