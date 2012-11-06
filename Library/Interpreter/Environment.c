@@ -43,6 +43,19 @@ void environment_release (Environment* environment)
 }
 
 
+void environment_release_n (Environment* environment, int n)
+{
+    Environment* parent;
+    for (int i = n; i > 0; --i)
+    {
+        parent = environment->parent;
+        environment_release(environment);
+        environment = parent;
+    }
+    
+}
+
+
 void environment_print (Environment* environment)
 {
     for (int i = 0; i < vector_size(environment->bindings); ++i)
@@ -93,13 +106,17 @@ Environment* environment_create_default ()
     Environment* env = environment_create(NULL);
 
     // Keyword functions (not first-class objects)
+    environment_set(env, "begin", value_create_keyword(&function_begin));
+    environment_set(env, "cond", value_create_keyword(&function_cond));
     environment_set(env, "define", value_create_keyword(&function_define));
     environment_set(env, "if",     value_create_keyword(&function_if));
     environment_set(env, "lambda", value_create_keyword(&function_lambda));
     environment_set(env, "let",    value_create_keyword(&function_let));
     environment_set(env, "letrec", value_create_keyword(&function_letrec));
+    environment_set(env, "let*", value_create_keyword(&function_letstar));
     environment_set(env, "load",   value_create_keyword(&function_load));
     environment_set(env, "quote",  value_create_keyword(&function_quote));
+    environment_set(env, "set!", value_create_keyword(&function_setbang));
 
     // Real Amurican functions
     environment_set(env, "+",      value_create_function(&function_plus));

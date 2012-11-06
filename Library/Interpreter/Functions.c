@@ -15,6 +15,18 @@
 bool check_let_args (ParseTree* args);
 
 
+Value* function_begin (Environment* environment, ParseTree* args)
+{
+    return NULL; // Placeholder
+}
+
+
+Value* function_cond (Environment* environment, ParseTree* args)
+{
+    return NULL; // Placeholder
+}
+
+
 Value* function_define (Environment* environment, ParseTree* args)
 {
     // Check arguments
@@ -190,6 +202,41 @@ Value* function_letrec (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_letstar (Environment* environment, ParseTree* args)
+{
+    // Check arguments
+    if (!check_let_args(args)) { return NULL; }
+    ParseTree* vars = args->children[1];
+
+    // Create environment from bindings
+    Environment* envParent = environment;
+    Environment* envNew;
+    int envCount = 0;
+    for (int i = 0; i < vars->numChildren; ++i)
+    {
+        char* var = vars->children[i]->children[0]->token->symbol;
+        ParseTree* val = vars->children[i]->children[1];
+        Value* value = evaluate(val, envParent);
+        if (value == NULL) 
+        { 
+            environment_release_n(envNew, envCount); return NULL; 
+        }
+
+        envNew = environment_create(envParent);
+        environment_set(envNew, var, value);
+        ++envCount;
+        envParent = envNew;
+        value_release(value);
+    }
+
+    return evaluate_bodies(args, envNew);  //LOL MEMORY
+
+    // For each variable i+1, evaluate it within the environment created from variable i
+    // None of the newly made environments gets released unless value == NULL, in which case you want to release ALL OF THEM? If you remember the parent, delete the child, count--, repeat until count hits 0, I think you're good...
+    // Hang on, env get released in evaluate_bodies, but only the most recent env gets released...not all of them. Should we write a function to release n environments/parents?
+}
+
+
 Value* function_load (Environment* environment, ParseTree* args)
 {
     // Check arguments
@@ -336,6 +383,12 @@ Value* function_quote (Environment* environment, ParseTree* args)
     list->head = value;
     list->tail = value_create_list_empty();
     return list;
+}
+
+
+Value* function_setbang (Environment* environment, ParseTree* args)
+{
+    return NULL; // Placeholder
 }
 
 
