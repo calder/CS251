@@ -1,6 +1,9 @@
 syntax: glob
 
 build
+<<<<<<< local
+*~
+=======
 .DS_Store
 *.*~
-#*.*
+#*.*>>>>>>> other

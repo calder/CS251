@@ -12,13 +12,13 @@ Value* function_if (Environment* environment, ParseTree* args);
 Value* function_lambda (Environment* environment, ParseTree* args);
 Value* function_let (Environment* environment, ParseTree* args);
 Value* function_letrec (Environment* environment, ParseTree* args);
-Value* function_letstar (Environment* environment, ParseTree* args); // Not implemented
+Value* function_letstar (Environment* environment, ParseTree* args); // Not fully implemented
 Value* function_load (Environment* environment, ParseTree* args);
 Value* function_minus (Environment*  environment, ParseTree* args);
 Value* function_null (Environment*  environment, ParseTree* args);
 Value* function_plus (Environment*  environment, ParseTree* args);
 Value* function_quote (Environment* environment, ParseTree* args);
-Value* function_setbang (Environment* environment, ParseTree* args); // Not implemented
+Value* function_setbang (Environment* environment, ParseTree* args);
 Value* function_times (Environment*  environment, ParseTree* args);
 
 
