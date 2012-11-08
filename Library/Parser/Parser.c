@@ -7,6 +7,14 @@
 ParseTree* make_parsetree_from_stack (Quack* parseStack);
 
 
+void clear_partial (Quack* parens, Quack* tokens, Quack* expressions)
+{
+    while (!quack_empty(parens))      { quack_pop_front(parens); }
+    while (!quack_empty(tokens))      { value_release(quack_pop_front(tokens)); }
+    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(parens)); }
+}
+
+
 Quack* parse (const char* input)
 {
     Quack* parens = quack_create();
@@ -14,13 +22,13 @@ Quack* parse (const char* input)
     Quack* parseTrees = quack_create();
 
     bool success = parse_partial(input, parens, tokens, parseTrees);
-    if (!success || !quack_empty(parens)) { goto syntax_error; }
+    if (!success || !quack_empty(parens)) { goto error; }
 
     quack_free(parens);
     quack_free(tokens);
     return parseTrees;
 
-syntax_error:
+error:
     
     while (!quack_empty(tokens)) { value_release(quack_pop_front(tokens)); }
     while (!quack_empty(parseTrees)) { parsetree_release(quack_pop_front(parseTrees)); }
@@ -57,7 +65,7 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
             // Close paren case
             else if (quack_empty(parens) ||
                     (token->paren - ((char*)quack_back(parens))[0] > 2))
-                { goto syntax_error; }
+                { goto error; }
             else { quack_pop_back(parens); }
         }
 
@@ -65,7 +73,7 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
         if (quack_empty(parens))
         {
             ParseTree* expression = parse_expression(tokens);
-            if (expression == NULL) { goto syntax_error; }
+            if (expression == NULL) { goto error; }
             quack_push_back(parseTrees, expression);
         }
     }
@@ -73,7 +81,7 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
     quack_free(newTokens);
     return true;
 
-syntax_error:
+error:
 
     while (!quack_empty(newTokens)) { value_release(quack_pop_front(newTokens)); }
     quack_free(newTokens);

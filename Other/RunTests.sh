@@ -15,9 +15,9 @@ cd ..
 # Test tokenizer and parser
 for FILE in Scheme/test.input.*
 do
-    cat $FILE | build/tokenize | diff Scheme/test.tokens.${FILE##*.} -
-    cat $FILE | build/parse    | diff Scheme/test.parsed.${FILE##*.} -
-    cat $FILE | build/scheme   | diff Scheme/test.output.${FILE##*.} -
+    cat $FILE | build/tokenize    | diff Scheme/test.tokens.${FILE##*.} -
+    cat $FILE | build/parse       | diff Scheme/test.parsed.${FILE##*.} -
+    cat $FILE | build/interpreter | diff Scheme/test.output.${FILE##*.} -
 done
 
 # Change back to original directory
