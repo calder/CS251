@@ -7,6 +7,79 @@
 #include "ValueUtil.h"
 
 
+void test_interpreter_append ()
+{
+    start_test("Interpreter - Append");
+    Quack* values = interpret("(append (quote (5)) (quote (1)) (quote (2)))");
+    assert(values != NULL && !quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == LIST_VALUE);
+    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 5);
+    assert(value->tail->head->type == INTEGER_VALUE && value->tail->head->intVal == 1);
+    assert(value->tail->tail->head->type == INTEGER_VALUE && value->tail->tail->head->intVal == 2);
+    assert(value->tail->tail->tail->head == NULL && value->tail->tail->tail->tail == NULL);
+
+    quack_free(values);
+    value_release(value);
+
+    values = interpret("(append (quote (5)) 1)");
+    assert(values != NULL && !quack_empty(values));
+    value = quack_pop_front(values);
+    assert(value != NULL && value->type == LIST_VALUE);
+    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 5);
+    assert(value->tail->type == INTEGER_VALUE && value->tail->intVal == 1);
+    quack_free(values);
+    value_release(value);
+}
+
+
+void test_interpreter_car ()
+{
+    start_test("Interpreter - Car");
+    Quack* values = interpret("(car (quote (1 2)))");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == INTEGER_VALUE);
+    assert(value->intVal == 1);
+
+    quack_free(values);
+    value_release(value);
+}
+
+
+void test_interpreter_cdr ()
+{
+    start_test("Interpreter - Cdr");
+    Quack* values = interpret("(cdr (quote (1 2)))");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == LIST_VALUE);
+    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 2);
+
+    quack_free(values);
+    value_release(value);
+}
+
+
+void test_interpreter_cons ()
+{
+    start_test("Interpreter - Cons");
+    Quack* values = interpret("(cons 5 (quote (1 2)))");
+    assert(values != NULL && !quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == LIST_VALUE);
+    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 5);
+    assert(value->tail->head->type == INTEGER_VALUE && value->tail->head->intVal == 1);
+
+    quack_free(values);
+    value_release(value);
+}
+
+
 void test_interpreter_define ()
 {
     start_test("Interpreter - Define");
@@ -116,6 +189,24 @@ void test_interpreter_letrec ()
 
     assert(quack_empty(values));
     quack_free(values);
+}
+
+
+void test_interpreter_list ()
+{
+    start_test("Interpreter - List");
+    Quack* values = interpret("(list 5 1 2)");
+    assert(values != NULL && !quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == LIST_VALUE);
+    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 5);
+    assert(value->tail->head->type == INTEGER_VALUE && value->tail->head->intVal == 1);
+    assert(value->tail->tail->head->type == INTEGER_VALUE && value->tail->tail->head->intVal == 2);
+    assert(value->tail->tail->tail->head == NULL && value->tail->tail->tail->tail == NULL);
+
+    quack_free(values);
+    value_release(value);
 }
 
 
@@ -250,12 +341,17 @@ void test_interpreter_times ()
 
 void test_interpreter ()
 {
+    test_interpreter_append();
+    test_interpreter_car();
+    test_interpreter_cdr();
+    test_interpreter_cons();
     test_interpreter_define();
     test_interpreter_divide();
     test_interpreter_if();
     test_interpreter_lambda();
     test_interpreter_let();
     test_interpreter_letrec();
+    test_interpreter_list();
     test_interpreter_load();
     test_interpreter_minus();
     test_interpreter_null();
