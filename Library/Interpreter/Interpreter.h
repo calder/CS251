@@ -28,5 +28,10 @@ Value* evaluate_bodies (ParseTree* parseTree, Environment* environment);
 ///   - Symbols are kept as symbols rather than being evaluated.
 Value* evaluate_list (ParseTree* parseTree);
 
+/// Interpret a file in the given environment
+/// @note This function is used by both the "load" keyword and for built-in 
+/// library loading during interpreter startup.
+bool load_file (Environment* environment, const char* filename);
+
 
 #endif

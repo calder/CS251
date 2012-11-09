@@ -7,15 +7,19 @@
 #include "Util/StringBuffer.h"
 
 
+void load_libraries (Environment* environment, int argc, char** argv);
+
+
 int main (int argc, char** argv)
 {
     char c = 7;
-    if (isatty(0)) { printf(">>> "); }
     StringBuffer* buf = strbuf_create();
     Quack* parens = quack_create();
     Quack* tokens = quack_create();
     Quack* expressions = quack_create();
     Environment* environment = environment_create_default();
+    load_libraries(environment, argc, argv);
+    if (isatty(0)) { printf(">>> "); }
 
     while (c != 0 && c != EOF)
     {
@@ -29,7 +33,6 @@ int main (int argc, char** argv)
         {
             printf("Syntax Error\n");
             if (isatty(0)) { printf(">>> "); }
-            clear_partial(parens, tokens, expressions);
             strbuf_clear(buf);
             continue;
         }
@@ -40,12 +43,7 @@ int main (int argc, char** argv)
         {
             ParseTree* expression = quack_pop_front(expressions);
             Value* value = evaluate(expression, environment);
-            if (value == NULL)
-            {
-                printf("Runtime Error\n");
-                clear_partial(parens, tokens, expressions);
-                continue;
-            }
+            if (value == NULL) { printf("Runtime Error\n"); continue; }
             if (value->type != NULL_VALUE) { value_print(value); printf("\n"); }
             value_release(value);
             parsetree_release(expression);
@@ -55,11 +53,7 @@ int main (int argc, char** argv)
     if (isatty(0)) { printf("\n"); }
 
     // Make sure file input didn't end mid-expression
-    if (!isatty(0) && !quack_empty(parens))
-    {
-        printf("Syntax Error\n");
-        clear_partial(parens, tokens, expressions);
-    }
+    if (!isatty(0) && !quack_empty(parens)) { printf("Syntax Error\n"); }
 
     strbuf_free(buf);
     quack_free(parens);
@@ -67,4 +61,16 @@ int main (int argc, char** argv)
     quack_free(expressions);
     environment_release(environment);
     return 0;
+}
+
+
+void load_libraries (Environment* environment, int argc, char** argv)
+{
+    for (int i = 1; i < argc; ++i)
+    {
+        if (!load_file(environment, argv[i]))
+        {
+            printf("Error loading library %s\n", argv[i]);
+        }
+    }
 }

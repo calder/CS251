@@ -30,10 +30,6 @@ void environment_reserve (Environment* environment);
 /// Decrease the environment's refCount by 1, and free it if it reaches 0
 void environment_release (Environment* environment);
 
-/// Decrease the environment's refCount by 1, and free it if it reaches 0
-/// Do so to the n-1 closest ancestors of environment as well
-void environment_release_n (Environment* environment, int n);
-
 /// Display an Environment
 void environment_print (Environment* environment);
 

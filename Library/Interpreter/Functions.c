@@ -1,11 +1,6 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include "Interpreter/Interpreter.h"
 #include "Interpreter/Functions.h"
 #include "Parser/Parser.h"
@@ -208,32 +203,24 @@ Value* function_letstar (Environment* environment, ParseTree* args)
     if (!check_let_args(args)) { return NULL; }
     ParseTree* vars = args->children[1];
 
-    // Create environment from bindings
-    Environment* envParent = environment;
-    Environment* envNew;
-    int envCount = 0;
+    // Create sequential environments from bindings
+    Environment* env = environment_create(environment);
     for (int i = 0; i < vars->numChildren; ++i)
     {
+        // Evaluate and store in current environment
         char* var = vars->children[i]->children[0]->token->symbol;
         ParseTree* val = vars->children[i]->children[1];
-        Value* value = evaluate(val, envParent);
-        if (value == NULL) 
-        { 
-            environment_release_n(envNew, envCount); return NULL; 
-        }
+        Value* value = evaluate(val, env);
+        if (value == NULL) { environment_release(env); return NULL; }
+        environment_set(env, var, value);
 
-        envNew = environment_create(envParent);
-        environment_set(envNew, var, value);
-        ++envCount;
-        envParent = envNew;
+        // Create fresh environment
+        env = environment_create(env);
+        environment_release(env->parent);
         value_release(value);
     }
 
-    return evaluate_bodies(args, envNew);  //LOL MEMORY
-
-    // For each variable i+1, evaluate it within the environment created from variable i
-    // None of the newly made environments gets released unless value == NULL, in which case you want to release ALL OF THEM? If you remember the parent, delete the child, count--, repeat until count hits 0, I think you're good...
-    // Hang on, env get released in evaluate_bodies, but only the most recent env gets released...not all of them. Should we write a function to release n environments/parents?
+    return evaluate_bodies(args, env);
 }
 
 
@@ -243,44 +230,10 @@ Value* function_load (Environment* environment, ParseTree* args)
     if (args->numChildren != 2) { return NULL; }
     if (args->children[1]->token->type != STRING_VALUE) { return NULL; }
 
-    int f = open(args->children[1]->token->string, O_RDONLY);
-    if (f == -1) { return NULL; }
-
-    struct stat statbuf;
-    if (fstat(f, &statbuf) == -1) { return NULL; }
-
-    char* file = mmap(NULL, statbuf.st_size, PROT_READ, MAP_SHARED, f, 0);
-    if (file == MAP_FAILED) { return NULL; }
-    close(f);
-
-    StringBuffer* fileContents = strbuf_create();
-    for (int i = 0; i<statbuf.st_size; ++i)
-    {
-        strbuf_append(fileContents, file[i]);
-    }
-
-    Environment* topEnvironment = environment;
-    while (topEnvironment->parent != NULL)
-    {
-        topEnvironment = topEnvironment->parent;
-    }
-    Quack* expressions = parse(strbuf_data(fileContents));
-    while (!quack_empty(expressions))
-    {
-        ParseTree* expression = quack_pop_front(expressions);
-        Value* value = evaluate(expression, environment);
-        if (value == NULL) { return NULL; }
-        if (value->type != NULL_VALUE) { value_print(value); printf("\n"); }
-        value_release(value);
-        parsetree_release(expression);
-    }
-
-    strbuf_free(fileContents);
-    quack_free(expressions);
-
-    munmap(file, statbuf.st_size);
-
-    return value_create(NULL_VALUE);   
+    // Load file in top environment
+    while (environment->parent != NULL) { environment = environment->parent; }
+    load_file(environment, args->children[1]->token->string);
+    return value_create(NULL_VALUE);
 }
 
 

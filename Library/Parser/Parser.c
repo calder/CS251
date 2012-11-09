@@ -4,15 +4,8 @@
 #include "Util/Quack.h"
 
 
+void clear_partial_progress (Quack* parens, Quack* tokens, Quack* expressions);
 ParseTree* make_parsetree_from_stack (Quack* parseStack);
-
-
-void clear_partial (Quack* parens, Quack* tokens, Quack* expressions)
-{
-    while (!quack_empty(parens))      { quack_pop_front(parens); }
-    while (!quack_empty(tokens))      { value_release(quack_pop_front(tokens)); }
-    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(parens)); }
-}
 
 
 Quack* parse (const char* input)
@@ -83,6 +76,7 @@ bool parse_partial (const char* line, Quack* parens, Quack* tokens, Quack* parse
 
 error:
 
+    clear_partial_progress(parens, tokens, parseTrees);
     while (!quack_empty(newTokens)) { value_release(quack_pop_front(newTokens)); }
     quack_free(newTokens);
     return false;
@@ -121,6 +115,14 @@ ParseTree* parse_expression (Quack* tokens)
     ParseTree* parseTree = quack_pop_front(parseStack);
     quack_free(parseStack);
     return parseTree;
+}
+
+
+void clear_partial_progress (Quack* parens, Quack* tokens, Quack* expressions)
+{
+    while (!quack_empty(parens))      { quack_pop_front(parens); }
+    while (!quack_empty(tokens))      { value_release(quack_pop_front(tokens)); }
+    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(parens)); }
 }
 
 

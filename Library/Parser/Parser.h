@@ -5,9 +5,6 @@
 #include "Util/Quack.h"
 
 
-/// Empty all stacks involved in an unsuccessfull partial parse
-void clear_partial (Quack* parens, Quack* tokens, Quack* expressions);
-
 /// Parse the string input into a ParseTree for each top-level expressions
 /// @note parse() returns NULL if it encounters a syntax error or reaches the
 /// end of input part way through an expression.

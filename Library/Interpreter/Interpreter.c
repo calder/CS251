@@ -1,11 +1,17 @@
 #include <assert.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "Interpreter/Functions.h"
 #include "Interpreter/Interpreter.h"
 #include "Tokenizer/Value.h"
 #include "Parser/Parser.h"
+#include "Util/StringBuffer.h"
 #include "Util/StringUtil.h"
 
 
@@ -27,7 +33,7 @@ Quack* interpret (const char* input)
     {
         ParseTree* parseTree = quack_pop_front(expressions);
         Value* value = evaluate(parseTree, environment);
-        if (value == NULL) { goto syntax_error; }
+        if (value == NULL) { goto error; }
         parsetree_release(parseTree);
         quack_push_back(values, value);
     }
@@ -37,7 +43,7 @@ Quack* interpret (const char* input)
     quack_free(expressions);
     return values;
 
-syntax_error:
+error:
     
     while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(expressions)); }
     environment_release(environment);
@@ -161,4 +167,53 @@ Value* evaluate_lambda (Value* lambda, ParseTree* args)
         environment_set(env, lambda->params[i], args->children[i+1]->token);
     }
     return evaluate_bodies(lambda->code, env);
+}
+
+
+bool load_file (Environment* environment, const char* filename)
+{
+    // Get file handle
+    int f = open(filename, O_RDONLY);
+    if (f == -1) { return false; }
+
+    // Get file size
+    struct stat statbuf;
+    if (fstat(f, &statbuf) == -1) { return false; }
+
+    // Memory map file
+    char* file = mmap(NULL, statbuf.st_size, PROT_READ, MAP_SHARED, f, 0);
+    close(f);
+    if (file == MAP_FAILED) { return false; }
+
+    // Parse file into parse tree
+    StringBuffer* fileContents = strbuf_create();
+    for (int i = 0; i<statbuf.st_size; ++i)
+    {
+        strbuf_append(fileContents, file[i]);
+    }
+    Quack* expressions = parse(strbuf_data(fileContents));
+    if (expressions == NULL) { goto error; }
+
+    // Interpret parse tree
+    while (!quack_empty(expressions))
+    {
+        ParseTree* expression = quack_pop_front(expressions);
+        Value* value = evaluate(expression, environment);
+        parsetree_release(expression);
+        if (value == NULL) { goto error; }
+        if (value->type != NULL_VALUE) { value_print(value); printf("\n"); }
+        value_release(value);
+    }
+
+    munmap(file, statbuf.st_size);
+    strbuf_free(fileContents);
+    quack_free(expressions);
+    return true;
+
+error:
+    
+    munmap(file, statbuf.st_size);
+    strbuf_free(fileContents);
+    if (expressions != NULL) { quack_free(expressions); }
+    return false;
 }

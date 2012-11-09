@@ -43,19 +43,6 @@ void environment_release (Environment* environment)
 }
 
 
-void environment_release_n (Environment* environment, int n)
-{
-    Environment* parent;
-    for (int i = n; i > 0; --i)
-    {
-        parent = environment->parent;
-        environment_release(environment);
-        environment = parent;
-    }
-    
-}
-
-
 void environment_print (Environment* environment)
 {
     for (int i = 0; i < vector_size(environment->bindings); ++i)
