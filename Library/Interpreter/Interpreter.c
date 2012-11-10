@@ -100,7 +100,6 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
 {
     // Check number of arguments
     if (parseTree->numChildren < 1) { return NULL; }
-
     // Evaluate the first argument (which is hopefully a function)
     Value* f = evaluate(parseTree->children[0], environment);
     if (f == NULL) { return NULL; }
@@ -110,7 +109,7 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
     if (f->type == FUNCTION_VALUE) { result = f->function(environment, parseTree); }
     if (f->type == LAMBDA_VALUE)   { result = evaluate_lambda(f, parseTree); }
     value_release(f);
-    return result;
+    return result;  
 }
 
 

@@ -10,9 +10,79 @@
 bool check_let_args (ParseTree* args);
 
 
+Value* function_append (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren < 2) { return NULL; }
+    Value* listToAppend = evaluate(args->children[1], environment);
+    if (listToAppend == NULL || listToAppend->type != LIST_VALUE) { value_release(listToAppend); return NULL; }
+    Value* listPointer = listToAppend;
+    for (int i = 2; i < args->numChildren; ++i)
+    {
+        Value* item = evaluate(args->children[i], environment);
+        if (item == NULL) { value_release(listToAppend); value_release(item); return NULL; }
+        while(listPointer-> tail != NULL && listPointer->tail->tail != NULL)
+        { 
+            listPointer = listPointer->tail; 
+            if (listPointer->type != LIST_VALUE) { value_release(listToAppend); value_release(item); return NULL; }
+        }
+        value_release(listPointer->tail);
+        listPointer->tail = item;
+    }
+    return listToAppend;
+}
+
+
 Value* function_begin (Environment* environment, ParseTree* args)
 {
     return NULL; // Placeholder
+}
+
+
+Value* function_car (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren != 2) { return NULL; }
+    Value* list = evaluate(args->children[1], environment);
+    if (list == NULL) { return NULL; }
+    if (list->type != LIST_VALUE) { value_release(list); return NULL; }
+
+    Value* head = list->head;
+    value_reserve(head);
+    value_release(list);
+    return head;
+}
+
+
+Value* function_cdr (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren != 2) { return NULL; }
+    Value* list = evaluate(args->children[1], environment);
+    if (list == NULL) { return NULL; }
+    if (list->type != LIST_VALUE) { value_release(list); return NULL; }
+
+    Value* tail = list->tail;
+    value_reserve(tail);
+    value_release(list);
+    return tail;
+}
+
+
+Value* function_cons (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren != 3) { return NULL; }
+    Value* item = evaluate(args->children[1], environment);
+    Value* list = evaluate(args->children[2], environment);
+    if (list == NULL) { value_release(item); return NULL; }
+    if (item == NULL) { value_release(list); return NULL; }
+    if (list->type != LIST_VALUE) { value_release(list); value_release(item); return NULL; }
+
+    Value* newlist = value_create_list_empty();
+    newlist->head = item;
+    newlist->tail = list;
+    return newlist;
 }
 
 
@@ -221,6 +291,24 @@ Value* function_letstar (Environment* environment, ParseTree* args)
     }
 
     return evaluate_bodies(args, env);
+}
+
+
+Value* function_list (Environment* environment, ParseTree* args)
+{
+    // Check number of arguments
+    if (args->numChildren < 2) { return NULL; }
+    Value* builtList = value_create_list_empty();
+    for (int i = args->numChildren - 1; i > 0; --i)
+    {
+        Value* item = evaluate(args->children[i], environment);
+        if (item == NULL) { return NULL; }
+        Value* listTemp = value_create_list_empty();
+        listTemp->head = item;
+        listTemp->tail = builtList;
+        builtList = listTemp;
+    }
+    return builtList;
 }
 
 
