@@ -122,7 +122,7 @@ void clear_partial_progress (Quack* parens, Quack* tokens, Quack* expressions)
 {
     while (!quack_empty(parens))      { quack_pop_front(parens); }
     while (!quack_empty(tokens))      { value_release(quack_pop_front(tokens)); }
-    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(parens)); }
+    while (!quack_empty(expressions)) { parsetree_release(quack_pop_front(expressions)); }
 }
 
 

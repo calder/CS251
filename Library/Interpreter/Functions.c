@@ -73,16 +73,12 @@ Value* function_cons (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
     if (args->numChildren != 3) { return NULL; }
-    Value* item = evaluate(args->children[1], environment);
-    Value* list = evaluate(args->children[2], environment);
-    if (list == NULL) { value_release(item); return NULL; }
-    if (item == NULL) { value_release(list); return NULL; }
-    if (list->type != LIST_VALUE) { value_release(list); value_release(item); return NULL; }
+    Value* item1 = evaluate(args->children[1], environment);
+    if (item1 == NULL) { return NULL; }
+    Value* item2 = evaluate(args->children[2], environment);
+    if (item2 == NULL) { value_release(item1); return NULL; }
 
-    Value* newlist = value_create_list_empty();
-    newlist->head = item;
-    newlist->tail = list;
-    return newlist;
+    return value_create_list(item1,item2);
 }
 
 
@@ -412,18 +408,11 @@ Value* function_quote (Environment* environment, ParseTree* args)
 {
     // Check arguments
     if (args->numChildren != 2) { return NULL; }
-    if (args->children[1]->token != NULL) { return NULL; }
 
-    // Evaluate and return directly if we get a list back
+    // Evaluate and return
     Value* value = evaluate_list(args->children[1]);
     if (value == NULL) { return NULL; }
-    if (value->type == LIST_VALUE) { return value; }
-    
-    // Otherwise wrap returned primitive in a list and return
-    Value* list = value_create(LIST_VALUE);
-    list->head = value;
-    list->tail = value_create_list_empty();
-    return list;
+    return value;
 }
 
 

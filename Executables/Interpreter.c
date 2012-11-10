@@ -19,7 +19,7 @@ int main (int argc, char** argv)
     Quack* expressions = quack_create();
     Environment* environment = environment_create_default();
     load_libraries(environment, argc, argv);
-    if (isatty(0)) { printf(">>> "); }
+    if (isatty(0)) { printf("Welcome to The Inderpreter!  Press ^D to exit.\n>>> "); }
 
     while (c != 0 && c != EOF)
     {
@@ -48,7 +48,11 @@ int main (int argc, char** argv)
             value_release(value);
             parsetree_release(expression);
         }
-        if (isatty(0) && c != EOF) { printf(">>> "); }
+        if (isatty(0) && c != EOF)
+        {
+            if (quack_empty(parens)) { printf(">>> "); }
+            else                     { printf("... "); }
+        }
     }
     if (isatty(0)) { printf("\n"); }
 

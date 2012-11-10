@@ -1,0 +1,1 @@
+Implemented parts 3, 5 and 6.  Only tests 20-27 work at the moment.

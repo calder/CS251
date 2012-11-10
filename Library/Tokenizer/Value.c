@@ -85,6 +85,17 @@ Value* value_create_list_empty ()
 }
 
 
+Value* value_create_list (Value* head, Value* tail)
+{
+    Value* value = value_create(LIST_VALUE);
+    value->head = head;
+    value->tail = tail;
+    if (head != NULL) { value_reserve(head); }
+    if (tail != NULL) { value_reserve(tail); }
+    return value;
+}
+
+
 void value_reserve (Value* value)
 {
     value->refCount += 1;
@@ -147,46 +158,15 @@ void value_print (Value* value)
 }
 
 
-void value_print_debug (Value* value)
-{
-    if (value == NULL) { return; }
-    switch (value->type)
-    {
-        case BOOLEAN_VALUE:  printf("BOOLEAN_VALUE: %s ", value->boolVal ? "#t" : "#f"); break;
-        case FLOAT_VALUE:    printf("FLOAT_VALUE: %f ", value->floatVal); break;
-        case FUNCTION_VALUE: printf("func "); break;
-        case INTEGER_VALUE:  printf("INTEGER_VALUE: %d ", value->intVal); break;
-        case LAMBDA_VALUE:   value_print_lambda(value); break;
-        case LIST_VALUE:     value_print_list(value); break;
-        case STRING_VALUE:   printf("STRING_VALUE: \"%s\" ", value->string); break;
-        case SYMBOL_VALUE:   printf("SYMBOL_VALUE: %s ", value->string); break;
-        case UNDEF_VALUE:    printf("UNDEFINED_VALUE"); break;
-        default:             printf("??? "); break;
-    }
-}
-
-
-void value_print_lambda (Value* lambda)
-{
-    printf("( lambda ");
-    printf("( ");
-    for (int i = 0; i < lambda->numParams; ++i)
-    {
-        printf("%s ", lambda->params[i]);
-    }
-    printf(") ");
-    parsetree_print(lambda->code);
-    printf(") ");
-}
-
-
 void value_print_list (Value* list)
 {
     printf("( ");
-    while (list->head != NULL)
+    while (true)
     {
         value_print(list->head);
         list = list->tail;
+        if (list == NULL) { break; }
+        if (list->type != LIST_VALUE) { value_print(list); break; }
     }
     printf(") ");
 }

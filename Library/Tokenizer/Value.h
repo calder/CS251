@@ -110,6 +110,9 @@ Value* value_create_lambda (struct Environment* environment, int numParams, char
 /// Create an empty Scheme list
 Value* value_create_list_empty ();
 
+/// Create a Scheme cons box and reserve both head and tail (if not NULL)
+Value* value_create_list (Value* head, Value* tail);
+
 /// Increase a Value's refCount by 1
 void value_reserve (Value* value);
 

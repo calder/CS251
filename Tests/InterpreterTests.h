@@ -213,7 +213,7 @@ void test_interpreter_list ()
 void test_interpreter_load ()
 {
     start_test("Interpreter - Load");
-    Quack* values = interpret("(lambda () 5) (load \"../Tests/LoadTest.scheme\")");
+    Quack* values = interpret("(lambda () 5) (load \"../Tests/LoadTest.rkt\")");
     assert(!quack_empty(values));
     Value* value;
 
@@ -252,7 +252,7 @@ void test_interpreter_minus ()
 }
 
 
-void test_interpreter_null()
+void test_interpreter_null ()
 {
     start_test("Interpreter - Null?");
     Quack* values = interpret("(null? (quote ())) (null? (quote (())))");
