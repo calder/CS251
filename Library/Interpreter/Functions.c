@@ -68,6 +68,81 @@ Value* function_cdr (Environment* environment, ParseTree* args)
     return tail;
 }
 
+// Generic function for numerical comparison functions
+// @param comparison specifies the type of comparison to execute
+// 0: =
+// 1: <
+// 2: >
+// 3: <=
+// 4: >=
+Value* function_comparator (Environment* environment, ParseTree* args, int comparison)
+{
+    // Check arguments
+    if (args->numChildren < 3) { return NULL; }
+
+    bool result = true;
+
+    // Evaluate the first argument
+    Value* arg1 = evaluate(args->children[1], environment);
+    if (arg1 == NULL) { return NULL; }
+    if (arg1->type != FLOAT_VALUE && arg1->type != INTEGER_VALUE)
+    {
+        value_release(arg1);
+        return NULL;
+    }
+    double arg1Val = 0;
+    double arg2Val = 0;
+
+    // Get value of first argument
+    if (arg1->type == FLOAT_VALUE) { arg1Val = arg1->floatVal; }
+    else if (arg1->type == INTEGER_VALUE) { arg1Val = (float)arg1->intVal; }
+    value_release(arg1);
+
+    // Loop through the list of arguments, performing the comparison on every two arguments
+    for (int i = 2; i < args->numChildren; ++i)
+    {
+        // Evaluate and check second argument
+        Value* arg2 = evaluate(args->children[i], environment);
+        if (arg2 == NULL) { return NULL; }
+        if (arg2->type != FLOAT_VALUE && arg2->type != INTEGER_VALUE)
+        {
+            value_release(arg2);
+            return NULL;
+        }
+
+        // Get value of second argument
+        if (arg2->type == FLOAT_VALUE) { arg2Val = arg2->floatVal; }
+        else if (arg2->type == INTEGER_VALUE) { arg2Val = (float)arg2->intVal; }
+        value_release(arg2);
+
+        // Perform comparison
+        switch (comparison)
+        {
+        case 0:
+            result = result && arg1Val == arg2Val;
+            break;
+        case 1:
+            result = result && arg1Val < arg2Val;
+            break;
+        case 2:
+            result = result && arg1Val > arg2Val;
+            break;
+        case 3: 
+            result = result && arg1Val <= arg2Val;
+            break;
+        case 4:
+            result = result && arg1Val >= arg2Val;
+            break;
+        default:
+            return NULL;
+        }
+        arg1Val = arg2Val;
+    }
+
+    // Return the result of the comparisons
+    return value_create_bool(result);
+}
+
 
 Value* function_cons (Environment* environment, ParseTree* args)
 {
@@ -210,6 +285,12 @@ Value* function_lambda (Environment* environment, ParseTree* args)
     }
 
     return value_create_lambda(environment, numParams, params, args);
+}
+
+
+Value* function_lessthan (Environment* environment, ParseTree* args)
+{
+    return function_comparator(environment, args, 1);
 }
 
 

@@ -162,6 +162,33 @@ void test_interpreter_lambda ()
 }
 
 
+void test_interpreter_lessthan ()
+{
+    start_test("Interpreter - Lessthen");
+    Quack* values = interpret("(< 3 2) (< 2 5) (< 2 3 4) (< 2 4 3)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_let ()
 {
     start_test("Interpreter - Let");
@@ -349,6 +376,7 @@ void test_interpreter ()
     test_interpreter_divide();
     test_interpreter_if();
     test_interpreter_lambda();
+    test_interpreter_lessthan();
     test_interpreter_let();
     test_interpreter_letrec();
     test_interpreter_list();

@@ -114,6 +114,7 @@ Environment* environment_create_default ()
     environment_set(env, "car",      value_create_function(&function_car));
     environment_set(env, "cdr",      value_create_function(&function_cdr));
     environment_set(env, "cons",      value_create_function(&function_cons));
+    environment_set(env, "<",      value_create_function(&function_lessthan));
     environment_set(env, "list",      value_create_function(&function_list));
     environment_set(env, "null?",  value_create_function(&function_null));
 
