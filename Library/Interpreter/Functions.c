@@ -68,13 +68,13 @@ Value* function_cdr (Environment* environment, ParseTree* args)
     return tail;
 }
 
-// Generic function for numerical comparison functions
-// @param comparison specifies the type of comparison to execute
-// 0: =
-// 1: <
-// 2: >
-// 3: <=
-// 4: >=
+/// Generic function for numerical comparison functions
+/// @param comparison specifies the type of comparison to execute
+///     0: =
+///     1: <
+///     2: >
+///     3: <=
+///     4: >=
 Value* function_comparator (Environment* environment, ParseTree* args, int comparison)
 {
     // Check arguments
@@ -166,7 +166,7 @@ Value* function_cond (Environment* environment, ParseTree* args)
 Value* function_define (Environment* environment, ParseTree* args)
 {
     // Check arguments
-    if (args->numChildren != 3) { return NULL; }
+    if (args->numChildren != 2) { return NULL; }
     ParseTree* var = args->children[1];
     ParseTree* val = args->children[2];
     if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
@@ -175,6 +175,22 @@ Value* function_define (Environment* environment, ParseTree* args)
     Value* value = evaluate(val, environment);
     if (value == NULL) { return NULL; }
     environment_set(environment, var->token->symbol, value);
+    value_release(value);
+
+    return value_create(NULL_VALUE);
+}
+
+
+Value* function_display (Environment* environment, ParseTree* args)
+{
+    // Check and evaluate argument
+    if (args->numChildren != 2) { return NULL; }
+    Value* value = evaluate(args->children[1], environment);
+    if (value == NULL) { return NULL; }
+
+    // Print and release value
+    if (value->type == STRING_VALUE) { printf("%s\n", value->string); }
+    else { value_print(value); printf("\n"); }
     value_release(value);
 
     return value_create(NULL_VALUE);

@@ -19,7 +19,7 @@ int main (int argc, char** argv)
     Quack* expressions = quack_create();
     Environment* environment = environment_create_default();
     load_libraries(environment, argc, argv);
-    if (isatty(0)) { printf("Welcome to The Inderpreter!  Press ^D to exit.\n>>> "); }
+    if (isatty(0)) { printf("Welcome to The Inderpreter.  Press ^D to exit.\n>>> "); }
 
     while (c != 0 && c != EOF)
     {

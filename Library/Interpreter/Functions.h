@@ -11,6 +11,7 @@ Value* function_cdr (Environment* environment, ParseTree* args);
 Value* function_cons (Environment* environment, ParseTree* args);
 Value* function_cond (Environment* environment, ParseTree* args);    // Not implemented
 Value* function_define (Environment* environment, ParseTree* args);
+Value* function_display (Environment* environment, ParseTree* args);
 Value* function_divide (Environment*  environment, ParseTree* args);
 Value* function_if (Environment* environment, ParseTree* args);
 Value* function_lambda (Environment* environment, ParseTree* args);
