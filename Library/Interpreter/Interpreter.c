@@ -27,6 +27,7 @@ Quack* interpret (const char* input)
     Environment* environment = environment_create_default();
     Quack* values = quack_create();
     Quack* expressions = parse(input);
+    if (expressions == NULL) { environment_release(environment); quack_free(values); return NULL; }
 
     // Evaluate each expression tree
     while (!quack_empty(expressions))

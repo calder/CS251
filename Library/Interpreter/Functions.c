@@ -35,7 +35,18 @@ Value* function_append (Environment* environment, ParseTree* args)
 
 Value* function_and (Environment* environment, ParseTree* args)
 {
-    return NULL; // Placeholder
+    Value* returnVal = value_create_bool(true);
+    for (int i = 1; i < args->numChildren; ++i)
+    {
+        value_release(returnVal);
+        returnVal = evaluate(args->children[i], environment);
+        if (returnVal->type == BOOLEAN_VALUE && returnVal->boolVal == false)
+        {
+            return returnVal;
+        }
+    }
+
+    return returnVal;
 }
 
 
@@ -175,29 +186,35 @@ Value* function_cond (Environment* environment, ParseTree* args)
 {
     // Check number of arguments
     if (args->numChildren < 2) { return NULL; }
-    for (int i = 1; i < args->numChildren; i++)
+    for (int i = 1; i < args->numChildren; ++i)
     {
-        printf("TRYING %d\n", i);
+        if (args->children[i]->children[0]->token != NULL && 
+            args->children[i]->children[0]->token->type == SYMBOL_VALUE)
+        {
+            if (i != args->numChildren - 1 && 
+                strcmp(args->children[i]->children[0]->token->symbol, "else") == 0)
+                { return NULL; }
+        }
+    }
+
+    for (int i = 1; i < args->numChildren; ++i)
+    {
         if (args->children[i]->numChildren < 1) { return NULL; }
         if (args->children[i]->children[0]->token != NULL && 
             args->children[i]->children[0]->token->type == SYMBOL_VALUE)
         {
-            printf("a\n");
             if (i == args->numChildren - 1 && 
                 strcmp(args->children[i]->children[0]->token->symbol, "else") == 0)
             {
-                printf("OKAY ELSE\n");
                 return evaluate(args->children[i]->children[1], environment);
 
             }
         }
-        printf("b\n");
         
         // Evaluate and check condition
         Value* condition = evaluate(args->children[i]->children[0], environment);
-        if (condition == NULL) { printf("Error evaling\n"); return NULL; }
+        if (condition == NULL) { return NULL; }
         if (condition->type != BOOLEAN_VALUE) { value_release(condition); return NULL; }
-        printf("c\n");
         // Evaluate and return if condition true
         bool cond = condition->boolVal;
         value_release(condition);
@@ -540,7 +557,18 @@ Value* function_numequals (Environment* environment, ParseTree* args)
 
 Value* function_or (Environment* environment, ParseTree* args)
 {
-    return NULL; // Placeholder
+    Value* returnVal = value_create_bool(false);
+    for (int i = 1; i < args->numChildren; ++i)
+    {
+        value_release(returnVal);
+        returnVal = evaluate(args->children[i], environment);
+        if (returnVal->type != BOOLEAN_VALUE || returnVal->boolVal == true)
+        {
+            return returnVal;
+        }
+    }
+
+    return returnVal;
 }
 
 

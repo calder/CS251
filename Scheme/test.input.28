@@ -1,0 +1,9 @@
+
+
+	(letrec ((x (lambda (m total) 
+				(if (= m 0)
+					total 
+					(x (- m 1) (* total 2))))))
+			 (x 5 1))
+
+; should print 32 except we need operators working first...

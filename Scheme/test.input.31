@@ -1,0 +1,8 @@
+(define a 
+        (lambda (x y)
+                (cond 
+                    ((< x y) 0)
+                    ((> x y) 1)
+                    (else 2))))
+
+(a 1 1)

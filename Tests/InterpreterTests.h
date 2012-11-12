@@ -34,6 +34,36 @@ void test_interpreter_append ()
 }
 
 
+void test_interpreter_and ()
+{
+    start_test("Interpreter - And");
+    Quack* values = interpret("(and 123 234 345)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == INTEGER_VALUE);
+    assert(value->intVal == 345);
+
+    quack_free(values);
+    value_release(value);
+}
+
+
+void test_interpreter_begin ()
+{
+    start_test("Interpreter - Begin");
+    Quack* values = interpret("(begin (define x 234) (+ x 103))");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == INTEGER_VALUE);
+    assert(value->intVal == 337);
+
+    quack_free(values);
+    value_release(value);
+}
+
+
 void test_interpreter_car ()
 {
     start_test("Interpreter - Car");
@@ -61,6 +91,26 @@ void test_interpreter_cdr ()
 
     quack_free(values);
     value_release(value);
+}
+
+
+void test_interpreter_cond ()
+{
+    start_test("Interpreter - Cond");
+    assert(interpret("(cond (#t 654) (else 987) (#f 321)") == NULL);
+    Quack* values = interpret("(cond (#f 234) (#f 367) (else 446)) (cond (#f 234) (#t 367) (else 446))");
+    assert(values != NULL && !quack_empty(values));
+    Value* value;
+
+    value = quack_pop_front(values);
+    check_int(value, 446);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_int(value, 367);
+    value_release(value);
+
+    quack_free(values);
 }
 
 
@@ -422,6 +472,20 @@ void test_interpreter_null ()
     quack_free(values);
 }
 
+void test_interpreter_or ()
+{
+    start_test("Interpreter - Or");
+    Quack* values = interpret("(or 123 234 345)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    assert(value != NULL && value->type == INTEGER_VALUE);
+    assert(value->intVal == 123);
+
+    quack_free(values);
+    value_release(value);
+}
+
 
 void test_interpreter_plus ()
 {
@@ -493,8 +557,11 @@ void test_interpreter_times ()
 void test_interpreter ()
 {
     test_interpreter_append();
+    test_interpreter_and();
+    test_interpreter_begin();
     test_interpreter_car();
     test_interpreter_cdr();
+    test_interpreter_cond();
     test_interpreter_cons();
     test_interpreter_define();
     test_interpreter_divide();
@@ -511,6 +578,7 @@ void test_interpreter ()
     test_interpreter_minus();
     test_interpreter_numequals();
     test_interpreter_null();
+    test_interpreter_or();
     test_interpreter_plus();
     test_interpreter_quote();
     test_interpreter_times();
