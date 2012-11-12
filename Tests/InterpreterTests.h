@@ -124,6 +124,68 @@ void test_interpreter_divide ()
 }
 
 
+void test_interpreter_greaterthen ()
+{
+    start_test("Interpreter - Greaterthen");
+    Quack* values = interpret("(> 3 2) (> 2 5) (> 4 3 2) (> 2 4 3)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
+void test_interpreter_greatertheneqto ()
+{
+    start_test("Interpreter - Greaterthen or Eqto");
+    Quack* values = interpret("(>= 3 2) (>= 2 5) (>= 4 4) (>= 4 3 2) (>= 2 4 3) (>= 5 5 5)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
 void test_interpreter_if ()
 {
     start_test("Interpreter - If");
@@ -162,7 +224,7 @@ void test_interpreter_lambda ()
 }
 
 
-void test_interpreter_lessthan ()
+void test_interpreter_lessthen ()
 {
     start_test("Interpreter - Lessthen");
     Quack* values = interpret("(< 3 2) (< 2 5) (< 2 3 4) (< 2 4 3)");
@@ -182,6 +244,41 @@ void test_interpreter_lessthan ()
 
     value = quack_pop_front(values);
     check_bool(value, false);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
+void test_interpreter_lesstheneqto ()
+{
+    start_test("Interpreter - Lessthen or Eqto");
+    Quack* values = interpret("(<= 3 2) (<= 2 5) (<= 4 4) (<= 2 3 4) (<= 2 4 3) (<= 5 5 5)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
     value_release(value);
 
     assert(quack_empty(values));
@@ -272,6 +369,33 @@ void test_interpreter_minus ()
 
     value = quack_pop_front(values);
     check_float(value, -3.14);
+    value_release(value);
+
+    assert(quack_empty(values));
+    quack_free(values);
+}
+
+
+void test_interpreter_numequals ()
+{
+    start_test("Interpreter - Numequals");
+    Quack* values = interpret("(= 3 2) (= 5 5) (= 3 3 3) (= 2 4 3)");
+    assert(!quack_empty(values));
+
+    Value* value = quack_pop_front(values);
+    check_bool(value, false);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, true);
+    value_release(value);
+
+    value = quack_pop_front(values);
+    check_bool(value, false);
     value_release(value);
 
     assert(quack_empty(values));
@@ -374,14 +498,18 @@ void test_interpreter ()
     test_interpreter_cons();
     test_interpreter_define();
     test_interpreter_divide();
+    test_interpreter_greaterthen();
+    test_interpreter_greatertheneqto();
     test_interpreter_if();
     test_interpreter_lambda();
-    test_interpreter_lessthan();
+    test_interpreter_lessthen();
+    test_interpreter_lesstheneqto();
     test_interpreter_let();
     test_interpreter_letrec();
     test_interpreter_list();
     test_interpreter_load();
     test_interpreter_minus();
+    test_interpreter_numequals();
     test_interpreter_null();
     test_interpreter_plus();
     test_interpreter_quote();
