@@ -33,9 +33,23 @@ Value* function_append (Environment* environment, ParseTree* args)
 }
 
 
-Value* function_begin (Environment* environment, ParseTree* args)
+Value* function_and (Environment* environment, ParseTree* args)
 {
     return NULL; // Placeholder
+}
+
+
+Value* function_begin (Environment* environment, ParseTree* args)
+{
+    // You're allowed to just have (begin) and return nothing
+    Value* exprVal = value_create(NULL_VALUE);
+    for (int i = 1; i < args->numChildren; ++i)
+    {
+        value_release(exprVal);
+        exprVal = evaluate(args->children[i], environment);
+    }
+
+    return exprVal;
 }
 
 
@@ -159,14 +173,44 @@ Value* function_cons (Environment* environment, ParseTree* args)
 
 Value* function_cond (Environment* environment, ParseTree* args)
 {
-    return NULL; // Placeholder
-}
+    // Check number of arguments
+    if (args->numChildren < 2) { return NULL; }
+    for (int i = 1; i < args->numChildren; i++)
+    {
+        printf("TRYING %d\n", i);
+        if (args->children[i]->numChildren < 1) { return NULL; }
+        if (args->children[i]->children[0]->token != NULL && 
+            args->children[i]->children[0]->token->type == SYMBOL_VALUE)
+        {
+            printf("a\n");
+            if (i == args->numChildren - 1 && 
+                strcmp(args->children[i]->children[0]->token->symbol, "else") == 0)
+            {
+                printf("OKAY ELSE\n");
+                return evaluate(args->children[i]->children[1], environment);
+
+            }
+        }
+        printf("b\n");
+        
+        // Evaluate and check condition
+        Value* condition = evaluate(args->children[i]->children[0], environment);
+        if (condition == NULL) { printf("Error evaling\n"); return NULL; }
+        if (condition->type != BOOLEAN_VALUE) { value_release(condition); return NULL; }
+        printf("c\n");
+        // Evaluate and return if condition true
+        bool cond = condition->boolVal;
+        value_release(condition);
+        if (cond) { return evaluate(args->children[i]->children[1], environment); }
+    }
+
+    return value_create(NULL_VALUE);}
 
 
 Value* function_define (Environment* environment, ParseTree* args)
 {
     // Check arguments
-    if (args->numChildren != 2) { return NULL; }
+    if (args->numChildren != 3) { return NULL; }
     ParseTree* var = args->children[1];
     ParseTree* val = args->children[2];
     if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
@@ -467,6 +511,12 @@ Value* function_null (Environment* environment, ParseTree* args)
         { null = true; }
     value_release(value);
     return value_create_bool(null);
+}
+
+
+Value* function_or (Environment* environment, ParseTree* args)
+{
+    return NULL; // Placeholder
 }
 
 

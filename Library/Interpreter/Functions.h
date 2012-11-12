@@ -5,6 +5,7 @@
 #include "Parser/ParseTree.h"
 
 Value* function_append (Environment* environment, ParseTree* args);
+Value* function_and (Environment* environment, ParseTree* args);     // Not implemented
 Value* function_begin (Environment* environment, ParseTree* args);   // Not implemented
 Value* function_car (Environment* environment, ParseTree* args);
 Value* function_cdr (Environment* environment, ParseTree* args);
@@ -23,6 +24,7 @@ Value* function_list (Environment* environment, ParseTree* args);
 Value* function_load (Environment* environment, ParseTree* args);
 Value* function_minus (Environment*  environment, ParseTree* args);
 Value* function_null (Environment*  environment, ParseTree* args);
+Value* function_or (Environment* environment, ParseTree* args);      // Not implemented
 Value* function_plus (Environment*  environment, ParseTree* args);
 Value* function_quote (Environment* environment, ParseTree* args);
 Value* function_setbang (Environment* environment, ParseTree* args);
