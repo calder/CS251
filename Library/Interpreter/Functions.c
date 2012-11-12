@@ -306,13 +306,13 @@ Value* function_divide (Environment* environment, ParseTree* args)
 }
 
 
-Value* function_greaterthen (Environment* environment, ParseTree* args)
+Value* function_greaterthan (Environment* environment, ParseTree* args)
 {
     return function_comparator(environment, args, 2);
 }
 
 
-Value* function_greatertheneqto (Environment* environment, ParseTree* args)
+Value* function_greaterthaneqto (Environment* environment, ParseTree* args)
 {
     return function_comparator(environment, args, 4);
 }
@@ -366,7 +366,7 @@ Value* function_lessthan (Environment* environment, ParseTree* args)
 }
 
 
-Value* function_lesstheneqto (Environment* environment, ParseTree* args)
+Value* function_lessthaneqto (Environment* environment, ParseTree* args)
 {
     return function_comparator(environment, args, 3);
 }

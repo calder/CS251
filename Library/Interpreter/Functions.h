@@ -14,12 +14,12 @@ Value* function_cond (Environment* environment, ParseTree* args);    // Not impl
 Value* function_define (Environment* environment, ParseTree* args);
 Value* function_display (Environment* environment, ParseTree* args);
 Value* function_divide (Environment*  environment, ParseTree* args);
-Value* function_greaterthen (Environment* environment, ParseTree* args);
-Value* function_greatertheneqto (Environment* environment, ParseTree* args);
+Value* function_greaterthan (Environment* environment, ParseTree* args);
+Value* function_greaterthaneqto (Environment* environment, ParseTree* args);
 Value* function_if (Environment* environment, ParseTree* args);
 Value* function_lambda (Environment* environment, ParseTree* args);
-Value* function_lessthen (Environment* environment, ParseTree* args);
-Value* function_lesstheneqto (Environment* environment, ParseTree* args);
+Value* function_lessthan (Environment* environment, ParseTree* args);
+Value* function_lessthaneqto (Environment* environment, ParseTree* args);
 Value* function_let (Environment* environment, ParseTree* args);
 Value* function_letrec (Environment* environment, ParseTree* args);
 Value* function_letstar (Environment* environment, ParseTree* args); // Not fully implemented
