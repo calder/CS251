@@ -166,7 +166,7 @@ Value* function_cond (Environment* environment, ParseTree* args)
 Value* function_define (Environment* environment, ParseTree* args)
 {
     // Check arguments
-    if (args->numChildren != 2) { return NULL; }
+    if (args->numChildren != 3) { return NULL; }
     ParseTree* var = args->children[1];
     ParseTree* val = args->children[2];
     if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
