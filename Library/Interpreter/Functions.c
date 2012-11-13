@@ -73,7 +73,7 @@ Value* function_car (Environment* environment, ParseTree* args)
     if (list->type != LIST_VALUE) { value_release(list); return NULL; }
 
     Value* head = list->head;
-    value_reserve(head);
+    if (head != NULL) { value_reserve(head); }
     value_release(list);
     return head;
 }
@@ -88,7 +88,7 @@ Value* function_cdr (Environment* environment, ParseTree* args)
     if (list->type != LIST_VALUE) { value_release(list); return NULL; }
 
     Value* tail = list->tail;
-    value_reserve(tail);
+    if (tail != NULL) { value_reserve(tail); }
     value_release(list);
     return tail;
 }
