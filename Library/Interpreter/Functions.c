@@ -27,7 +27,7 @@ Value* function_append (Environment* environment, ParseTree* args)
             listPointer = listPointer->tail; 
             if (listPointer->type != LIST_VALUE) { value_release(listToAppend); value_release(item); return NULL; }
         }
-        value_release(listPointer->tail);
+        if(listPointer->tail != NULL) { value_release(listPointer->tail); }
         listPointer->tail = item;
     }
     return listToAppend;
