@@ -41,6 +41,7 @@ Value* function_and (Environment* environment, ParseTree* args)
     {
         value_release(returnVal);
         returnVal = evaluate(args->children[i], environment);
+        if (returnVal == NULL) { return returnVal; }
         if (returnVal->type == BOOLEAN_VALUE && returnVal->boolVal == false)
         {
             return returnVal;
@@ -179,7 +180,10 @@ Value* function_cons (Environment* environment, ParseTree* args)
     Value* item2 = evaluate(args->children[2], environment);
     if (item2 == NULL) { value_release(item1); return NULL; }
 
-    return value_create_list(item1,item2);
+    Value* list = value_create_list(item1,item2);
+    value_release(item1);
+    value_release(item2);
+    return list;
 }
 
 
