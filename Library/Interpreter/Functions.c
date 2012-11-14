@@ -500,7 +500,8 @@ Value* function_load (Environment* environment, ParseTree* args)
 
     // Load file in top environment
     while (environment->parent != NULL) { environment = environment->parent; }
-    load_file(environment, args->children[1]->token->string);
+    bool success = load_file(environment, args->children[1]->token->string);
+    if (!success) { return NULL; }
     return value_create(NULL_VALUE);
 }
 
