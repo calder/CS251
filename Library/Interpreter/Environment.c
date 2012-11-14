@@ -129,8 +129,9 @@ Environment* environment_create_default ()
     environment_set_default(env, "cdr",     value_create_function(&function_cdr));
     environment_set_default(env, "cons",    value_create_function(&function_cons));
     environment_set_default(env, "list",    value_create_function(&function_list));
-    environment_set_default(env, "or",      value_create_function(&function_or));
     environment_set_default(env, "null?",   value_create_function(&function_null));
+    environment_set_default(env, "or",      value_create_function(&function_or));
+    environment_set_default(env, "zero?",   value_create_function(&function_zero));
 
     return env;
 }
