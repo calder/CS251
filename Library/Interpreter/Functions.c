@@ -199,7 +199,7 @@ Value* function_cons (Environment* environment, ParseTree* args)
 
 Value* function_cond (Environment* environment, ParseTree* args)
 {
-    // Check number of arguments
+    // Check arguments
     if (args->numChildren < 2) { return NULL; }
     for (int i = 1; i < args->numChildren; ++i)
     {
@@ -229,14 +229,15 @@ Value* function_cond (Environment* environment, ParseTree* args)
         // Evaluate and check condition
         Value* condition = evaluate(args->children[i]->children[0], environment);
         if (condition == NULL) { return NULL; }
-        if (condition->type != BOOLEAN_VALUE) { value_release(condition); return NULL; }
-        // Evaluate and return if condition true
-        bool cond = condition->boolVal;
-        value_release(condition);
-        if (cond) { return evaluate(args->children[i]->children[1], environment); }
+        if (condition->type != BOOLEAN_VALUE || condition->boolVal)
+        {
+            value_release(condition);
+            return evaluate(args->children[i]->children[1], environment);
+        }
     }
 
-    return value_create(NULL_VALUE);}
+    return value_create(NULL_VALUE);
+}
 
 
 Value* function_define (Environment* environment, ParseTree* args)
@@ -510,7 +511,8 @@ Value* function_load (Environment* environment, ParseTree* args)
 
     // Load file in top environment
     while (environment->parent != NULL) { environment = environment->parent; }
-    load_file(environment, args->children[1]->token->string);
+    bool success = load_file(environment, args->children[1]->token->string);
+    if (!success) { return NULL; }
     return value_create(NULL_VALUE);
 }
 
@@ -546,6 +548,27 @@ Value* function_minus (Environment* environment, ParseTree* args)
     // Return sum as the correct type
     if (integer) { return value_create_int(sum); }
     else         { return value_create_float(sum); }
+}
+
+
+Value* function_modulo (Environment* environment, ParseTree* args)
+{
+    // Check that there are two arguments
+    if (args->numChildren != 3) { return NULL; }
+
+    // Evaluate arguments and check for null cases
+    Value* arg1 = evaluate(args->children[1], environment);
+    if (arg1 == NULL) { return NULL; }
+    if (arg1->type != INTEGER_VALUE) { value_release(arg1); return NULL; }
+
+    Value* arg2 = evaluate(args->children[2], environment);
+    if (arg2 == NULL) { value_release(arg1); return NULL; }
+    if (arg2->type != INTEGER_VALUE) { value_release(arg1); value_release(arg2); return NULL; }
+
+    int result = arg1->intVal % arg2->intVal;
+    value_release(arg1);
+    value_release(arg2);
+    return value_create_int(result);
 }
 
 
