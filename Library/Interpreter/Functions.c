@@ -41,6 +41,7 @@ Value* function_and (Environment* environment, ParseTree* args)
     {
         value_release(returnVal);
         returnVal = evaluate(args->children[i], environment);
+        if (returnVal == NULL) { return returnVal; }
         if (returnVal->type == BOOLEAN_VALUE && returnVal->boolVal == false)
         {
             return returnVal;
