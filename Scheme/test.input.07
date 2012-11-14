@@ -1,8 +1,0 @@
-(define insert ;Inserts a value into an existing binary search tree onto one of the leaves
-  (lambda (v bst)
-    (cond ;Handles all conditions
-      [(null? bst) (list v () ())] ;If it's a leaf, we replace it with the value
-      [(= (car bst) v) bst] ;Duplicates are not inserted
-      [(> (car bst) v) (list (car bst) (insert v (left bst)) (right bst))] ;Rebuilds tree if inserting into left subtree
-      [(< (car bst) v) (list (car bst) (left bst) (insert v (right bst)))] ;Rebuilds tree if inserting into right subtree
-      )))

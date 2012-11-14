@@ -1,0 +1,20 @@
+  paren : (
+ symbol : cons
+  paren : (
+ symbol : list
+integer : 1
+integer : 2
+integer : 3
+  paren : )
+integer : 4
+  paren : )
+  paren : (
+ symbol : append
+  paren : (
+ symbol : list
+integer : 1
+integer : 2
+integer : 3
+  paren : )
+integer : 4
+  paren : )

@@ -1,0 +1,10 @@
+(define g-lazy-list
+    (lambda (start stop)
+        (if (> start stop)
+            #f
+            (cons start
+                (lambda () (g-lazy-list (+ start 1) stop))))))
+
+(g-lazy-list 1 6)
+(define asdf (list 1 (car ((cdr (g-lazy-list 1 6))))))
+asdf

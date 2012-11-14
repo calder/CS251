@@ -1,0 +1,65 @@
+  paren : (
+ symbol : define
+ symbol : g-lazy-list
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : start
+ symbol : stop
+  paren : )
+  paren : (
+ symbol : if
+  paren : (
+ symbol : >
+ symbol : start
+ symbol : stop
+  paren : )
+boolean : #f
+  paren : (
+ symbol : cons
+ symbol : start
+  paren : (
+ symbol : lambda
+  paren : (
+  paren : )
+  paren : (
+ symbol : g-lazy-list
+  paren : (
+ symbol : +
+ symbol : start
+integer : 1
+  paren : )
+ symbol : stop
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : g-lazy-list
+integer : 1
+integer : 6
+  paren : )
+  paren : (
+ symbol : define
+ symbol : asdf
+  paren : (
+ symbol : list
+integer : 1
+  paren : (
+ symbol : car
+  paren : (
+  paren : (
+ symbol : cdr
+  paren : (
+ symbol : g-lazy-list
+integer : 1
+integer : 6
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+ symbol : asdf

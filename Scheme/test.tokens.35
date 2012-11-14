@@ -1,0 +1,75 @@
+  paren : (
+ symbol : cond
+  paren : (
+integer : 2
+boolean : #t
+  paren : )
+  paren : (
+ symbol : else
+boolean : #f
+  paren : )
+  paren : )
+  paren : (
+ symbol : cond
+  paren : (
+boolean : #f
+boolean : #t
+  paren : )
+  paren : (
+ symbol : else
+boolean : #f
+  paren : )
+  paren : )
+  paren : (
+ symbol : define
+ symbol : a
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : x
+ symbol : y
+  paren : )
+  paren : (
+ symbol : cond
+  paren : (
+  paren : (
+ symbol : =
+ symbol : x
+ symbol : y
+  paren : )
+integer : 0
+  paren : )
+  paren : (
+  paren : (
+ symbol : <
+ symbol : x
+ symbol : y
+  paren : )
+integer : 1
+  paren : )
+  paren : (
+  paren : (
+ symbol : >
+ symbol : x
+ symbol : y
+  paren : )
+integer : 2
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : a
+integer : 0
+integer : 0
+  paren : )
+  paren : (
+ symbol : a
+integer : -1
+integer : 0
+  paren : )
+  paren : (
+ symbol : a
+integer : 1
+integer : 0
+  paren : )

@@ -1,0 +1,45 @@
+  paren : (
+ symbol : define
+ symbol : x
+integer : 5
+  paren : )
+  paren : (
+ symbol : define
+ symbol : a
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : x
+  paren : )
+  paren : (
+ symbol : set!
+ symbol : x
+integer : 6
+  paren : )
+ symbol : x
+  paren : )
+  paren : )
+ symbol : x
+  paren : (
+ symbol : a
+ symbol : x
+  paren : )
+  paren : (
+ symbol : a
+integer : 4
+  paren : )
+ symbol : x
+  paren : (
+ symbol : begin
+  paren : (
+ symbol : set!
+ symbol : x
+integer : 7
+  paren : )
+  paren : (
+ symbol : +
+ symbol : x
+integer : 1
+  paren : )
+  paren : )
+ symbol : x

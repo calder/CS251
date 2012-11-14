@@ -1,0 +1,8 @@
+( define x 5 ) 
+( define a ( lambda ( x ) ( set! x 6 ) x ) ) 
+x 
+( a x ) 
+( a 4 ) 
+x 
+( begin ( set! x 7 ) ( + x 1 ) ) 
+x 

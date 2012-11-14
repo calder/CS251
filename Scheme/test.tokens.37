@@ -1,0 +1,60 @@
+  paren : (
+ symbol : and
+boolean : #t
+boolean : #f
+  paren : )
+  paren : (
+ symbol : and
+boolean : #f
+boolean : #f
+  paren : )
+  paren : (
+ symbol : and
+boolean : #t
+boolean : #t
+  paren : )
+  paren : (
+ symbol : and
+integer : 1
+integer : 2
+  paren : )
+  paren : (
+ symbol : and
+integer : 1
+boolean : #f
+  paren : )
+  paren : (
+ symbol : and
+boolean : #t
+integer : 1
+  paren : )
+  paren : (
+ symbol : or
+boolean : #t
+boolean : #f
+  paren : )
+  paren : (
+ symbol : or
+boolean : #f
+boolean : #f
+  paren : )
+  paren : (
+ symbol : or
+boolean : #t
+boolean : #t
+  paren : )
+  paren : (
+ symbol : or
+integer : 1
+integer : 2
+  paren : )
+  paren : (
+ symbol : or
+integer : 1
+boolean : #f
+  paren : )
+  paren : (
+ symbol : or
+boolean : #t
+integer : 1
+  paren : )

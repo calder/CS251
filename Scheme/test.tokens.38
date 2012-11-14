@@ -1,0 +1,19 @@
+  paren : (
+ symbol : begin
+  paren : (
+ symbol : define
+ symbol : a
+integer : 2
+  paren : )
+boolean : #f
+  paren : (
+ symbol : define
+ symbol : a
+  paren : (
+ symbol : +
+ symbol : a
+integer : 3
+  paren : )
+  paren : )
+ symbol : a
+  paren : )

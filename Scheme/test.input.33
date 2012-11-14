@@ -1,0 +1,3 @@
+(define a (append (append (quote (a b 2)) 3) 4))
+(define b (cons 1 2))
+(cons a b)

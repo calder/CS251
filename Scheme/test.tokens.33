@@ -1,0 +1,34 @@
+  paren : (
+ symbol : define
+ symbol : a
+  paren : (
+ symbol : append
+  paren : (
+ symbol : append
+  paren : (
+ symbol : quote
+  paren : (
+ symbol : a
+ symbol : b
+integer : 2
+  paren : )
+  paren : )
+integer : 3
+  paren : )
+integer : 4
+  paren : )
+  paren : )
+  paren : (
+ symbol : define
+ symbol : b
+  paren : (
+ symbol : cons
+integer : 1
+integer : 2
+  paren : )
+  paren : )
+  paren : (
+ symbol : cons
+ symbol : a
+ symbol : b
+  paren : )

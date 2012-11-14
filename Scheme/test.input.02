@@ -1,9 +1,0 @@
-(define valid-bst? ;Checks that the search tree that is passed is valid (i.e. made up of lists)
-  (lambda (bst)
-    (if (list? bst)
-        (if (null-bst? bst)
-            #t
-            (if (and (list? (left bst)) (list? (right bst)))
-                #t
-                #f))
-        #f)))
