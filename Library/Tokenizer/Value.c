@@ -114,7 +114,6 @@ void value_free (Value* value)
     switch (value->type)
     {
     case FUNCTION_VALUE:
-        environment_release(value->environment);
         break;
     case LAMBDA_VALUE:
         parsetree_release(value->code);

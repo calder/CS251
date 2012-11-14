@@ -268,13 +268,16 @@ Value* function_divide (Environment* environment, ParseTree* args)
     if (args->numChildren == 2)
     {
         Value* v = evaluate(args->children[1], environment);
+        Value* result;
         if (v == NULL) { return NULL; }
         if (v->type == INTEGER_VALUE && (v->intVal == 1 || v->intVal == -1))
-            { value_release(v); return value_create_int(v->intVal); }
+            { result = value_create_int(v->intVal); }
         else if (v->type == INTEGER_VALUE || v->type == FLOAT_VALUE)
-            { value_release(v); return value_create_float(1.0 / v->intVal); }
+            { result = value_create_float(1.0 / v->intVal); }
         else
-            { value_release(v); return NULL; }
+            { result = NULL; }
+        value_release(v);
+        return result;
     }
 
     // Actual quotient cases
@@ -293,7 +296,7 @@ Value* function_divide (Environment* environment, ParseTree* args)
                 return NULL;
             }
 
-            // Dividor case
+            // Dividend case
             if (i == 1)
             {
                 if (value->type == FLOAT_VALUE) { quotient = value->floatVal; integer = false; }

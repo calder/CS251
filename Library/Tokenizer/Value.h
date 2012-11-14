@@ -33,7 +33,8 @@ enum ValueType
 typedef ValueType;
 
 
-/// 
+/// All built-in error codes
+/// @note These aren't actually used yet!
 enum ErrorType
 {
     SYNTAX_ERROR,

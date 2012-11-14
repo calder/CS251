@@ -39,5 +39,8 @@ Value* environment_get (Environment* environment, const char* symbol);
 /// Set the Value bound to a symbol and reserve the Value
 void environment_set (Environment* environment, const char* symbol, Value* value);
 
+/// Set the Value bound to a symbol but DO NOT reserve the Value
+void environment_set_default (Environment* environment, const char* symbol, Value* value);
+
 
 #endif
