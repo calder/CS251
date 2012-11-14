@@ -21,7 +21,7 @@ Value* function_append (Environment* environment, ParseTree* args)
     for (int i = 2; i < args->numChildren; ++i)
     {
         Value* item = evaluate(args->children[i], environment);
-        if (item == NULL) { value_release(listToAppend); value_release(item); return NULL; }
+        if (item == NULL) { value_release(listToAppend); return NULL; }
         while(listPointer-> tail != NULL && listPointer->tail->tail != NULL)
         { 
             listPointer = listPointer->tail; 
