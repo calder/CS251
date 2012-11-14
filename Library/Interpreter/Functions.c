@@ -15,7 +15,8 @@ Value* function_append (Environment* environment, ParseTree* args)
     // Check number of arguments
     if (args->numChildren < 2) { return NULL; }
     Value* listToAppend = evaluate(args->children[1], environment);
-    if (listToAppend == NULL || listToAppend->type != LIST_VALUE) { value_release(listToAppend); return NULL; }
+    if (listToAppend == NULL) {return NULL; }
+    else if (listToAppend->type != LIST_VALUE) { value_release(listToAppend); return NULL; }
     Value* listPointer = listToAppend;
     for (int i = 2; i < args->numChildren; ++i)
     {
