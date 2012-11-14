@@ -165,7 +165,7 @@ void value_print_list (Value* list)
         value_print(list->head);
         list = list->tail;
         if (list == NULL) { break; }
-        if (list->type != LIST_VALUE) { value_print(list); break; }
+        if (list->type != LIST_VALUE) { printf(". "); value_print(list); break; }
     }
     printf(") ");
 }
