@@ -12,25 +12,35 @@ bool check_let_args (ParseTree* args);
 
 Value* function_append (Environment* environment, ParseTree* args)
 {
-    // Check number of arguments
-    if (args->numChildren < 2) { return NULL; }
-    Value* listToAppend = evaluate(args->children[1], environment);
-    if (listToAppend == NULL) {return NULL; }
-    else if (listToAppend->type != LIST_VALUE) { value_release(listToAppend); return NULL; }
-    Value* listPointer = listToAppend;
-    for (int i = 2; i < args->numChildren; ++i)
+    // Empty list case
+    if (args->numChildren == 1) { return value_create_list_empty(); }
+
+    Value* list = value_create_list_empty();
+    for (int i = args->numChildren-1; i > 0; --i)
     {
-        Value* item = evaluate(args->children[i], environment);
-        if (item == NULL) { value_release(listToAppend); return NULL; }
-        while(listPointer-> tail != NULL && listPointer->tail->tail != NULL)
-        { 
-            listPointer = listPointer->tail; 
-            if (listPointer->type != LIST_VALUE) { value_release(listToAppend); value_release(item); return NULL; }
+        // Evaluate argument
+        Value* newList = evaluate(args->children[i], environment);
+        if (newList == NULL) { value_release(list); return NULL; }
+
+        // Listify it if necessary
+        if (newList->type != LIST_VALUE)
+        {
+            newList = value_create_list(newList, value_create_list_empty());
+            value_release(newList->head);
         }
-        if(listPointer->tail != NULL) { value_release(listPointer->tail); }
-        listPointer->tail = item;
+
+        // Append the current list to it
+        Value* end = newList;
+        while (end->tail->head != NULL)
+        {
+            end = end->tail;
+        }
+        value_release(end->tail);
+        end->tail = list;
+        list = newList;
     }
-    return listToAppend;
+
+    return list;
 }
 
 

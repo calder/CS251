@@ -19,18 +19,10 @@ void test_interpreter_append ()
     assert(value->tail->head->type == INTEGER_VALUE && value->tail->head->intVal == 1);
     assert(value->tail->tail->head->type == INTEGER_VALUE && value->tail->tail->head->intVal == 2);
     assert(value->tail->tail->tail->head == NULL && value->tail->tail->tail->tail == NULL);
-
-    quack_free(values);
     value_release(value);
-
-    values = interpret("(append (quote (5)) 1)");
-    assert(values != NULL && !quack_empty(values));
-    value = quack_pop_front(values);
-    assert(value != NULL && value->type == LIST_VALUE);
-    assert(value->head->type == INTEGER_VALUE && value->head->intVal == 5);
-    assert(value->tail->type == INTEGER_VALUE && value->tail->intVal == 1);
+    
+    assert(quack_empty(values));
     quack_free(values);
-    value_release(value);
 }
 
 
