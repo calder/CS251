@@ -475,7 +475,7 @@ Value* function_list (Environment* environment, ParseTree* args)
     for (int i = args->numChildren - 1; i > 0; --i)
     {
         Value* item = evaluate(args->children[i], environment);
-        if (item == NULL) { return NULL; }
+        if (item == NULL) { value_release(builtList); return NULL; }
         Value* listTemp = value_create_list_empty();
         listTemp->head = item;
         listTemp->tail = builtList;
