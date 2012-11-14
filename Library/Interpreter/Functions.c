@@ -189,7 +189,7 @@ Value* function_cons (Environment* environment, ParseTree* args)
 
 Value* function_cond (Environment* environment, ParseTree* args)
 {
-    // Check number of arguments
+    // Check arguments
     if (args->numChildren < 2) { return NULL; }
     for (int i = 1; i < args->numChildren; ++i)
     {
@@ -219,14 +219,15 @@ Value* function_cond (Environment* environment, ParseTree* args)
         // Evaluate and check condition
         Value* condition = evaluate(args->children[i]->children[0], environment);
         if (condition == NULL) { return NULL; }
-        if (condition->type != BOOLEAN_VALUE) { value_release(condition); return NULL; }
-        // Evaluate and return if condition true
-        bool cond = condition->boolVal;
-        value_release(condition);
-        if (cond) { return evaluate(args->children[i]->children[1], environment); }
+        if (condition->type != BOOLEAN_VALUE || condition->boolVal)
+        {
+            value_release(condition);
+            return evaluate(args->children[i]->children[1], environment);
+        }
     }
 
-    return value_create(NULL_VALUE);}
+    return value_create(NULL_VALUE);
+}
 
 
 Value* function_define (Environment* environment, ParseTree* args)
