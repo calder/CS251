@@ -540,6 +540,27 @@ Value* function_minus (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_modulo (Environment* environment, ParseTree* args)
+{
+    // Check that there are two arguments
+    if (args->numChildren != 3) { return NULL; }
+
+    // Evaluate arguments and check for null cases
+    Value* arg1 = evaluate(args->children[1], environment);
+    if (arg1 == NULL) { return NULL; }
+    if (arg1->type != INTEGER_VALUE) { value_release(arg1); return NULL; }
+
+    Value* arg2 = evaluate(args->children[2], environment);
+    if (arg2 == NULL) { value_release(arg1); return NULL; }
+    if (arg2->type != INTEGER_VALUE) { value_release(arg1); value_release(arg2); return NULL; }
+
+    int result = arg1->intVal % arg2->intVal;
+    value_release(arg1);
+    value_release(arg2);
+    return value_create_int(result);
+}
+
+
 Value* function_null (Environment* environment, ParseTree* args)
 {
     // Check that there's only a single argument
