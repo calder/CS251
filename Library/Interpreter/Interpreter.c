@@ -60,6 +60,18 @@ Value* evaluate (ParseTree* parseTree, Environment* environment)
 }
 
 
+Value* evaluate_nokeyword (ParseTree* parseTree, Environment* environment)
+{
+    Value* value = evaluate(parseTree, environment);
+    if (value != NULL && value->type == FUNCTION_VALUE && value->keyword)
+    {
+        value_release(value);
+        return NULL;
+    }
+    return value;
+}
+
+
 Value* evaluate_list (ParseTree* parseTree)
 {
     // Primitive case (leaf)
