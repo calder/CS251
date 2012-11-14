@@ -664,57 +664,12 @@ Value* function_setbang (Environment* environment, ParseTree* args)
     ParseTree* val = args->children[2];
     if (var->token == NULL || var->token->type != SYMBOL_VALUE) { return NULL; }
 
-    // Evaluate value and store in variable
+    // Evaluate and replace
     Value* value = evaluate(val, environment);
     if (value == NULL) { return NULL; }
+    environment_set(environment, var->token->string, value);
 
-    Environment* env = environment;
-    Vector* envs = vector_create();
-    while (env != NULL)
-    {
-        vector_append(envs, env);
-        env = env->parent;
-    }
-    int index = vector_size(envs);
-    while (index > 0)
-    {
-        env = vector_get(envs, --index);
-        if (environment_get(env, var->token->symbol) != NULL)
-        {
-            environment_set(env, var->token->symbol, value);
-            value_release(value);
-            vector_free(envs);
-            return value_create(NULL_VALUE);
-
-        }
-    }
-    value_release(value);
-    vector_free(envs);
-    return NULL;
-
-    // Find the broadest scope (environment) in which the variable is defined
-    // Reset it in that environment
-    // If it doesn't exist in any environment, error
-
-    /*
-    while (env != NULL)
-    {
-        if (environment_get(env, var->token->symbol) != NULL)
-        {
-            // Var exists in an environment, so reset it
-            // If it's not just in the scope of the set!
-            // environment_set(env, var->token->symbol, value);
-            // Otherwise, environment_set(environment, ");
-
-            environment_set(environment, var->token->symbol, value);
-            value_release(value);
-            return value_create(NULL_VALUE);
-        }
-        env = env->parent;
-    }
-    */
-    value_release(value);
-    return NULL;
+    return value_create(NULL_VALUE);
 }
 
 
