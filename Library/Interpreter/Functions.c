@@ -716,6 +716,22 @@ Value* function_times (Environment* environment, ParseTree* args)
 }
 
 
+Value* function_zero (Environment* environment, ParseTree* args)
+{
+    // Check and evaluate argument
+    if (args->numChildren != 2) { return NULL; }
+    Value* value = evaluate(args->children[1], environment);
+    if (value == NULL) { return NULL; }
+
+    // Return result
+    bool result = false;
+    if (value->type == INTEGER_VALUE) { result = value->intVal == 0; }
+    if (value->type == FLOAT_VALUE)   { result = value->floatVal == 0; }
+    value_release(value);
+    return value_create_bool(result);
+}
+
+
 bool check_let_args (ParseTree* args)
 {
     // Check number of arguments

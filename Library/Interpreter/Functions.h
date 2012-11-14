@@ -33,6 +33,7 @@ Value* function_plus (Environment*  environment, ParseTree* args);
 Value* function_quote (Environment* environment, ParseTree* args);
 Value* function_setbang (Environment* environment, ParseTree* args);
 Value* function_times (Environment*  environment, ParseTree* args);
+Value* function_zero (Environment*  environment, ParseTree* args);
 
 
 #endif
