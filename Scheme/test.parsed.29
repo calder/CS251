@@ -1,0 +1,4 @@
+( define x 3 ) 
+( define y ( + x 1 ) ) 
+( define z 5 ) 
+( + x y z ) 

@@ -1,0 +1,18 @@
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : x
+integer : 5
+  paren : )
+  paren : (
+ symbol : y
+  paren : (
+ symbol : +
+integer : 2
+ symbol : x
+  paren : )
+  paren : )
+  paren : )
+ symbol : y
+  paren : )

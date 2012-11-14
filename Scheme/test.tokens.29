@@ -1,0 +1,25 @@
+  paren : (
+ symbol : define
+ symbol : x
+integer : 3
+  paren : )
+  paren : (
+ symbol : define
+ symbol : y
+  paren : (
+ symbol : +
+ symbol : x
+integer : 1
+  paren : )
+  paren : )
+  paren : (
+ symbol : define
+ symbol : z
+integer : 5
+  paren : )
+  paren : (
+ symbol : +
+ symbol : x
+ symbol : y
+ symbol : z
+  paren : )

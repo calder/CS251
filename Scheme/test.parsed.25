@@ -1,0 +1,6 @@
+( define x 23 ) 
+( letrec ( ( x 5 ) ( y ( lambda ( ) ( + 2 x ) ) ) ) y ) 
+( letrec ( ( x 5 ) ( y ( lambda ( ) ( + 2 x ) ) ) ) ( y ) ) 
+( letrec ( ( y 2 ) ( z ( lambda ( y ) y ) ) ) ( z 0 ) ) 
+( letrec ( ( y 2 ) ( z ( lambda ( m n ) y ) ) ) ( z 0 2 ) ) 
+( let ( ( z 10 ) ) ( + z x ) ) 

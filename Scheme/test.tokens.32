@@ -1,0 +1,24 @@
+  paren : (
+ symbol : and
+integer : 2
+integer : 4
+integer : 6
+  paren : )
+  paren : (
+ symbol : and
+integer : 2
+integer : 9
+boolean : #f
+  paren : )
+  paren : (
+ symbol : or
+integer : 2
+integer : 4
+integer : 6
+  paren : )
+  paren : (
+ symbol : or
+integer : 2
+integer : 9
+boolean : #f
+  paren : )

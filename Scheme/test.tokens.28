@@ -1,0 +1,42 @@
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : x
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : m
+ symbol : total
+  paren : )
+  paren : (
+ symbol : if
+  paren : (
+ symbol : =
+ symbol : m
+integer : 0
+  paren : )
+ symbol : total
+  paren : (
+ symbol : x
+  paren : (
+ symbol : -
+ symbol : m
+integer : 1
+  paren : )
+  paren : (
+ symbol : *
+ symbol : total
+integer : 2
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : x
+integer : 5
+integer : 1
+  paren : )
+  paren : )

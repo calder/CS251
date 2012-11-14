@@ -17,7 +17,7 @@ integer : 30
   paren : )
 integer : 42
   paren : (
- symbol : + 
+ symbol : +
  symbol : woozle
 integer : 1
   paren : )

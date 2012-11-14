@@ -1,0 +1,1 @@
+( letrec ( ( x ( lambda ( m total ) ( if ( = m 0 ) total ( x ( - m 1 ) ( * total 2 ) ) ) ) ) ) ( x 5 1 ) ) 

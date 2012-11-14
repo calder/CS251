@@ -1,0 +1,115 @@
+  paren : (
+ symbol : define
+ symbol : x
+integer : 23
+  paren : )
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : x
+integer : 5
+  paren : )
+  paren : (
+ symbol : y
+  paren : (
+ symbol : lambda
+  paren : (
+  paren : )
+  paren : (
+ symbol : +
+integer : 2
+ symbol : x
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+ symbol : y
+  paren : )
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : x
+integer : 5
+  paren : )
+  paren : (
+ symbol : y
+  paren : (
+ symbol : lambda
+  paren : (
+  paren : )
+  paren : (
+ symbol : +
+integer : 2
+ symbol : x
+  paren : )
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : y
+  paren : )
+  paren : )
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : y
+integer : 2
+  paren : )
+  paren : (
+ symbol : z
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : y
+  paren : )
+ symbol : y
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : z
+integer : 0
+  paren : )
+  paren : )
+  paren : (
+ symbol : letrec
+  paren : (
+  paren : (
+ symbol : y
+integer : 2
+  paren : )
+  paren : (
+ symbol : z
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : m
+ symbol : n
+  paren : )
+ symbol : y
+  paren : )
+  paren : )
+  paren : )
+  paren : (
+ symbol : z
+integer : 0
+integer : 2
+  paren : )
+  paren : )
+  paren : (
+ symbol : let
+  paren : (
+  paren : (
+ symbol : z
+integer : 10
+  paren : )
+  paren : )
+  paren : (
+ symbol : +
+ symbol : z
+ symbol : x
+  paren : )
+  paren : )

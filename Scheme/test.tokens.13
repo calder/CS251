@@ -1,18 +1,1 @@
-  paren : (
- symbol : define
- symbol : /<<::>>/
-  paren : (
- symbol : lambda
- symbol : <<______^^_______>>
-  paren : (
- symbol : let
-  paren : (
-  paren : (
- symbol : x
-integer : -285372
-  paren : )
-  paren : )
- symbol : x
-  paren : )
-  paren : )
-  paren : )
+Syntax Error!

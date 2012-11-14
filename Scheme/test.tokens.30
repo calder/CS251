@@ -1,0 +1,32 @@
+  paren : (
+ symbol : define
+ symbol : w
+integer : 34
+  paren : )
+  paren : (
+ symbol : let*
+  paren : (
+  paren : (
+ symbol : x
+integer : 1
+  paren : )
+  paren : (
+ symbol : y
+  paren : (
+ symbol : +
+ symbol : x
+integer : 1
+  paren : )
+  paren : )
+  paren : (
+ symbol : z
+ symbol : w
+  paren : )
+  paren : )
+  paren : (
+ symbol : +
+ symbol : x
+ symbol : y
+ symbol : z
+  paren : )
+  paren : )

@@ -1,0 +1,17 @@
+  paren : (
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : y
+  paren : )
+  paren : (
+ symbol : lambda
+  paren : (
+ symbol : x
+  paren : )
+ symbol : x
+  paren : )
+ symbol : y
+  paren : )
+integer : 25
+  paren : )
