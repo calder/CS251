@@ -18,7 +18,7 @@
 Value* evaluate_function (ParseTree* parseTree, Environment* environment);
 Value* evaluate_primitive (ParseTree* parseTree, Environment* environment);
 
-Value* evaluate_lambda (Value* lambda, ParseTree* args);
+Value* evaluate_lambda (Value* lambda, ParseTree* args, Environment* environment);
 
 
 Quack* interpret (const char* input)
@@ -108,7 +108,7 @@ Value* evaluate_function (ParseTree* parseTree, Environment* environment)
     // Apply function and return result
     Value* result = NULL;
     if (f->type == FUNCTION_VALUE) { result = f->function(environment, parseTree); }
-    if (f->type == LAMBDA_VALUE)   { result = evaluate_lambda(f, parseTree); }
+    if (f->type == LAMBDA_VALUE)   { result = evaluate_lambda(f, parseTree, environment); }
     value_release(f);
     return result;  
 }
@@ -157,14 +157,17 @@ Value* evaluate_primitive (ParseTree* parseTree, Environment* environment)
 }
 
 
-Value* evaluate_lambda (Value* lambda, ParseTree* args)
+Value* evaluate_lambda (Value* lambda, ParseTree* args, Environment* environment)
 {
     if ((args->numChildren - 1) != lambda->numParams) { return NULL; }
     Environment* env = environment_create(lambda->environment);
 
     for (int i = 0; i < lambda->numParams; ++i)
     {
-        environment_set(env, lambda->params[i], args->children[i+1]->token);
+        Value* arg = evaluate(args->children[i+1], environment);
+        if (arg == NULL) { environment_release(env); return NULL; }
+        environment_set(env, lambda->params[i], arg);
+        value_release(arg);
     }
     return evaluate_bodies(lambda->code, env);
 }
