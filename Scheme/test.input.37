@@ -1,0 +1,13 @@
+(and #t #f)
+(and #f #f)
+(and #t #t)
+(and 1 2)
+(and 1 #f)
+(and #t 1)
+
+(or #t #f)
+(or #f #f)
+(or #t #t)
+(or 1 2)
+(or 1 #f)
+(or #t 1)
