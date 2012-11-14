@@ -1,5 +1,0 @@
-(define null-bst?
-  (lambda (bst)
-    (if (empty? bst) 
-    #t
-    #f)))

@@ -26,6 +26,8 @@ range   - The published range test works for our program, but it fails when prov
 	  that this happens somewhere between 13000 and 14000, and that DrRacket also
 	  requires more memory to evaluate the same code.
 
+tests   - Our test files are in the Scheme directory, labelled test.input.xx
+
 
 Build Instructions
 ==================
